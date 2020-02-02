@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.company.project.dao.CompanyMapper">
+  <resultMap id="BaseResultMap" type="com.company.project.model.Company">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="companyCode" jdbcType="VARCHAR" property="companycode" />
+    <result column="companyName" jdbcType="VARCHAR" property="companyname" />
+    <result column="createDate" jdbcType="VARCHAR" property="createdate" />
+    <result column="createTime" jdbcType="VARCHAR" property="createtime" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="applyType" jdbcType="VARCHAR" property="applytype" />
+    <result column="corporationID" jdbcType="VARCHAR" property="corporationid" />
+    <result column="licenceNo" jdbcType="VARCHAR" property="licenceno" />
+    <result column="addr" jdbcType="VARCHAR" property="addr" />
+    <result column="orgId" jdbcType="BIGINT" property="orgid" />
+    <result column="companyFloor" jdbcType="VARCHAR" property="companyfloor" />
+    <result column="companyFloor2" jdbcType="VARCHAR" property="companyfloor2" />
+  </resultMap>
+  <sql id="companyUserOrg">
+   c.id ,c.companyName,o.org_code,u.companyId ,u.id uid
+  </sql>
+  <select id="findByUserId" parameterType="Long" resultMap="ResultCompanyMap">
+    select
+    <include refid="companyUserOrg" />
+    from tbl_company_user cu,tbl_company c,t_org o,tbl_user u
+    where
+    cu.companyId=c.id
+    and o.id=c.orgId
+    and u.id=cu.userId
+    and cu.userId=#{userId}
+    and cu.currentStatus='normal'
+  </select>
+  <select id="findNotCompanyUser" parameterType="Long" resultMap="ResultCompanyMap">
+    select
+    <include refid="companyUserOrg" />
+    from tbl_company c,t_org o,tbl_user u
+    where
+    o.id=c.orgId
+    and u.companyId=c.id
+    and u.id=#{userId}
+  </select>
+  <resultMap id="ResultCompanyMap" type="com.company.project.model.Company">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="companyName" jdbcType="VARCHAR" property="companyname" />
+  <collection property="org" ofType="com.company.project.model.Org">
+    <result column="org_code" jdbcType="VARCHAR" property="orgCode" />
+  </collection>
+  <collection property="users" ofType="com.company.project.model.User">
+
+    <id column="uid" jdbcType="BIGINT" property="id" />
+    <result column="companyId" jdbcType="BIGINT" property="companyId" />
+  </collection>
+  </resultMap>
+</mapper>

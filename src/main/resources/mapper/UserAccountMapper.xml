@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.company.project.dao.UserAccountMapper">
+  <resultMap id="BaseResultMap" type="com.company.project.model.UserAccount">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="userId" jdbcType="BIGINT" property="userid" />
+    <result column="sysPwd" jdbcType="VARCHAR" property="syspwd" />
+    <result column="payPwd" jdbcType="VARCHAR" property="paypwd" />
+    <result column="cstatus" jdbcType="VARCHAR" property="cstatus" />
+    <result column="gesturePwd" jdbcType="VARCHAR" property="gesturepwd" />
+    <result column="handleCause" jdbcType="VARCHAR" property="handlecause" />
+    <result column="handleTime" jdbcType="VARCHAR" property="handletime" />
+    <result column="operId" jdbcType="BIGINT" property="operid" />
+  </resultMap>
+</mapper>

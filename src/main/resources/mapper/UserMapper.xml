@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.company.project.dao.UserMapper">
+  <resultMap id="BaseResultMap" type="com.company.project.model.User">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="orgId" jdbcType="BIGINT" property="orgid" />
+    <result column="relationNo" jdbcType="VARCHAR" property="relationno" />
+    <result column="realName" jdbcType="VARCHAR" property="realname" />
+    <result column="sex" jdbcType="VARCHAR" property="sex" />
+    <result column="niceName" jdbcType="VARCHAR" property="nicename" />
+    <result column="loginName" jdbcType="VARCHAR" property="loginname" />
+    <result column="idType" jdbcType="VARCHAR" property="idtype" />
+    <result column="idNO" jdbcType="VARCHAR" property="idno" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="createDate" jdbcType="VARCHAR" property="createdate" />
+    <result column="createTime" jdbcType="VARCHAR" property="createtime" />
+    <result column="province" jdbcType="VARCHAR" property="province" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="area" jdbcType="VARCHAR" property="area" />
+    <result column="addr" jdbcType="VARCHAR" property="addr" />
+    <result column="isAuth" jdbcType="VARCHAR" property="isauth" />
+    <result column="authDate" jdbcType="VARCHAR" property="authdate" />
+    <result column="authTime" jdbcType="VARCHAR" property="authtime" />
+    <result column="idFrontImgUrl" jdbcType="VARCHAR" property="idfrontimgurl" />
+    <result column="idOppositeImgUrl" jdbcType="VARCHAR" property="idoppositeimgurl" />
+    <result column="idHandleImgUrl" jdbcType="VARCHAR" property="idhandleimgurl" />
+    <result column="bankCardImgUrl" jdbcType="VARCHAR" property="bankcardimgurl" />
+    <result column="headImgUrl" jdbcType="VARCHAR" property="headimgurl" />
+    <result column="token" jdbcType="VARCHAR" property="token" />
+    <result column="isSetTransPwd" jdbcType="VARCHAR" property="issettranspwd" />
+    <result column="qrcodeUrl" jdbcType="VARCHAR" property="qrcodeurl" />
+    <result column="companyId" jdbcType="BIGINT" property="companyId" />
+    <result column="role" jdbcType="VARCHAR" property="role" />
+    <result column="workKey" jdbcType="VARCHAR" property="workkey" />
+    <result column="failReason" jdbcType="VARCHAR" property="failreason" />
+    <result column="soleCode" jdbcType="VARCHAR" property="solecode" />
+    <result column="validityDate" jdbcType="VARCHAR" property="validitydate" />
+    <result column="deviceToken" jdbcType="VARCHAR" property="devicetoken" />
+    <result column="deviceType" jdbcType="VARCHAR" property="devicetype" />
+    <result column="isOnlineApp" jdbcType="VARCHAR" property="isonlineapp" />
+  </resultMap>
+</mapper>

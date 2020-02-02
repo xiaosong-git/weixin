@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.company.project.dao.KeyMapper">
+  <resultMap id="BaseResultMap" type="com.company.project.model.Key">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="workKey" jdbcType="VARCHAR" property="workkey" />
+    <result column="cstatus" jdbcType="VARCHAR" property="cstatus" />
+    <result column="createDate" jdbcType="VARCHAR" property="createdate" />
+  </resultMap>
+</mapper>

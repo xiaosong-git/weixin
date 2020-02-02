@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.company.project.dao.UserAuthMapper">
+  <resultMap id="BaseResultMap" type="com.company.project.model.UserAuth">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="userId" jdbcType="BIGINT" property="userid" />
+    <result column="realName" jdbcType="VARCHAR" property="realname" />
+    <result column="idNo" jdbcType="VARCHAR" property="idno" />
+    <result column="idHandleImgUrl" jdbcType="VARCHAR" property="idhandleimgurl" />
+    <result column="authDate" jdbcType="VARCHAR" property="authdate" />
+  </resultMap>
+</mapper>

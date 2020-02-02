@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.company.project.dao.VisitRecordMapper">
+  <resultMap id="BaseResultMap" type="com.company.project.model.VisitRecord">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="visitDate" jdbcType="VARCHAR" property="visitdate" />
+    <result column="visitTime" jdbcType="VARCHAR" property="visittime" />
+    <result column="userId" jdbcType="BIGINT" property="userid" />
+    <result column="visitorId" jdbcType="BIGINT" property="visitorid" />
+    <result column="reason" jdbcType="VARCHAR" property="reason" />
+    <result column="cstatus" jdbcType="VARCHAR" property="cstatus" />
+    <result column="dateType" jdbcType="VARCHAR" property="datetype" />
+    <result column="startDate" jdbcType="VARCHAR" property="startdate" />
+    <result column="endDate" jdbcType="VARCHAR" property="enddate" />
+    <result column="answerContent" jdbcType="VARCHAR" property="answercontent" />
+    <result column="orgCode" jdbcType="VARCHAR" property="orgcode" />
+    <result column="companyId" jdbcType="BIGINT" property="companyId" />
+    <result column="recordType" jdbcType="INTEGER" property="recordtype" />
+    <result column="replyDate" jdbcType="VARCHAR" property="replydate" />
+    <result column="replyTime" jdbcType="VARCHAR" property="replytime" />
+    <result column="vitype" jdbcType="VARCHAR" property="vitype" />
+    <result column="replyUserId" jdbcType="BIGINT" property="replyuserid" />
+    <result column="isReceive" jdbcType="VARCHAR" property="isreceive" />
+  </resultMap>
+</mapper>

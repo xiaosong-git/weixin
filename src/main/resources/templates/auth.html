@@ -1,0 +1,353 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <link rel="stylesheet" href="css/weui.css"/>
+    <link rel="stylesheet" href="css/weuix.css"/>
+
+
+</head>
+
+<body ontouchstart>
+<div class="page-hd">
+    <h1 class="page-hd-title">
+        实人认证
+    </h1>
+    <p class="page-hd-desc"></p>
+</div>
+
+<!--<div class="weui-cells__title">表单</div>-->
+
+<div class="weui-cells weui-cells_form">
+
+    <div class="weui-cell">
+        <div class="weui-cell__hd">
+            <label class="weui-label">真实姓名</label>
+        </div>
+        <div class="weui-cell__bd">
+            <input class="weui-input" placeholder="请输入您的真实姓名" type="text" id="realName" value="">
+        </div>
+
+    </div>
+    <div class="weui-cell">
+        <div class="weui-cell__hd">
+            <label class="weui-label">身份证号</label>
+        </div>
+        <div class="weui-cell__bd">
+            <input class="weui-input" placeholder="请输入您的身份证号" type="text" id="idNo" value="" >
+        </div>
+
+    </div>
+    <div class="weui-uploader">
+        <div class="weui-cell__hd">
+            <label class="weui-label" >人像图片上传</label>
+        </div>
+        <div class="weui-uploader__bd">
+            <ul class="weui-uploader__files" id="uploaderFiles"></ul>
+            <div class="weui-uploader__input-box" id="photoDiv" value="">
+                <span class="weui-uploader__input" onclick="jssdkimg(this)" id="choose" value=""></span>
+            </div>
+        </div>
+    </div>
+<!--    <div class="weui-cell">-->
+<!--        <div class="weui-cell__hd">-->
+<!--            <label class="weui-label">住址</label>-->
+<!--        </div>-->
+<!--        <div class="weui-cell__bd">-->
+<!--            <input class="weui-input" placeholder="请输入您的住址" type="text" id="addr" >-->
+<!--        </div>-->
+
+<!--    </div>-->
+<!--<label for="weuiAgree" class="weui-agree">-->
+<!--    <input id="weuiAgree" class="weui-agree__checkbox" type="checkbox">-->
+<!--    <span class="weui-agree__text">-->
+<!--                阅读并同意<a href="javascript:void(0);">《相关条款》</a>-->
+<!--            </span>-->
+<!--</label>-->
+
+
+<div class="weui-btn-area">
+    <a class="weui-btn weui-btn_primary" href="javascript:" id="btn" onclick="upload()">确定</a>
+</div>
+<br>
+<br>
+
+<!--<div class="weui-footer weui-footer_fixed-bottom">-->
+<!--    <p class="weui-footer__links">-->
+<!--        <a href="login" class="weui-footer__link">登入</a>-->
+<!--    </p>-->
+<!--    <p class="weui-footer__text">Copyright &copy; Yoby</p>-->
+<!--</div>-->
+</div>
+
+</body>
+
+<script src="https://cdn.bootcss.com/zepto/1.2.0/zepto.min.js"></script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+<script src="js/zepto.weui.min.js"></script>
+<script src="js/myUtil.js"></script>
+<script>
+    // var appid = ['[${config.appid}]'];
+    // var config = '[[${config.jsApiList}]]';
+
+    wx.config({
+        debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+        appId: '[[${config.appid}]]', // 必填，公众号的唯一标识
+        timestamp:'[[${config.timestamp}]]' , // 必填，生成签名的时间戳
+        nonceStr: '[[${config.noncestr}]]', // 必填，生成签名的随机串
+        signature: '[[${config.signature}]]',// 必填，签名
+        jsApiList: ['[[${config.jsApiList[0]}]]','[[${config.jsApiList[1]}]]',
+            '[[${config.jsApiList[2]}]]','[[${config.jsApiList[3]}]]','[[${config.jsApiList[4]}]]'] // 必填，需要使用的JS接口列表 这里填写需要用到的微信api openlocation为使用微信内置地图查看位置接口
+    });
+    wx.ready(function () {
+        wx.checkJsApi({
+            jsApiList: ['[[${config.jsApiList[0]}]]','[[${config.jsApiList[1]}]]'],
+            success: function (res) {
+                console.log(res)
+            }
+        });
+    });
+    wx.error(function(res){
+        console.log(res);
+    });
+
+    // var list =[[${config.jsApiList}]];
+    // for (var i=0;i<list.length;i++){
+    //     console.log(list[i]);
+    // }})
+    $(function(){
+
+        // $(document).on("click","#btn",function(){
+        //     var user = $("#user").val();
+        //     if(user==""){
+        //         $.toptip("拜访姓名不能为空");
+        //         return false;
+        //     }else{
+        //         //做发送信息
+        //         $.toptip("提交成功",'success');
+        //     }
+        // })
+        //解决表单控件不能回弹 只有微信ios有这个问题
+        $("input,select,textarea").blur(function(){
+            setTimeout(() => {
+                const scrollHeight = document.documentElement.scrollTop || document.body.scrollTop || 0;
+            window.scrollTo(0, Math.max(scrollHeight - 1, 0));
+        }, 100);
+        })
+
+    });
+    function removeimg(obj){
+        $.confirm('您确定要删除吗?', '确认删除?', function() {$(obj).remove();});
+        $("#choose").val('');
+        // $("#photoDiv").show();
+        return false;
+    }
+    function jssdkimg(obj){
+
+        wx.chooseImage({
+            count: 1, // 默认9
+            sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+            sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+            success: function (res) {
+                var localIds = res.localIds; //本地图片id
+                $(obj).val(localIds);
+
+                wx.uploadImage({
+                    localId:'' + $("#choose").val(), // 需要上传的图片的本地ID，由chooseImage接口获得
+                    isShowProgressTips: 1, // 默认为1，显示进度提示
+                    success: function (res) {
+
+                        var serverId = res.serverId; // 返回图片的服务器端ID
+                        $.toptip("检测人脸中！","success");
+                        // alert(serverId);
+                        $.ajax({
+                            //请求方式
+                            type : "POST",
+                            //请求的媒体类型
+                            contentType: "application/x-www-form-urlencoded",
+                            //请求地址
+                            url : "user/uploadVerify",
+                            //数据，json字符串
+                            data : {userId:getCookie("userId"),
+                                token:getCookie(("token")),
+                                mediaId:serverId,
+                                type:3
+                                // imgname:rst.base64
+                            },
+                            //请求成功
+                            success : function(result) {
+                                if (result.code==400){
+                                    $.toptip(result.message);
+                                    // alert(result.message);
+                                }else {
+                                    $.toptip("人脸识别成功","success");
+                                    // alert(result.data);
+                                    //图片服务器中的图片地址
+                                    $("#photoDiv").val(result.data);
+                                    $("#uploaderFiles").parent().prev().html('<li onclick="removeimg(this)" class="weui-uploader__file" style="background-image:url('+localIds+')"><input value=""  type="hidden"  name="file" /></li>');
+                                }
+                            }
+                        });
+                    }
+                    // $("#uploaderFiles").parent().prev().html('<li onclick="removeimg(this)" class="weui-uploader__file" style="background-image:url('+serverId+')"><input value=""  type="hidden"  name="file" /></li>');
+                });
+                // wx.getLocalImgData({
+                //     localId: localIds,
+                //     success: function (res) {
+                //         var localData = res.localData;
+                //         localData = localData.replace('jgp', 'jpeg');
+                //         alert(res.localData);
+                //     }
+                // });
+
+                // $("#photoDiv").hide();
+            }
+        });}
+    function upload() {
+        // alert($("#choose").val());
+        if (isEmpty($("#realName").val())){
+            $.toptip("请输入您的真实姓名！");
+        }else if (isEmpty($("#idNo").val())){
+            $.toptip("请输入身份证号！");
+        } else if (isEmpty($("#photoDiv").val())){
+            $.toptip("请选择人脸图片！");
+        }else {
+            $.showLoading();
+            $.ajax({
+                //请求方式
+                type : "POST",
+                //请求的媒体类型
+                contentType: "application/x-www-form-urlencoded",
+                //请求地址
+                url : "user/verify",
+                //数据，json字符串
+                data : {userId:getCookie("userId"),
+                    token:getCookie(("token")),
+                    idHandleImgUrl: $("#photoDiv").val(),
+                    idNO:$("#idNo").val(),
+                    realName:$("#realName").val()
+
+                    // imgname:rst.base64
+                },
+                //请求成功
+                success : function(result) {
+                    if (result.code==400){
+                        $.toptip(result.message);
+                        alert(result.message);
+                        $.hideLoading();
+                    }else {
+                        $.hideLoading();
+                        $.toptip("认证成功！发起访问中。。。",'success');
+                        // alert("认证成功！发起访问中。。。");
+                        $.showLoading();
+                        //发起访问
+                        $.ajax({
+                            type: 'POST',
+                            contentType: "application/x-www-form-urlencoded",
+                            url: "visit/record/visitRequest",
+                            data: {
+                                //从跳转页获取用户id
+                                userId: getCookie('userId'),
+                                visitorId: getCookie('visitorId'),
+                                // companyId: $("#company").attr("data-values"),
+                                reason: getCookie('reason'),
+                                startDate: getCookie('startTime'),
+                                endDate: getCookie('endTime'),
+                                token: getCookie('token')
+                                // orgCode: $("#orgCode").attr("orgCode")
+                            },
+                            success: function(result) {
+                                $.hideLoading();
+                                var data = result.data;
+                                console.log(result);
+                                if (result.code==400){
+                                    $.toptip(result.message);
+                                    //登入过期
+                                    if (data=='overTime'){
+                                        window.location.href=loginUrl;
+                                        $.showLoading();
+                                        //实名认证失败
+                                    }else if ('verifyFail'==data){
+
+                                        window.location.href=authUrl;
+                                        $.showLoading();
+                                    }else if ('tokenFail'==data){
+                                        window.location.href=loginUrl;
+                                        $.showLoading();
+                                    }else if ('userFail'==data) {
+                                        window.location.href=loginUrl;
+                                        $.showLoading();
+                                    }
+                                }else{
+                                    $.toast("发起访问成功",'success');
+                                    alert("发起访问成功，对方同意后将在《朋悦比邻》公众号提示，请注意查收！");
+                                    wx.closeWindow();
+                                }
+                            }
+                        });
+
+
+                    }
+                }
+            });
+        }
+
+        function test(test){
+            if(test!=2333){
+                console.log("错误密令！")
+                return ;
+            }
+            $.ajax({
+                type: 'POST',
+                contentType: "application/x-www-form-urlencoded",
+                url: "visit/record/visitRequest",
+                data: {
+                    //从跳转页获取用户id
+                    userId: getCookie('userId'),
+                    visitorId: getCookie('visitorId'),
+                    // companyId: $("#company").attr("data-values"),
+                    reason: getCookie('reason'),
+                    startDate: getCookie('startTime'),
+                    endDate: getCookie('endTime'),
+                    token: getCookie('token')
+                    // orgCode: $("#orgCode").attr("orgCode")
+                },
+                success: function(result) {
+                    $.hideLoading();
+                    var data = result.data;
+                    console.log(result);
+                    if (result.code==400){
+                        $.toptip(result.message);
+                        //登入过期
+                        if (data=='overTime'){
+                            window.location.href=loginUrl;
+                            $.showLoading();
+                            //实名认证失败
+                        }else if ('verifyFail'==data){
+
+                            window.location.href=authUrl;
+                            $.showLoading();
+                        }else if ('tokenFail'==data){
+                            window.location.href=loginUrl;
+                            $.showLoading();
+                        }else if ('userFail'==data) {
+                            window.location.href=loginUrl;
+                            $.showLoading();
+                        }
+                    }else{
+                        $.toast("发起访问成功",'success');
+                        alert("发起访问成功，对方同意后将在《朋悦比邻》公众号提示，请注意查收！");
+                        wx.closeWindow();
+                    }
+                }
+            });
+        }
+    }
+
+</script>
+<script src="https://cdn.bootcss.com/webcamjs/1.0.25/webcam.js"></script>
+<script src="js/myUtil.js"></script>
+
+</html>

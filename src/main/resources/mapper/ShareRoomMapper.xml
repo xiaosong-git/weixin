@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.company.project.dao.ShareRoomMapper">
+  <resultMap id="BaseResultMap" type="com.company.project.model.ShareRoom">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="room_name" jdbcType="VARCHAR" property="roomName" />
+    <result column="room_addr" jdbcType="VARCHAR" property="roomAddr" />
+    <result column="room_size" jdbcType="VARCHAR" property="roomSize" />
+    <result column="room_type" jdbcType="INTEGER" property="roomType" />
+    <result column="room_short_content" jdbcType="VARCHAR" property="roomShortContent" />
+    <result column="room_image" jdbcType="VARCHAR" property="roomImage" />
+    <result column="room_open_time" jdbcType="VARCHAR" property="roomOpenTime" />
+    <result column="room_close_time" jdbcType="VARCHAR" property="roomCloseTime" />
+    <result column="room_price" jdbcType="INTEGER" property="roomPrice" />
+    <result column="room_manager" jdbcType="BIGINT" property="roomManager" />
+    <result column="room_status" jdbcType="INTEGER" property="roomStatus" />
+    <result column="room_orgcode" jdbcType="VARCHAR" property="roomOrgcode" />
+    <result column="room_cancle_hour" jdbcType="INTEGER" property="roomCancleHour" />
+    <result column="room_percent" jdbcType="INTEGER" property="roomPercent" />
+    <result column="mode" jdbcType="INTEGER" property="mode" />
+    <result column="ext1" jdbcType="VARCHAR" property="ext1" />
+    <result column="ext2" jdbcType="VARCHAR" property="ext2" />
+    <result column="ext3" jdbcType="VARCHAR" property="ext3" />
+    <collection property="menus" ofType="com.company.project.model.Org">
+      <result column="id" jdbcType="BIGINT" property="id" />
+      <result column="org_name" jdbcType="BIGINT" property="orgName" />
+    </collection>
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, room_name, room_addr, room_size,room_type,room_short_content,room_image,room_open_time,room_close_time,
+  room_price,room_manager,room_status,room_orgcode,room_cancle_hour,room_percent,mode
+  </sql>
+
+</mapper>

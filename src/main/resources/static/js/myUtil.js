@@ -1,14 +1,22 @@
-var url= "http://f.pyblkj.cn/";
-//朋客联盟
-// var suffix="weixin/";
+var IS_DEVELOP=false;//是否生产环境
+var uri;
+var url;
+var loginUrl;
+var appId="wx1ddcdc86c83bc9a1";
+if (IS_DEVELOP){//生产环境
+    uri="f.pyblkj.cn";
+    url= "http://"+uri+"/";
+    //重定向地址
+    loginUrl="https://open.weixin.qq.com/connect/oauth2/authorize?appid="+appId+"&redirect_uri=http%3A%2F%2F"+uri+"%2Fpybl%2Flogin&response_type=code&scope=snsapi_userinfo&state=233#wechat_redirect";
+} else{
+    appId="wx2a1951f46acc4371";
+    uri="6kivds.natappfree.cc";
+    url= "http://"+uri+"/";
+    loginUrl="https://open.weixin.qq.com/connect/oauth2/authorize?appid="+appId+"&redirect_uri=http%3A%2F%2F"+uri+"%2Fpybl%2Flogin&response_type=code&scope=snsapi_userinfo&state=233#wechat_redirect";
+
+}
 //朋悦比邻
 var suffix="pybl/";
-//朋客联盟
-// var loginUrl="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx960de9db7158a03b&redirect_uri=http%3A%2F%2Ff.pyblkj.cn%2Fweixin%2Flogin&response_type=code&scope=snsapi_userinfo&state=233#wechat_redirect";
-//朋悦比邻
-var loginUrl="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1ddcdc86c83bc9a1&redirect_uri=http%3A%2F%2Ff.pyblkj.cn%2Fpybl%2Flogin&response_type=code&scope=snsapi_userinfo&state=233#wechat_redirect";
-//测试
-// var loginUrl="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx2a1951f46acc4371&redirect_uri=http%3A%2F%2Ff.pyblkj.cn%2Fpybl%2Flogin&response_type=code&scope=snsapi_userinfo&state=233#wechat_redirect";
 var visitUrl=url+suffix+"visit";
 var authUrl=url+suffix+"auth";
 function setCookie(c_name,value,expiredays)

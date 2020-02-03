@@ -1,6 +1,5 @@
 package com.company.project;
 
-import com.company.project.weixin.Menu;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

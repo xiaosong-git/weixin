@@ -96,12 +96,11 @@ import java.util.List;
            }
             return "visit";
         }
-//        @AuthCheckAnnotation(checkLogin = false,checkVerify = false)
-//        @RequestMapping(value = "/form12")
-//        public String room(@RequestParam(name = "name", required = false, defaultValue = "world") String name,
-//                        Model model) {
-//        return "form12";
-//        }
+        @AuthCheckAnnotation(checkLogin = false,checkVerify = false)
+        @RequestMapping(value = "/form",method= RequestMethod.GET)
+        public String form() {
+        return "form";
+        }
 
 //        @AuthCheckAnnotation(checkLogin = false,checkVerify = false)
 //        @RequestMapping({"static/MP_verify_I4XWI1ZSKeFojwT6.txt"})

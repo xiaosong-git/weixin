@@ -36,13 +36,6 @@ import java.util.List;
     Logger logger = LoggerFactory.getLogger(WxController.class);
     private IService iService = new WxService();
         @AuthCheckAnnotation(checkLogin = false,checkVerify = false)
-        @RequestMapping(value = "/test")
-        public String test(@RequestParam(name = "name", required = false, defaultValue = "world") String name,
-                               Model model) {
-            model.addAttribute("xname", name);
-            return "index";
-        }
-        @AuthCheckAnnotation(checkLogin = false,checkVerify = false)
         @RequestMapping(value = "/login",method= RequestMethod.GET)
         public String login(@RequestParam(name="code",required=false)String code,
                             @RequestParam(name="state",defaultValue = "0" )String state,Model model) throws WxErrorException {

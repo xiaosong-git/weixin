@@ -58,6 +58,8 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
     private OrgService orgService;
     @Resource
     private UserAuthMapper userAuthMapper;
+    @Resource
+    private UserMapper userMapper;
 
     private IService iService = new WxService();
     /**
@@ -539,7 +541,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
         map.put("file",newFile);
         System.out.println(newFile.getName());
         String imageServerApiUrl = paramService.findValueByName("imageServerApiUrl");
-        String s = okHttpUtil.postFile(imageServerApiUrl, map, "multipart/form-data");
+        String s = okHttpUtil.postFile(imageServerApiUrl, map, "multipart/form-data");//上传图片
         JSONObject jsonObject=JSONObject.parseObject(s);
         Map resultMap = JSON.parseObject(jsonObject.toString());
         if (resultMap.isEmpty()){
@@ -555,6 +557,25 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
 //
         //返回图片在服务器的地址
         return ResultGenerator.genSuccessResult(data.get("imageFileName"));
+    }
+
+    @Override
+    public Result frequentContacts(String userId) {
+        if (userId == null||"".equals(userId)) {
+            return null;
+        }
+        List<User> users = userMapper.frequentContacts(userId);
+        if (users==null||users.isEmpty()){
+            return ResultGenerator.genFailResult("暂无数据");
+        }
+        String imageServerUrl = paramService.findValueByName("imageServerUrl");
+        for (User user : users) {
+            if (user.getIdhandleimgurl()==null||"".equals(user.getIdhandleimgurl())){
+                continue;
+            }
+            user.setIdhandleimgurl(Base64.encode(FilesUtils.getImageFromNetByUrl(imageServerUrl + user.getIdhandleimgurl())));
+        }
+        return ResultGenerator.genSuccessResult(users);
     }
 
     public String phoneResult(String idNO,String realName,String idHandleImgUrl) throws Exception{

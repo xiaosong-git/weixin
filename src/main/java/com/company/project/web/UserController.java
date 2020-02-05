@@ -136,5 +136,23 @@ public class UserController {
         return ResultGenerator.genFailResult("系统异常");
     }
 
+    /**
+     * 查看常用联系人
+     * @param userId 登入用户id
+     * @return 根据访客时间倒序输出带图片的用户
+     */
+    @AuthCheckAnnotation(checkLogin = false,checkVerify = false)
+    @RequestMapping("/frequentContacts")
+    @ResponseBody
+    public Result frequentContacts(@RequestParam String userId)   {
+
+        try {
+            return userService.frequentContacts(userId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return ResultGenerator.genFailResult("系统异常");
+    }
 
 }

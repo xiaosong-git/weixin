@@ -34,4 +34,5 @@ public interface UserService extends Service<User> {
     Result uploadPhoto(String userId, String mediaId, String type) throws WxErrorException, Exception;
 
 
+    Result frequentContacts(String userId);
 }

@@ -126,42 +126,27 @@
                     <a href="javascript:" class="weui-search-bar__cancel-btn" id="searchCancel">取消</a>
                 </div>
 
+                <!-- 联系人列表-->
                 <div class="weui-cells">
-                    <div class="weui-cell weui-cell_swiped" id="swipe1">
+                    <div class="weui-cell" onclick="testt(this)">
+                        <div class="weui-cell__hd"><img src=""></div>
                         <div class="weui-cell__bd">
-                            <div class="weui-cell">
-                                <div class="img_circle"><img src="js/images/avatar.jpg" alt=""
-                                                             style="width:20px;margin-right:10px;display:block"></div>
-                                <div class="weui-cell__bd">
-                                    <p>小红</p>
-                                </div>
-                                <div class="weui-cell__ft">
-                                    <a class="weui-swiped-btn " href="javascript:">访问</a>
-                                    <a class="weui-swiped-btn" href="javascript:">邀约</a>
-                                </div>
-                            </div>
+                            <p>标题文字</p>
                         </div>
-
+                        <div class="weui-cell__ft">说明文字</div>
                     </div>
-
-                    <div class="weui-cell weui-cell_swiped">
+                    <div class="weui-cell">
+                        <div class="weui-cell__hd"><img src=""></div>
                         <div class="weui-cell__bd">
-                            <div class="weui-cell">
-                                <div class="img_circle"><img src="js/images/avatar2.jpg" alt=""
-                                                             style="width:20px;margin-right:10px;display:block"></div>
-                                <div class="weui-cell__bd">
-                                    <p>小明</p>
-                                </div>
-
-                            </div>
+                            <p>标题文字</p>
                         </div>
-                        <div class="weui-cell__ft">
-                            <a class="weui-swiped-btn weui-swiped-btn_warn delete-swipeout" href="javascript:">访问</a>
-                            <a class="weui-swiped-btn weui-swiped-btn_default close-swipeout" href="javascript:">邀约</a>
-                        </div>
+                        <div class="weui-cell__ft">说明文字</div>
                     </div>
                 </div>
             </div>
+
+
+
             <div id="tab2" class="weui-tab__bd-item">
                 <h1>页面二</h1>
             </div>
@@ -173,9 +158,25 @@
     <script src="https://cdn.bootcss.com/jquery-weui/1.2.1/js/jquery-weui.min.js"></script>
     <script src="https://cdn.bootcss.com/fastclick/1.0.6/fastclick.js"></script>
     <script>
+        function testt(){
+            $.ajax({
+                type: 'POST',
+                contentType: "application/x-www-form-urlencoded",
+                url: "http://kxzfid.natappfree.cc/pybl/user/frequentContacts",
+                data: {userId:'3'},
+                success: function(result) {
+                    alert(JSON.stringify(result.data))
+                    alert(result.data.idhandleimgurl)
+                },
+                error : function(e){
+                    alert("error"+e.message)
+                }
+            });
+        }
         $(function () {
             FastClick.attach(document.body);
             $("#start-time").val(formatDateTime(0, 0, 0));
+
         });
         $("#start-time").datetimePicker();
         $("#hour").picker({

@@ -127,25 +127,20 @@
                 </div>
 
                 <!-- 联系人列表-->
-                <div class="weui-cells">
-                    <div class="weui-cell" onclick="testt(this)">
-                        <div class="weui-cell__hd"><img src=""></div>
-                        <div class="weui-cell__bd">
-                            <p>标题文字</p>
-                        </div>
-                        <div class="weui-cell__ft">说明文字</div>
-                    </div>
+                <div id="contactPerson"></div>
+               <!-- <div class="weui-cells">
                     <div class="weui-cell">
                         <div class="weui-cell__hd"><img src=""></div>
                         <div class="weui-cell__bd">
-                            <p>标题文字</p>
+                            <p>data[i].realname</p>
                         </div>
-                        <div class="weui-cell__ft">说明文字</div>
+                        <div class="weui-cell__ft">
+                            <i class="weui-icon-success" onclick="addPersonInfo(data[i])"></i>
+                        </div>
                     </div>
-                </div>
+                </div>-->
+
             </div>
-
-
 
             <div id="tab2" class="weui-tab__bd-item">
                 <h1>页面二</h1>
@@ -165,8 +160,21 @@
                 url: "http://kxzfid.natappfree.cc/pybl/user/frequentContacts",
                 data: {userId:'3'},
                 success: function(result) {
-                    alert(JSON.stringify(result.data))
-                    alert(result.data.idhandleimgurl)
+
+                    var data = result.data;
+                    var personSize = result.data.length;
+                    for(var i in data){
+                        console.log(data[i].realname);
+                        $("#contactPerson").append("<div class=\"weui-cell\">\n" +
+                            "                        <div class=\"weui-cell__hd\"><img src=\"\"></div>\n" +
+                            "                        <div class=\"weui-cell__bd\">\n" +
+                            "                            <p>"+data[i].realname+"</p>\n" +
+                            "                        </div>\n" +
+                            "                        <div class=\"weui-cell__ft\">\n" +
+                            "                            <i class=\"weui-icon-success\" onclick=\"addPersonInfo()\"></i>\n" +
+                            "                        </div>\n" +
+                            "                    </div>")
+                    }
                 },
                 error : function(e){
                     alert("error"+e.message)
@@ -176,7 +184,7 @@
         $(function () {
             FastClick.attach(document.body);
             $("#start-time").val(formatDateTime(0, 0, 0));
-
+            testt();
         });
         $("#start-time").datetimePicker();
         $("#hour").picker({
@@ -236,6 +244,9 @@
 
             return y + '-' + m + '-' + d + ' ' + h + ':' + minute;
             //2017-12-12 12:23:34
+        }
+        function addPersonInfo() {
+            console.log("ssssssssssssssss")
         }
     </script>
 </body>

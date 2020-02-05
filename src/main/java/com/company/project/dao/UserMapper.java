@@ -9,9 +9,9 @@ import java.util.List;
 
 public interface UserMapper extends Mapper<User> {
 
-    @Select(  "select id,realName,idHandleImgUrl from tbl_user where id in (\n" +
-            "select visitorId from "+TableList.VISITOR_RECORD+" where userId=#{userId}\n" +
-            "union select userId from "+TableList.VISITOR_RECORD+" where visitorId=#{userId})")
+    @Select(  "select DISTINCT id, realName,idHandleImgUrl from (select  * from (\n" +
+            "select u.id,realName,idHandleImgUrl,startDate from "+TableList.VISITOR_RECORD+" vr left join tbl_user u on u.id=vr.visitorId where userId=#{userId}\n" +
+            "union select  u.id,realName,idHandleImgUrl,startDate from "+TableList.VISITOR_RECORD+" vr left join tbl_user u on u.id=vr.userId where visitorId=#{userId})x ORDER BY startDate desc)y")
     List<User> frequentContacts(Object userId);
 
 }

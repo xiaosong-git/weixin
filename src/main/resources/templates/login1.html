@@ -1,0 +1,42 @@
+<!doctype html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/weui/2.0.1/style/weui.min.css"/>
+
+<!--    <link rel="stylesheet" href="css/weui.css"/>-->
+    <link rel="stylesheet" href="css/weuix.css"/>
+
+
+</head>
+
+<body >
+<div class="weui-cells weui-cells_form">
+    <div class="weui-cell">
+        <div class="weui-cell__hd">
+            <label hidden th:value="${state}" id="fromUrl">来自哪个页面</label>
+        </div>
+    </div>
+    </div>
+</div>
+<br>
+    <br>
+    <script src="https://cdn.bootcss.com/zepto/1.2.0/zepto.min.js"></script>
+    <script src="js/zepto.weui.min.js"></script>
+    <script src="js/myUtil.js"></script>
+    <script>
+        $(function() {
+            setCookie('openId', '[[${openId}]]', 365);
+            // setCookie('token', '[[${token}]]', 365);
+            setCookie('loginName', '[[${loginName}]]', 365);
+            setCookie('userId', '[[${userId}]]', 365);
+            setCookie('isAuth', '[[${isAuth}]]', 365);
+            $.toptip("验证成功", 'success');
+            window.history.go(-2);
+        })
+    </script>
+
+</body>
+</html>

@@ -594,6 +594,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
 
         User user = userMapper.getUserFromOpenId(openId);
         if (user==null){
+            user=new User();
             user.setWxOpenId(openId);
             int save = this.save(user);
 

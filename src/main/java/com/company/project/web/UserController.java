@@ -100,7 +100,7 @@ public class UserController {
     }
     /**
      * 实名认证
-     * @param userId 手机号
+     * @param userId 用户Id
      * @param idNO 验证码
      * @param realName 真实姓名
      * @param idHandleImgUrl 图片地址

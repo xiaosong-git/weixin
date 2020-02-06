@@ -46,7 +46,9 @@ function isLogin() {
     console.log(getCookie('openId'));
 if (getCookie('openId')===""){
     window.location.href=loginUrl;
+    return true;
 }
+return false;
 }
 
 

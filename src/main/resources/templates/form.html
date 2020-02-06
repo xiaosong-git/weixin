@@ -182,10 +182,11 @@
         }
         $(function () {
 
-            isLogin();
+            if(!isLogin()){
             FastClick.attach(document.body);
             $("#start-time").val(formatDateTime(0, 0, 0));
             testt();
+            }
         });
         $("#start-time").datetimePicker();
         $("#hour").picker({

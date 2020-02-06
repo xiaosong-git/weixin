@@ -35,4 +35,7 @@ public interface UserService extends Service<User> {
 
 
     Result frequentContacts(String userId);
+
+
+    User getUser(String openId);
 }

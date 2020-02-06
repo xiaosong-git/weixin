@@ -1,7 +1,7 @@
 package com.company.project.web;
-
-
 import com.company.project.annotation.AuthCheckAnnotation;
+import com.company.project.model.User;
+import com.company.project.service.UserService;
 import com.company.project.weixin.MenuKey;
 import com.company.project.weixin.WxController;
 import com.soecode.wxtools.api.IService;
@@ -13,13 +13,12 @@ import com.soecode.wxtools.bean.result.WxOAuth2AccessTokenResult;
 import com.soecode.wxtools.exception.WxErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,29 +34,26 @@ import java.util.List;
     public class ThymeleafController {
     Logger logger = LoggerFactory.getLogger(WxController.class);
     private IService iService = new WxService();
-        @AuthCheckAnnotation(checkLogin = false,checkVerify = false)
+    @Autowired
+    private UserService userService;
         @RequestMapping(value = "/login",method= RequestMethod.GET)
         public String login(@RequestParam(name="code",required=false)String code,
                             @RequestParam(name="state",defaultValue = "0" )String state,Model model) throws WxErrorException {
-
-            System.out.println("-------微信传来请求数据为："+code+"-----------------------"+state);
             model.addAttribute("state", state);
             WxOAuth2AccessTokenResult wxOAuth2AccessTokenResult = iService.oauth2ToGetAccessToken(code);
-            System.out.println("-------Access_token: "+wxOAuth2AccessTokenResult.getAccess_token());
-//            WxOAuth2AccessTokenResult accessToken = iService.oauth2ToGetRefreshAccessToken(wxOAuth2AccessTokenResult.getRefresh_token());
-//            System.out.println("-------accessToken: "+accessToken);
-//            WxError wxError = iService.oauth2CheckAccessToken(accessToken.getAccess_token(), wxOAuth2AccessTokenResult.getOpenid());
-//            System.out.println("-------wxError: "+wxError);
             //获取微信登入的openid
             WxUserList.WxUser.WxUserGet wxUser=new WxUserList.WxUser.WxUserGet();
             wxUser.setOpenid(wxOAuth2AccessTokenResult.getOpenid());
             wxUser.setLang("zh_CN");
             WxUserList.WxUser wxUser1 = iService.oauth2ToGetUserInfo(wxOAuth2AccessTokenResult.getAccess_token(), wxUser);
-            System.out.println("-------wxUser1: "+wxUser1);
             model.addAttribute("openId",wxUser1.getOpenid());
-//            model.addAttribute("openId","test");
+            User user = userService.getUser(wxUser1.getOpenid());
+            model.addAttribute("userId",user.getId());
+            model.addAttribute("isAuth",user.getIsauth());
+            model.addAttribute("loginName",user.getRealname());
             return "login";
         }
+
         @AuthCheckAnnotation(checkLogin = false,checkVerify = false)
         @RequestMapping(value = "/visit",method= RequestMethod.GET)
         public String visit(@RequestParam(name="code",required=false)String code,

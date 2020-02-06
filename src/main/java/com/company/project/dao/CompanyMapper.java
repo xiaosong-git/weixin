@@ -24,4 +24,6 @@ public interface CompanyMapper extends Mapper<Company> {
      * @date 2019/10/10 10:24
      */
     List<Company> findNotCompanyUser(long userId);
+
+
 }

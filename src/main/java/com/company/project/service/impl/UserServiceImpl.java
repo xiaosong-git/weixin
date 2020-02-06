@@ -583,6 +583,24 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
         }
         return ResultGenerator.genSuccessResult(users);
     }
+
+    /**
+     * 通过openid获取用户信息
+     * @param openId
+     * @return
+     */
+    @Override
+    public User getUser(String openId){
+
+        User user = userMapper.getUserFromOpenId(openId);
+        if (user==null){
+            user.setWxOpenId(openId);
+            int save = this.save(user);
+
+        }
+        return user;
+    }
+
     //旧实人认证
     public String phoneResult(String idNO,String realName,String idHandleImgUrl) throws Exception{
         String merchOrderId = OrderNoUtil.genOrderNo("V", 16);//商户请求订单号

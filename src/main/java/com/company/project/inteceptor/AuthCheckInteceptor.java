@@ -34,6 +34,9 @@ public class AuthCheckInteceptor extends HandlerInterceptorAdapter {
         HandlerMethod methodHandler=(HandlerMethod) handler;
         AuthCheckAnnotation auth = methodHandler.getMethodAnnotation(AuthCheckAnnotation.class);
 
+        if (auth==null){
+           return super.preHandle(request, response, handler);
+        }
         if(auth.checkLogin()){  //需要登录验证
             /**
              * 登录验证visitRequest

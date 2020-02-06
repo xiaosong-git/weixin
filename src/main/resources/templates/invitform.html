@@ -60,17 +60,25 @@
 <body ontouchstart>
 <div class="weui-cells weui-cells_form">
     <div class="weui-cell">
-        <div class="weui-cell__hd"><label class="weui-label">受访人姓名</label></div>
+        <div class="weui-cell__hd"><label class="weui-label">邀约人姓名</label></div>
         <div class="weui-cell__bd">
-            <input class="weui-input" id="visitorName" type="text" placeholder="请输入受访人姓名">
+            <input class="weui-input" id="visitorName" type="text" placeholder="请输入邀约人姓名">
         </div>
     </div>
     <div class="weui-cell">
         <div class="weui-cell__hd">
-            <label class="weui-label">受访人手机号</label>
+            <label class="weui-label">邀约人手机号</label>
         </div>
         <div class="weui-cell__bd">
-            <input class="weui-input" id="visitorPhone" type="tel" placeholder="请输入受访人手机号">
+            <input class="weui-input" id="visitorPhone" type="tel" placeholder="请输入邀约人手机号">
+        </div>
+    </div>
+    <div class="weui-cell">
+        <div class="weui-cell__hd">
+            <label class="weui-label">地址</label>
+        </div>
+        <div class="weui-cell__bd">
+            <input class="weui-input" id="addr" type="tel" placeholder="请输入邀约人地址">
         </div>
     </div>
     <div class="weui-cell">
@@ -94,7 +102,7 @@
         </div>
     </div>
     <div class="weui-btn-area">
-        <a class="weui-btn weui-btn_primary" href="javascript:" id="showTooltips">发起访问</a>
+        <a class="weui-btn weui-btn_primary" href="javascript:" id="showTooltips">发起邀约</a>
     </div>
 
     <div class="weui-tab">
@@ -131,7 +139,7 @@
                             <p>data[i].realname</p>
                         </div>
                         <div class="weui-cell__ft">
-                            <i onclick="addPersonInfo('personData')">+</i>
+                            <i class="weui-icon-success" onclick="addPersonInfo('personData')"></i>
                         </div>
                     </div>
                 </div>
@@ -148,31 +156,30 @@
     <script src="https://cdn.bootcss.com/fastclick/1.0.6/fastclick.js"></script>
     <script>
         function testt(){
-            var userid =
             $.ajax({
                 type: 'POST',
                 contentType: "application/x-www-form-urlencoded",
                 url: "/pybl/user/frequentContacts",
-                data: { userId:'3' },
+                data: {userId:'3'},
                 success: function(result) {
 
                     var data = result.data;
                     var personSize = result.data.length;
                     $("#contactPerson").append("<div class=\"weui-cells\">")
                     for(var i in data){
-                        console.log(data[i].phone);
                         var realname = data[i].realname;
-                        var userid = data[i].phone
+                        var userid = data[i].id
                         $("#contactPerson").append(" <div class=\"weui-cell\">\n" +
                             "                      <div class=\"weui-cell__hd\"><img src=\"images\\user.png\" style=\"width: 30px;height: 30px\"></div>\n" +
                             "                        <div class=\"weui-cell__bd\">\n" +
                             "                             <p>"+data[i].realname+"</p>\n" +
                             "                        </div>\n" +
                             "                        <div class=\"weui-cell__ft\">\n" +
-                            "                           <a href=\"javascript:void(0);\" style=\"font-size:25px;\" onclick=\"addPersonInfo('"+realname+"','"+userid+"')\">+</a>\n" +
+                            "                            <a href=\"javascript:void(0);\" style=\"font-size:25px;\" onclick=\"addPersonInfo('"+realname+"','"+userid+"')\">+</a>\n" +
                             "                        </div>\n" +
                             "                    </div>")
                     }
+                    //"                      <div class=\"weui-cell__hd\"><img src=\"images\\user.png\" style=\"width: 30px;height: 30px\"></div>\n" +
                     $("#contactPerson").append("</div>")
                 },
                 error : function(e){
@@ -181,8 +188,6 @@
             });
         }
         $(function () {
-
-
             FastClick.attach(document.body);
             $("#start-time").val(formatDateTime(0, 0, 0));
             testt();

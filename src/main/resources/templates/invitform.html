@@ -30,7 +30,6 @@
         div {
             font-size: 14px;
         }
-
         label {
             text-align: right;
         }
@@ -62,7 +61,7 @@
     <div class="weui-cell">
         <div class="weui-cell__hd"><label class="weui-label">邀约人姓名</label></div>
         <div class="weui-cell__bd">
-            <input class="weui-input" id="visitorName" type="text" placeholder="请输入邀约人姓名">
+            <input class="weui-input" id="invitName" type="text" placeholder="请输入邀约人姓名" onBlur ="postNP()" invitId="">
         </div>
     </div>
     <div class="weui-cell">
@@ -70,15 +69,7 @@
             <label class="weui-label">邀约人手机号</label>
         </div>
         <div class="weui-cell__bd">
-            <input class="weui-input" id="visitorPhone" type="tel" placeholder="请输入邀约人手机号">
-        </div>
-    </div>
-    <div class="weui-cell">
-        <div class="weui-cell__hd">
-            <label class="weui-label">地址</label>
-        </div>
-        <div class="weui-cell__bd">
-            <input class="weui-input" id="addr" type="tel" placeholder="请输入邀约人地址">
+            <input class="weui-input" id="invitPhone" type="tel" placeholder="请输入邀约人手机号" onBlur ="postNP()">
         </div>
     </div>
     <div class="weui-cell">
@@ -94,7 +85,12 @@
             <input class="weui-input" id="hour" type="text" value="">
         </div>
     </div>
-
+    <div class="weui-cell">
+        <div class="weui-cell__hd"><label for="address" class="weui-label">地址</label></div>
+        <div class="weui-cell__bd">
+            <input class="weui-input" id="address" type="text" value="">
+        </div>
+    </div>
     <div class="weui-cell">
         <div class="weui-cell__hd"><label for="reason" class="weui-label">原因</label></div>
         <div class="weui-cell__bd">
@@ -154,7 +150,10 @@
     <script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
     <script src="https://cdn.bootcss.com/jquery-weui/1.2.1/js/jquery-weui.min.js"></script>
     <script src="https://cdn.bootcss.com/fastclick/1.0.6/fastclick.js"></script>
+    <script src="js/myUtil.js"></script>
     <script>
+
+        //联系人获取
         function testt(){
             $.ajax({
                 type: 'POST',
@@ -164,18 +163,18 @@
                 success: function(result) {
 
                     var data = result.data;
-                    var personSize = result.data.length;
                     $("#contactPerson").append("<div class=\"weui-cells\">")
                     for(var i in data){
                         var realname = data[i].realname;
-                        var userid = data[i].id
+                        var phone = data[i].phone
+                        var visitorId = data[i].id
                         $("#contactPerson").append(" <div class=\"weui-cell\">\n" +
                             "                      <div class=\"weui-cell__hd\"><img src=\"images\\user.png\" style=\"width: 30px;height: 30px\"></div>\n" +
                             "                        <div class=\"weui-cell__bd\">\n" +
                             "                             <p>"+data[i].realname+"</p>\n" +
                             "                        </div>\n" +
                             "                        <div class=\"weui-cell__ft\">\n" +
-                            "                            <a href=\"javascript:void(0);\" style=\"font-size:25px;\" onclick=\"addPersonInfo('"+realname+"','"+userid+"')\">+</a>\n" +
+                            "                            <a href=\"javascript:void(0);\" style=\"font-size:25px;\" onclick=\"addPersonInfo('"+realname+"','"+phone+"','"+visitorId+"')\">+</a>\n" +
                             "                        </div>\n" +
                             "                    </div>")
                     }
@@ -188,9 +187,16 @@
             });
         }
         $(function () {
-            FastClick.attach(document.body);
-            $("#start-time").val(formatDateTime(0, 0, 0));
-            testt();
+
+            console.log(getCookie("isAuth"))
+            if(getCookie("isAuth")!="T"){
+                window.location.href=authUrl;
+            }else{
+                FastClick.attach(document.body);
+                $("#start-time").val(formatDateTime(0, 0, 0));
+                testt();
+            }
+
         });
         $("#start-time").datetimePicker();
         $("#hour").picker({
@@ -234,6 +240,38 @@
             else $.toptip('提交成功', 'success');
         });
 
+        //输入完姓名与电话查找受邀人id（访问者）
+        function postNP(){
+            var invitName = $("#invitName").val();
+            var invitPhone = $("#invitPhone").val();
+            if(invitName=="") {
+                $.toptip("邀约人姓名不能为空");
+                return;
+            }
+            if(invitPhone=="") {
+                $.toptip("邀约人手机号不能为空");
+                return;
+            }
+            $.ajax({
+                type: 'POST',
+                contentType: "application/x-www-form-urlencoded",
+                url: "user/namePhone",
+                data: {realName:invitName,
+                    phone:invitPhone},
+                success: function(result) {
+                    var data=result.data;
+                    if(result.code == 400){
+                        $.toptip(result.message);
+                    }else if(result.code == 200){
+                        $("#invitName").attr("invitId",data[0].id);
+
+                    }else{
+                        $.toptip("系统错误");
+                    }
+                }
+            });
+
+        }
         function formatDateTime(year, day, hours) {
             var date = new Date();
             var y = date.getFullYear() + year;
@@ -251,9 +289,12 @@
             return y + '-' + m + '-' + d + ' ' + h + ':' + minute;
             //2017-12-12 12:23:34
         }
-        function addPersonInfo(name,phone) {
-            $("#visitorName").val(name);
-            $("#visitorPhone").val(phone);
+        function addPersonInfo(name,phone,visitorId) {
+            $("#invitName").val(name);
+            $("#invitPhone").val(phone);
+            $("#invitName").attr("invitId",visitorId);
+
+
         }
     </script>
 </body>

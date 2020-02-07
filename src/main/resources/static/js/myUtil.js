@@ -9,8 +9,8 @@ if (IS_DEVELOP){//生产环境
     //重定向地址
     loginUrl="https://open.weixin.qq.com/connect/oauth2/authorize?appid="+appId+"&redirect_uri=http%3A%2F%2F"+uri+"%2Fpybl%2Flogin&response_type=code&scope=snsapi_userinfo&state=233#wechat_redirect";
 } else{
-    appId="wx2a1951f46acc4371";
-    uri="rnxcpv.natappfree.cc";
+    appId="wx73d294462904125c";
+    uri="e9ieii.natappfree.cc";
     url= "http://"+uri+"/";
     loginUrl="https://open.weixin.qq.com/connect/oauth2/authorize?appid="+appId+"&redirect_uri=http%3A%2F%2F"+uri+"%2Fpybl%2Flogin&response_type=code&scope=snsapi_userinfo&state=233#wechat_redirect";
 }
@@ -18,6 +18,8 @@ if (IS_DEVELOP){//生产环境
 var suffix="pybl/";
 var visitUrl=url+suffix+"visit";
 var authUrl=url+suffix+"auth";
+var formUrl=url+suffix+"form";
+var invitformUrl=url+suffix+"invitform";
 function setCookie(c_name,value,expiredays)
 {
     var exdate=new Date()

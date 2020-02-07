@@ -102,6 +102,12 @@ public class ThymeleafController {
         return "invitform";
     }
 
+    @AuthCheckAnnotation(checkLogin = false,checkVerify = false)
+    @RequestMapping(value = "/bindphone",method= RequestMethod.GET)
+    public String bindphone() {
+        return "bindphone";
+    }
+
 //        @AuthCheckAnnotation(checkLogin = false,checkVerify = false)
 //        @RequestMapping({"static/MP_verify_I4XWI1ZSKeFojwT6.txt"})
 //        private String returnConfigFile(HttpServletResponse response) {

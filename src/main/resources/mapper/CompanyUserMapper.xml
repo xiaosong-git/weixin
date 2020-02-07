@@ -20,10 +20,11 @@
     <result column="secucode" jdbcType="VARCHAR" property="secucode" />
     <result column="authtype" jdbcType="VARCHAR" property="authtype" />
   </resultMap>
-  <!-- 单向关联菜单按钮 -->
+  <!-- 单向关联公司 -->
   <sql id="companyUserOrg">
    c.id cid,c.companyName,o.org_code,u.companyId userCompany,u.id uid
   </sql>
+
   <select id="findByUserId" parameterType="Long" resultMap="ResultCompanyUserMap">
     select
     <include refid="companyUserOrg" />
@@ -33,6 +34,16 @@
     and o.id=c.orgId
     and u.id=cu.userId
     and cu.userId=#{userId}
+  </select>
+  <select id="findByPhone" parameterType="String" resultMap="ResultCompanyUserMap">
+    select
+    <include refid="companyUserOrg" />
+    from tbl_company_user cu,tbl_company c,t_org o,tbl_user u
+    where
+    cu.companyId=c.id
+    and o.id=c.orgId
+    and u.id=cu.userId
+    and u.phone=#{phone}
   </select>
   <resultMap id="ResultCompanyUserMap" type="com.company.project.model.CompanyUser">
     <id column="id" jdbcType="BIGINT" property="id" />

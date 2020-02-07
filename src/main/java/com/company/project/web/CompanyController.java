@@ -1,10 +1,10 @@
 package com.company.project.web;
+
 import com.company.project.core.Result;
 import com.company.project.core.ResultGenerator;
+import com.company.project.dao.CompanyMapper;
 import com.company.project.model.Company;
 import com.company.project.service.CompanyService;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,12 +22,13 @@ public class CompanyController {
     @Resource
     private CompanyService companyService;
 
-//    @PostMapping("/add")
-//    public Result add(Company company) {
-//        companyService.save(company);
-//        return ResultGenerator.genSuccessResult();
-//    }
-//
+    @Resource
+    private CompanyMapper companyMapper;
+    @PostMapping("/findByPhone")
+    public Result findByPhone(@RequestParam String phone) {
+        List<Company> companyList = companyMapper.findByPhone(phone);
+        return ResultGenerator.genSuccessResult(companyList);
+    }
 //    @PostMapping("/delete")
 //    public Result delete(@RequestParam Integer id) {
 //        companyService.deleteById(id);

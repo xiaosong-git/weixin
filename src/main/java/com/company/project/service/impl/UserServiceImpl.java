@@ -7,6 +7,7 @@ import com.company.project.compose.TableList;
 import com.company.project.core.AbstractService;
 import com.company.project.core.Result;
 import com.company.project.core.ResultGenerator;
+import com.company.project.dao.CompanyMapper;
 import com.company.project.dao.UserMapper;
 import com.company.project.dao.UserAuthMapper;
 import com.company.project.model.Company;
@@ -66,6 +67,8 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
     private UserAuthMapper userAuthMapper;
     @Resource
     private UserMapper userMapper;
+    @Resource
+    private CompanyMapper companyMapper;
 
     private IService iService = new WxService();
     /**
@@ -544,6 +547,8 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
         User user = userMapper.getUserFromOpenId(openId);
         if (user==null){
             user=new User();
+            user.setCreatedate(DateUtil.getCurDate());
+            user.setCreatetime(DateUtil.getCurTime());
             user.setWxOpenId(openId);
             int save = this.save(user);
 
@@ -551,6 +556,26 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
         return user;
     }
 
+    /**
+     * 绑定手机
+     * @param userId
+     * @param phone
+     * @param openId
+     * @return
+     */
+    @Override
+    public Result bindWxPhone(Long userId, String phone,String openId) {
+        User user=new User();
+        user.setId(userId);
+        user.setPhone(phone);
+        user.setWxOpenId(openId);
+        int save = save(user);
+        if (save>0){
+            List<Company> companyList = companyMapper.findByPhone(phone);
+            return ResultGenerator.genSuccessResult(companyList);
+        }
+        return ResultGenerator.genFailResult("绑定手机号失败，系统错误！");
+    }
     //旧实人认证
     public String phoneResult(String idNO,String realName,String idHandleImgUrl) throws Exception{
         String merchOrderId = OrderNoUtil.genOrderNo("V", 16);//商户请求订单号

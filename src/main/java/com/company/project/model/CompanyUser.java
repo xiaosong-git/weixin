@@ -80,18 +80,18 @@ public class CompanyUser {
      * 公司
      */
     @Transient
-    private List<Company> company;
+    private Company company;
     /**
      * 大楼
      */
     @Transient
-    private List<Org>  org;
+    private Org  org;
 
     /**
      * 用户
      */
     @Transient
-    private List<User>  users;
+    private User  users;
 
     /**
      * @return id
@@ -314,7 +314,6 @@ public class CompanyUser {
     public void setSecucode(String secucode) {
         this.secucode = secucode;
     }
-
     /**
      * 获取授权类型0为自己授权1不可授权2为本部门授权3全体公司授权
      *
@@ -323,7 +322,6 @@ public class CompanyUser {
     public String getAuthtype() {
         return authtype;
     }
-
     /**
      * 设置授权类型0为自己授权1不可授权2为本部门授权3全体公司授权
      *
@@ -332,29 +330,26 @@ public class CompanyUser {
     public void setAuthtype(String authtype) {
         this.authtype = authtype;
     }
-
-    public List<Company> getCompany() {
+    public Company getCompany() {
         return company;
     }
-
-    public void setCompany(List<Company> company) {
+    public void setCompany(Company company) {
         this.company = company;
     }
-
-    public List<Org> getOrg() {
+    public Org getOrg() {
         return org;
     }
 
-    public void setOrg(List<Org> org) {
+    public void setOrg(Org org) {
         this.org = org;
     }
 
 
-    public List<User> getUsers() {
+    public User getUsers() {
         return users;
     }
 
-    public void setUsers(List<User> users) {
+    public void setUsers(User users) {
         this.users = users;
     }
 }

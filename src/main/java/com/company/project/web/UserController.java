@@ -30,37 +30,6 @@ public class UserController {
 
     private IService iService = new WxService();
 
-//    @PostMapping("/add")
-//    public Result add(User user) {
-//        userService.save(user);
-//        return ResultGenerator.genSuccessResult();
-//    }
-//
-//    @PostMapping("/delete")
-//    public Result delete(@RequestParam Integer id) {
-//        userService.deleteById(id);
-//        return ResultGenerator.genSuccessResult();
-//    }
-//
-//    @PostMapping("/update")
-//    public Result update(User user) {
-//        userService.update(user);
-//        return ResultGenerator.genSuccessResult();
-//    }
-//
-//    @PostMapping("/detail")
-//    public Result detail(@RequestParam Integer id) {
-//        User user = userService.findById(id);
-//        return ResultGenerator.genSuccessResult(user);
-//    }
-
-//    @PostMapping("/list")
-//    public Result list(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size) {
-//        PageHelper.startPage(page, size);
-//        List<User> list = userService.findAll();
-//        PageInfo pageInfo = new PageInfo(list);
-//        return ResultGenerator.genSuccessResult(pageInfo);
-//    }
     @AuthCheckAnnotation(checkLogin = false,checkVerify = false)
     @PostMapping("/namePhone")
     public Result findByNamePhone(@RequestParam(defaultValue = "0") String realName, @RequestParam(defaultValue = "0") String phone) {
@@ -154,5 +123,18 @@ public class UserController {
 
         return ResultGenerator.genFailResult("系统异常");
     }
+    /**
+     * 通过手机号绑定微信账号
+     */
+    @RequestMapping("/bindWxPhone")
+    @ResponseBody
+    public Result bindWxPhone(Long userId,String phone,String openId){
 
+        try {
+            return userService.bindWxPhone(userId,phone,openId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ResultGenerator.genFailResult("系统异常");
+    }
 }

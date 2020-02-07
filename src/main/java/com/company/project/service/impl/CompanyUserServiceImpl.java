@@ -26,8 +26,7 @@ public class CompanyUserServiceImpl extends AbstractService<CompanyUser> impleme
 //        condition.createCriteria().andEqualTo("userid",userId);
 //        condition.selectProperties("id");
 //        List<CompanyUser> list = super.findByCondition(condition);
-        List<CompanyUser> list = tblCompanyUserMapper.findByUserId(userId);
-        return list;
+        return tblCompanyUserMapper.findByUserId(userId);
     }
 
 }

@@ -4,7 +4,7 @@ import com.company.project.compose.TableList;
 import com.company.project.core.Mapper;
 import com.company.project.model.CompanyUser;
 import com.company.project.model.ShareRoom;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -19,4 +19,9 @@ public interface CompanyUserMapper extends Mapper<CompanyUser> {
      * @date 2019/10/10 10:24
      */
     List<CompanyUser> findByUserId (long userId);
+
+    List<CompanyUser> findByPhone (String phone);
+
+
+    List<CompanyUser> findCompanyByPhone(String phone);
 }

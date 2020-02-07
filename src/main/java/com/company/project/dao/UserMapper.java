@@ -15,4 +15,6 @@ public interface UserMapper extends Mapper<User> {
     List<User> frequentContacts(Object userId);
     @Select("select id,realName,phone,isAuth from "+TableList.USER+" where wx_open_id=#{openId} limit 1")
     User getUserFromOpenId(Object openId);
+    @Select("select id from "+TableList.USER+" where phone=#{phone} limit 1")
+    User findByPhone(String phone);
 }

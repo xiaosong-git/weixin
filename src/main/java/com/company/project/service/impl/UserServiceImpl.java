@@ -10,6 +10,7 @@ import com.company.project.core.ResultGenerator;
 import com.company.project.dao.CompanyMapper;
 import com.company.project.dao.UserMapper;
 import com.company.project.dao.UserAuthMapper;
+import com.company.project.dao.VisitRecordMapper;
 import com.company.project.model.Company;
 import com.company.project.model.User;
 import com.company.project.model.UserAccount;
@@ -69,7 +70,8 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
     private UserMapper userMapper;
     @Resource
     private CompanyMapper companyMapper;
-
+    @Resource
+    private VisitRecordMapper visitRecordMapper;
     private IService iService = new WxService();
     /**
      * 检测用户是否存在
@@ -565,15 +567,30 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
      */
     @Override
     public Result bindWxPhone(Long userId, String phone,String openId) {
-        User user=new User();
-        user.setId(userId);
-        user.setPhone(phone);
-        user.setWxOpenId(openId);
-        int save = save(user);
-        if (save>0){
-            List<Company> companyList = companyMapper.findByPhone(phone);
-            return ResultGenerator.genSuccessResult(companyList);
+        User byPhone = userMapper.findByPhone(phone);
+        int save=0;
+        //没有手机号
+        if (byPhone == null) {
+            //未绑定
+            byPhone=new User();
+            byPhone.setId(userId);
+            byPhone.setPhone(phone);
+            save = save(byPhone);
+        }else {//todo 已有手机号，变更记录
+            byPhone.setWxOpenId(openId);
+            visitRecordMapper.updateUserId(userId,byPhone.getId());
+            visitRecordMapper.updateVisitorId(userId,byPhone.getId());
+            save=update(byPhone);
         }
+
+        if (save>0){
+            Map<String,Object> map=new HashMap<>();
+            map.put("userId",byPhone.getId());
+            List<Company> companyList = companyMapper.findByPhone(phone);
+            map.put("company",companyList);
+            return ResultGenerator.genSuccessResult(map);
+        }
+        TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();//回滚
         return ResultGenerator.genFailResult("绑定手机号失败，系统错误！");
     }
     //旧实人认证

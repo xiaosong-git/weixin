@@ -55,28 +55,24 @@ public class VisitRecordController {
         return ResultGenerator.genSuccessResult(pageInfo);
     }
     /**
-     * @param userId 用户id
-     * @param visitorId 访问id
-     * @param reason 访问原因
-     * @param startDate 开始时间
-     * @param endDate 结束时间
+     * @param hour 结束时间
      * @return result
      * @throws Exception
      * @author cwf
      * @date 2019/10/8 16:11
      */
-    @AuthCheckAnnotation(checkLogin = true,checkVerify = true)
      @PostMapping("/visitRequest")
-    public Result visitRequest(@RequestParam(required = true) String userId, @RequestParam(required = true) String visitorId,
-//                               @RequestParam (defaultValue = "0")long companyId,
-                                @RequestParam(defaultValue = "无") String reason,
-                               @RequestParam(required = true) String startDate, @RequestParam(required = true) String endDate)
-//                               @RequestParam(defaultValue = "0") String orgCode)
+    public Result visitRequest(VisitRecord visitRecord, @RequestParam() String hour)
              throws Exception {
-         String cstatus = "applyConfirm";
 
-        return visitRecordService.visitRequest( Long.valueOf(userId), Long.valueOf(visitorId), reason, startDate, endDate);
+        return visitRecordService.visitRequest( visitRecord, hour);
     }
 
+    @PostMapping("/inviteRequest")
+    public Result inviteRequest(VisitRecord visitRecord, @RequestParam() String hour)
+            throws Exception {
+
+        return visitRecordService.inviteRequest( visitRecord, hour);
+    }
 
 }

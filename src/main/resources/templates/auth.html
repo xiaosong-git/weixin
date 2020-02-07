@@ -6,10 +6,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
     <link rel="stylesheet" href="css/weui.css"/>
     <link rel="stylesheet" href="css/weuix.css"/>
-
-
 </head>
-
 <body ontouchstart>
 <div class="page-hd">
     <h1 class="page-hd-title">
@@ -17,9 +14,6 @@
     </h1>
     <p class="page-hd-desc"></p>
 </div>
-
-<!--<div class="weui-cells__title">表单</div>-->
-
 <div class="weui-cells weui-cells_form">
 
     <div class="weui-cell">
@@ -51,35 +45,12 @@
             </div>
         </div>
     </div>
-<!--    <div class="weui-cell">-->
-<!--        <div class="weui-cell__hd">-->
-<!--            <label class="weui-label">住址</label>-->
-<!--        </div>-->
-<!--        <div class="weui-cell__bd">-->
-<!--            <input class="weui-input" placeholder="请输入您的住址" type="text" id="addr" >-->
-<!--        </div>-->
-
-<!--    </div>-->
-<!--<label for="weuiAgree" class="weui-agree">-->
-<!--    <input id="weuiAgree" class="weui-agree__checkbox" type="checkbox">-->
-<!--    <span class="weui-agree__text">-->
-<!--                阅读并同意<a href="javascript:void(0);">《相关条款》</a>-->
-<!--            </span>-->
-<!--</label>-->
-
-
 <div class="weui-btn-area">
     <a class="weui-btn weui-btn_primary" href="javascript:" id="btn" onclick="upload()">确定</a>
 </div>
 <br>
 <br>
 
-<!--<div class="weui-footer weui-footer_fixed-bottom">-->
-<!--    <p class="weui-footer__links">-->
-<!--        <a href="login" class="weui-footer__link">登入</a>-->
-<!--    </p>-->
-<!--    <p class="weui-footer__text">Copyright &copy; Yoby</p>-->
-<!--</div>-->
 </div>
 
 </body>
@@ -113,22 +84,8 @@
         console.log(res);
     });
 
-    // var list =[[${config.jsApiList}]];
-    // for (var i=0;i<list.length;i++){
-    //     console.log(list[i]);
-    // }})
     $(function(){
 
-        // $(document).on("click","#btn",function(){
-        //     var user = $("#user").val();
-        //     if(user==""){
-        //         $.toptip("拜访姓名不能为空");
-        //         return false;
-        //     }else{
-        //         //做发送信息
-        //         $.toptip("提交成功",'success');
-        //     }
-        // })
         //解决表单控件不能回弹 只有微信ios有这个问题
         $("input,select,textarea").blur(function(){
             setTimeout(() => {
@@ -145,7 +102,6 @@
         return false;
     }
     function jssdkimg(obj){
-
         wx.chooseImage({
             count: 1, // 默认9
             sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有

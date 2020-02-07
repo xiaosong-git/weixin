@@ -8,29 +8,30 @@ public class VisitRecord {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
     /**
      * 发起日期
      */
     @Column(name = "visitDate")
-    private String visitdate;
+    private String visitDate;
 
     /**
      * 发起时间
      */
     @Column(name = "visitTime")
-    private String visittime;
+    private String visitTime;
 
     /**
      * 访客id
      */
     @Column(name = "userId")
-    private Long userid;
+    private Long userId;
 
     /**
      * 被访者id
      */
     @Column(name = "visitorId")
-    private Long visitorid;
+    private Long visitorId;
 
     /**
      * 访问原因
@@ -46,55 +47,55 @@ public class VisitRecord {
      * 日期类型:无期：Indefinite,有限期:limitPeriod
      */
     @Column(name = "dateType")
-    private String datetype;
+    private String dateType;
 
     /**
      * 开始日期
      */
     @Column(name = "startDate")
-    private String startdate;
+    private String startDate;
 
     /**
      * 结束日期
      */
     @Column(name = "endDate")
-    private String enddate;
+    private String endDate;
 
     /**
      * 被访者回复
      */
     @Column(name = "answerContent")
-    private String answercontent;
+    private String answerContent;
 
     /**
      * 被访者大楼编码
      */
     @Column(name = "orgCode")
-    private String orgcode;
+    private String orgCode;
 
     /**
      * 被访者公司Id
      */
     @Column(name = "companyId")
-    private Long companyid;
+    private Long companyId;
 
     /**
      * 1--访问，2--邀约
      */
     @Column(name = "recordType")
-    private Integer recordtype;
+    private Integer recordType;
 
     /**
      * 审核日期
      */
     @Column(name = "replyDate")
-    private String replydate;
+    private String replyDate;
 
     /**
      * 审核时间
      */
     @Column(name = "replyTime")
-    private String replytime;
+    private String replyTime;
 
     /**
      * app端还是页端
@@ -105,349 +106,163 @@ public class VisitRecord {
      * 审核人ID
      */
     @Column(name = "replyUserId")
-    private Long replyuserid;
+    private Long replyUserId;
 
     /**
      * 是否已下发用户 T--是 F--否
      */
     @Column(name = "isReceive")
-    private String isreceive;
+    private String isReceive;
 
-    /**
-     * @return id
-     */
     public Long getId() {
         return id;
     }
 
-    /**
-     * @param id
-     */
     public void setId(Long id) {
         this.id = id;
     }
 
-    /**
-     * 获取发起日期
-     *
-     * @return visitDate - 发起日期
-     */
-    public String getVisitdate() {
-        return visitdate;
+    public String getVisitDate() {
+        return visitDate;
     }
 
-    /**
-     * 设置发起日期
-     *
-     * @param visitdate 发起日期
-     */
-    public void setVisitdate(String visitdate) {
-        this.visitdate = visitdate;
+    public void setVisitDate(String visitDate) {
+        this.visitDate = visitDate;
     }
 
-    /**
-     * 获取发起时间
-     *
-     * @return visitTime - 发起时间
-     */
-    public String getVisittime() {
-        return visittime;
+    public String getVisitTime() {
+        return visitTime;
     }
 
-    /**
-     * 设置发起时间
-     *
-     * @param visittime 发起时间
-     */
-    public void setVisittime(String visittime) {
-        this.visittime = visittime;
+    public void setVisitTime(String visitTime) {
+        this.visitTime = visitTime;
     }
 
-    /**
-     * 获取访客id
-     *
-     * @return userId - 访客id
-     */
-    public Long getUserid() {
-        return userid;
+    public Long getUserId() {
+        return userId;
     }
 
-    /**
-     * 设置访客id
-     *
-     * @param userid 访客id
-     */
-    public void setUserid(Long userid) {
-        this.userid = userid;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
-    /**
-     * 获取被访者id
-     *
-     * @return visitorId - 被访者id
-     */
-    public Long getVisitorid() {
-        return visitorid;
+    public Long getVisitorId() {
+        return visitorId;
     }
 
-    /**
-     * 设置被访者id
-     *
-     * @param visitorid 被访者id
-     */
-    public void setVisitorid(Long visitorid) {
-        this.visitorid = visitorid;
+    public void setVisitorId(Long visitorId) {
+        this.visitorId = visitorId;
     }
 
-    /**
-     * 获取访问原因
-     *
-     * @return reason - 访问原因
-     */
     public String getReason() {
         return reason;
     }
 
-    /**
-     * 设置访问原因
-     *
-     * @param reason 访问原因
-     */
     public void setReason(String reason) {
         this.reason = reason;
     }
 
-    /**
-     * 获取状态 applying:申请中，applySuccess:接受访问，applyFail:拒绝访问
-     *
-     * @return cstatus - 状态 applying:申请中，applySuccess:接受访问，applyFail:拒绝访问
-     */
     public String getCstatus() {
         return cstatus;
     }
 
-    /**
-     * 设置状态 applying:申请中，applySuccess:接受访问，applyFail:拒绝访问
-     *
-     * @param cstatus 状态 applying:申请中，applySuccess:接受访问，applyFail:拒绝访问
-     */
     public void setCstatus(String cstatus) {
         this.cstatus = cstatus;
     }
 
-    /**
-     * 获取日期类型:无期：Indefinite,有限期:limitPeriod
-     *
-     * @return dateType - 日期类型:无期：Indefinite,有限期:limitPeriod
-     */
-    public String getDatetype() {
-        return datetype;
+    public String getDateType() {
+        return dateType;
     }
 
-    /**
-     * 设置日期类型:无期：Indefinite,有限期:limitPeriod
-     *
-     * @param datetype 日期类型:无期：Indefinite,有限期:limitPeriod
-     */
-    public void setDatetype(String datetype) {
-        this.datetype = datetype;
+    public void setDateType(String dateType) {
+        this.dateType = dateType;
     }
 
-    /**
-     * 获取开始日期
-     *
-     * @return startDate - 开始日期
-     */
-    public String getStartdate() {
-        return startdate;
+    public String getStartDate() {
+        return startDate;
     }
 
-    /**
-     * 设置开始日期
-     *
-     * @param startdate 开始日期
-     */
-    public void setStartdate(String startdate) {
-        this.startdate = startdate;
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
     }
 
-    /**
-     * 获取结束日期
-     *
-     * @return endDate - 结束日期
-     */
-    public String getEnddate() {
-        return enddate;
+    public String getEndDate() {
+        return endDate;
     }
 
-    /**
-     * 设置结束日期
-     *
-     * @param enddate 结束日期
-     */
-    public void setEnddate(String enddate) {
-        this.enddate = enddate;
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
     }
 
-    /**
-     * 获取被访者回复
-     *
-     * @return answerContent - 被访者回复
-     */
-    public String getAnswercontent() {
-        return answercontent;
+    public String getAnswerContent() {
+        return answerContent;
     }
 
-    /**
-     * 设置被访者回复
-     *
-     * @param answercontent 被访者回复
-     */
-    public void setAnswercontent(String answercontent) {
-        this.answercontent = answercontent;
+    public void setAnswerContent(String answerContent) {
+        this.answerContent = answerContent;
     }
 
-    /**
-     * 获取被访者大楼编码
-     *
-     * @return orgCode - 被访者大楼编码
-     */
-    public String getOrgcode() {
-        return orgcode;
+    public String getOrgCode() {
+        return orgCode;
     }
 
-    /**
-     * 设置被访者大楼编码
-     *
-     * @param orgcode 被访者大楼编码
-     */
-    public void setOrgcode(String orgcode) {
-        this.orgcode = orgcode;
+    public void setOrgCode(String orgCode) {
+        this.orgCode = orgCode;
     }
 
-    /**
-     * 获取被访者公司Id
-     *
-     * @return companyId - 被访者公司Id
-     */
-    public Long getCompanyid() {
-        return companyid;
+    public Long getCompanyId() {
+        return companyId;
     }
 
-    /**
-     * 设置被访者公司Id
-     *
-     * @param companyid 被访者公司Id
-     */
-    public void setCompanyid(Long companyid) {
-        this.companyid = companyid;
+    public void setCompanyId(Long companyId) {
+        this.companyId = companyId;
     }
 
-    /**
-     * 获取1--访问，2--邀约
-     *
-     * @return recordType - 1--访问，2--邀约
-     */
-    public Integer getRecordtype() {
-        return recordtype;
+    public Integer getRecordType() {
+        return recordType;
     }
 
-    /**
-     * 设置1--访问，2--邀约
-     *
-     * @param recordtype 1--访问，2--邀约
-     */
-    public void setRecordtype(Integer recordtype) {
-        this.recordtype = recordtype;
+    public void setRecordType(Integer recordType) {
+        this.recordType = recordType;
     }
 
-    /**
-     * 获取审核日期
-     *
-     * @return replyDate - 审核日期
-     */
-    public String getReplydate() {
-        return replydate;
+    public String getReplyDate() {
+        return replyDate;
     }
 
-    /**
-     * 设置审核日期
-     *
-     * @param replydate 审核日期
-     */
-    public void setReplydate(String replydate) {
-        this.replydate = replydate;
+    public void setReplyDate(String replyDate) {
+        this.replyDate = replyDate;
     }
 
-    /**
-     * 获取审核时间
-     *
-     * @return replyTime - 审核时间
-     */
-    public String getReplytime() {
-        return replytime;
+    public String getReplyTime() {
+        return replyTime;
     }
 
-    /**
-     * 设置审核时间
-     *
-     * @param replytime 审核时间
-     */
-    public void setReplytime(String replytime) {
-        this.replytime = replytime;
+    public void setReplyTime(String replyTime) {
+        this.replyTime = replyTime;
     }
 
-    /**
-     * 获取app端还是页端
-     *
-     * @return vitype - app端还是页端
-     */
     public String getVitype() {
         return vitype;
     }
 
-    /**
-     * 设置app端还是页端
-     *
-     * @param vitype app端还是页端
-     */
     public void setVitype(String vitype) {
         this.vitype = vitype;
     }
 
-    /**
-     * 获取审核人ID
-     *
-     * @return replyUserId - 审核人ID
-     */
-    public Long getReplyuserid() {
-        return replyuserid;
+    public Long getReplyUserId() {
+        return replyUserId;
     }
 
-    /**
-     * 设置审核人ID
-     *
-     * @param replyuserid 审核人ID
-     */
-    public void setReplyuserid(Long replyuserid) {
-        this.replyuserid = replyuserid;
+    public void setReplyUserId(Long replyUserId) {
+        this.replyUserId = replyUserId;
     }
 
-    /**
-     * 获取是否已下发用户 T--是 F--否
-     *
-     * @return isReceive - 是否已下发用户 T--是 F--否
-     */
-    public String getIsreceive() {
-        return isreceive;
+    public String getIsReceive() {
+        return isReceive;
     }
 
-    /**
-     * 设置是否已下发用户 T--是 F--否
-     *
-     * @param isreceive 是否已下发用户 T--是 F--否
-     */
-    public void setIsreceive(String isreceive) {
-        this.isreceive = isreceive;
+    public void setIsReceive(String isReceive) {
+        this.isReceive = isReceive;
     }
 }

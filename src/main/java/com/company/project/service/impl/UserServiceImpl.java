@@ -302,7 +302,6 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
             if (user==null){
                 //自动注册账户
                 User regUser=new User();
-
                 Date date = new Date();
                 regUser.setCreatedate(new SimpleDateFormat("yyyy-MM-dd").format(date));
                 regUser.setCreatetime(new SimpleDateFormat("HH:mm:ss").format(date));
@@ -332,12 +331,9 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
                 User updateUser=new User();
                 updateUser.setId(user.getId());
                 updateUser.setWxOpenId(openId);
-
-
                 try {
                     update(updateUser);
                     //更新与redis微信号
-
                 }catch (Exception e){
                     logger.error("更新用户微信号失败",e);
                 }
@@ -358,53 +354,13 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
             }
             Map<Object,Object> result=new HashMap<>();
             result.put("user",user);
-//            String  applyType="";
-//            String  companyName="";
-//            if (user.getCompanyId()!=null){
-//                Company company=companyService.findById(user.getCompanyId());
-//
-//                if(company!=null){
-//                    if (company.getApplytype()!=null){
-//                        applyType = company.getApplytype();
-//                    }
-//                    if (company.getCompanyname()!=null){
-//                        companyName = company.getCompanyname();
-//                    }
-//                }
-//            }
-//            result.put("companyName",companyName);
-//            result.put("applyType",applyType);
-//            String orgCode =orgService.findOrgCodeByUserId(user.getId());
-//            result.put("orgCode", orgCode);
-//            String imageServerUrl = paramService.findValueByName("imageServerUrl");
-//            result.put("imageServerUrl",imageServerUrl);
+
             return ResultGenerator.genSuccessResult(result);
         }else{
             //验证码输入错误
             return  ResultGenerator.genFailResult("验证码输入错误，请重新获取!");
         }
-
-//        Map<String,Object>  user = this.getUserByPhone(phone);
-//        if(user == null){
-//            return  Result.unDataResult(ConsantCode.FAIL,"用户不存在");
-//        }
-//        Integer userId = Integer.parseInt(user.get("id")+"");
-//        Map<String,Object> userAccount = userAccountService.findUserAccountByUser(userId);
-//        if(userAccount == null){
-//            return  Result.unDataResult(ConsantCode.FAIL,"未查询到相关账户信息");
-//        }
-//        String cstatus = userAccount.get("cstatus")+"";
-//        if("normal".equals(cstatus)){
-//
-//        }else{
-//            //返回账户冻结原因
-//            String handleCause = userAccount.get("handleCause").toString();
-//            return  Result.unDataResult(ConsantCode.FAIL, handleCause);
-//        }
     }
-
-
-
     @Override
     public Result verify(long userId, String idNO, String name, String idHandleImgUrl, String addr) {
         try {
@@ -428,9 +384,9 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
              * 验证 身份证
              */
             // update by cwf  2019/10/15 10:54 Reason:改为加密后进行数据判断 原 idNO 现idNoMw
-            if(this.isExistIdNo(userId,idNoMW)){
-                return ResultGenerator.genFailResult( "该身份证已实名，无法再次进行实名认证！","fail");
-            }
+//            if(this.isExistIdNo(userId,idNoMW)){
+//                return ResultGenerator.genFailResult( "该身份证已实名，无法再次进行实名认证！","fail");
+//            }
             //非空判断
             if(idHandleImgUrl == null){
                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();//回滚
@@ -442,7 +398,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
                 //本地实人认证
                 UserAuth userAuth = userAuthMapper.localPhoneResult(idNoMW, realName);
                 if (userAuth!=null){
-                    idHandleImgUrl=userAuth.getIdhandleimgurl();
+                    idHandleImgUrl=userAuth.getIdhandleimgurl();//目前存在无法两张人像比对的bug
                     logger.info("本地实人认证成功上一张成功图片为：{}",userAuth.getIdhandleimgurl());
                 }else{
                     String photoResult = auth(idNO, realName, idHandleImgUrl);
@@ -454,8 +410,6 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
                 e.printStackTrace();
                 return ResultGenerator.genFailResult( "图片上传出错!","fail");
             }
-
-
             Date date = new Date();
             String authDate = new SimpleDateFormat("yyyy-MM-dd").format(date);
             String authTime = new SimpleDateFormat("HH:mm:ss").format(date);
@@ -496,11 +450,6 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
             return ResultGenerator.genFailResult("异常，请稍后再试","fail");
         }
     }
-
-//    private boolean localPhoneResult(String idNO, String realName) {
-//
-//    }
-
     @Override
     public boolean isVerify(long userId) {
         Integer apiNewAuthCheckRedisDbIndex = Integer.valueOf(paramService.findValueByName("apiNewAuthCheckRedisDbIndex"));//存储在缓存中的位置

@@ -9,11 +9,11 @@ import com.company.project.service.CodeService;
 import com.company.project.service.UserService;
 import com.company.project.service.visitRecordService;
 import com.company.project.core.AbstractService;
+import com.company.project.util.DateUtil;
 import com.company.project.util.GTNotification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import tk.mybatis.mapper.entity.Condition;
 
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
@@ -33,85 +33,73 @@ public class visitRecordServiceImpl extends AbstractService<VisitRecord> impleme
     @Autowired
     private UserService userService;
     /**
-     * @param userId 用户id
-     * @param visitorId 访问id
-     * @param reason 访问原因
-     * @param startDate 开始时间
-     * @param endDate 结束时间
+
+     * @param hour 结束时间
      * @return result
      * @throws Exception
      * @author cwf
      * @date 2019/10/8 16:11
      */
     @Override
-    public Result visitRequest(long userId, long visitorId, String reason, String startDate, String endDate) throws Exception {
+    public Result visitRequest(VisitRecord visitRecord, String hour) throws Exception {
+        visitRecord.setRecordType(1);
+        return  visitCommon( visitRecord,  hour);
+    }
 
+    @Override
+    public Result inviteRequest(VisitRecord visitRecord, String hour) {
+        visitRecord.setRecordType(2);
+        Long visitorId = visitRecord.getUserId();
+        Long userId = visitRecord.getVisitorId();
+        visitRecord.setUserId(userId);
+        visitRecord.setUserId(visitorId);
+        return visitCommon(visitRecord,hour);
+    }
+
+    public Result visitCommon(VisitRecord visitRecord, String hour){
         String cstatus = "applyConfirm";
-
-//        Map<String, Object> save = new HashMap<String, Object>();
-        VisitRecord repeat = visitorRecordMapper.findByRepeat(userId, visitorId, cstatus);
-        if (userId==visitorId){
+        Long userId = visitRecord.getUserId();
+        Long visitorId = visitRecord.getVisitorId();
+        if (userId.equals(visitorId)){
             return ResultGenerator.genFailResult("请不要对自己发起访问！");
         }
-        System.out.println(repeat);
-        if (repeat != null) {
-            if (repeat.getEnddate() != null || repeat.getEnddate() != "") {
-                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-                Date de = new Date();
-                Date d1 = df.parse(df.format(de));
-                Date d2 = df.parse(repeat.getEnddate());
-                if (d1.getTime() <= d2.getTime()) {
-                    return ResultGenerator.genFailResult("已经向此人提交过申请，请勿重复提交!");
-                } else {
-                    //如果时间过期，则状态改为取消
-                    VisitRecord visitRecord = new VisitRecord();
-                    visitRecord.setId(repeat.getId());
-                    visitRecord.setCstatus("Cancle");
-                    Integer num = update(visitRecord);
-                    if (num <= 0) {
-                        return ResultGenerator.genFailResult("上条访问申请未过期，请联系客服!");
-                    }
-                }
-            }
+        long v = (long)(Float.parseFloat(hour)*60);
+        String startDate = visitRecord.getStartDate();
+        String endDate= DateUtil.addMinute(startDate,v);
+        Integer recordType = visitRecord.getRecordType();
+        VisitRecord check = visitorRecordMapper.check(userId, visitorId, recordType, startDate,endDate);
+        if (check!=null){
+            return ResultGenerator.genFailResult("在" + startDate + "——" + endDate + "内已经有邀约信息存在");
         }
         //储存新的来访记录
         Date date = new Date();
-        VisitRecord visitRecord = new VisitRecord();
-        visitRecord.setUserid(userId);
-        visitRecord.setVisitorid(visitorId);
         visitRecord.setCstatus(cstatus);
-        visitRecord.setVisitdate(new SimpleDateFormat("yyyy-MM-dd").format(date));
-        visitRecord.setVisittime(new SimpleDateFormat("HH:mm:ss").format(date));
-        visitRecord.setReason(reason);
-        visitRecord.setStartdate(startDate);
-        visitRecord.setEnddate(endDate);
+        visitRecord.setVisitDate(new SimpleDateFormat("yyyy-MM-dd").format(date));
+        visitRecord.setVisitTime(new SimpleDateFormat("HH:mm:ss").format(date));
+        visitRecord.setEndDate(endDate);
         visitRecord.setVitype("C");
-        visitRecord.setRecordtype(1);
-
         int save = save(visitRecord);
-
         if (save > 0) {
-                    //消息推送
+            //消息推送
             User user = userService.findById(userId);
             User visitor = userService.findById(visitorId);
-            String notification_title = "访客-审核通知";
-                String msg_content = "【朋悦比邻】您好，您有一条预约访客需审核，访问者:" + user.getRealname() + "，被访者:" + visitor.getRealname() + ",访问时间:"
-                        + visitRecord.getStartdate();
-                if ("T".equals(visitor.getIsonlineapp())) {
-                    //发送个推
-                   boolean single = GTNotification.Single(visitor.getDevicetoken(), visitor.getPhone(), notification_title, msg_content, msg_content);
-                    if (!single){
-                        codeService.sendMsg(visitor.getPhone(), 5, null, null, visitRecord.getStartdate(), user.getRealname());
-                    }
-                }else {
-                    //发送短信
-                    codeService.sendMsg(visitor.getPhone(), 5, null, null, visitRecord.getStartdate(), user.getRealname());
+            String notification_title = recordType==1?"访客-审核通知":"邀约-审核通知";
+            String realName = user.getRealname();
+            String msg_content = "【朋悦比邻】您好，您有一条预约访客需审核，访问者:" + realName + "，被访者:" + visitor.getRealname() + ",访问时间:"
+                    + startDate;
+            if ("T".equals(visitor.getIsonlineapp())) {
+                //发送个推
+                boolean single = GTNotification.Single(visitor.getDevicetoken(), visitor.getPhone(), notification_title, msg_content, msg_content);
+                if (!single){
+                    codeService.sendMsg(visitor.getPhone(), 5, null, null, startDate, realName);
                 }
-
+            }else {
+                //发送短信
+                codeService.sendMsg(visitor.getPhone(), 5, null, null, startDate, realName);
+            }
             return ResultGenerator.genSuccessResult(visitRecord);
         }else {
             return ResultGenerator.genFailResult("发送访问失败");
         }
     }
-
 }

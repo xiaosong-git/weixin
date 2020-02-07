@@ -10,6 +10,8 @@ import com.company.project.core.Service;
 public interface visitRecordService extends Service<VisitRecord> {
 
 
-    Result visitRequest(long userId, long visitorId, String reason, String startDate, String endDate) throws Exception;
 
+    Result visitRequest(VisitRecord visitRecord, String hour) throws Exception;
+
+    Result inviteRequest(VisitRecord visitRecord, String hour);
 }

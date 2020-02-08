@@ -6,6 +6,8 @@ import com.company.project.model.VisitRecord;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
+import java.util.List;
+
 public interface VisitRecordMapper extends Mapper<VisitRecord> {
 
      // update by cwf  2019/10/10 17:08 Reason: 根据userId visitorId cstatus查看是否有访问
@@ -17,5 +19,8 @@ public interface VisitRecordMapper extends Mapper<VisitRecord> {
     int updateUserId(Long userId, Long id);
     @Update("update " + TableList.VISITOR_RECORD + " set dateType=concat('V',visitorId),visitorId=#{id}  where visitorId=#{userId}  ")
     int updateVisitorId(Long userId, Long id);
-
+    //sql放xml中
+    List<VisitRecord> record(Long userId);
+    //sql放xml中
+    List<VisitRecord> recordDetail(Long userId);
 }

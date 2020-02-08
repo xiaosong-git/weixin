@@ -5,6 +5,8 @@ import com.company.project.core.ResultGenerator;
 import com.company.project.dao.CompanyMapper;
 import com.company.project.model.Company;
 import com.company.project.service.CompanyService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,8 +28,10 @@ public class CompanyController {
     private CompanyMapper companyMapper;
     @PostMapping("/findByPhone")
     public Result findByPhone(@RequestParam String phone) {
+        PageHelper.startPage(1,2);
         List<Company> companyList = companyMapper.findByPhone(phone);
-        return ResultGenerator.genSuccessResult(companyList);
+        PageInfo<Company> page=new PageInfo<>(companyList);
+        return ResultGenerator.genSuccessResult(page);
     }
 //    @PostMapping("/delete")
 //    public Result delete(@RequestParam Integer id) {

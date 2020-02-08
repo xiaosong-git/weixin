@@ -48,12 +48,25 @@ public class visitRecordServiceImpl extends AbstractService<VisitRecord> impleme
 
     @Override
     public Result inviteRequest(VisitRecord visitRecord, String hour) {
+        if (visitRecord.getCompanyId()==null){
+            return ResultGenerator.genFailResult("邀约公司地址未上传成功！");
+        }
         visitRecord.setRecordType(2);
         Long visitorId = visitRecord.getUserId();
         Long userId = visitRecord.getVisitorId();
         visitRecord.setUserId(userId);
         visitRecord.setUserId(visitorId);
         return visitCommon(visitRecord,hour);
+    }
+
+    @Override
+    public Result record(Long userId) {
+        return ResultGenerator.genSuccessResult(visitorRecordMapper.record(userId));
+    }
+
+    @Override
+    public Result recordDetail(Long userId) {
+        return ResultGenerator.genSuccessResult(visitorRecordMapper.recordDetail(userId));
     }
 
     public Result visitCommon(VisitRecord visitRecord, String hour){

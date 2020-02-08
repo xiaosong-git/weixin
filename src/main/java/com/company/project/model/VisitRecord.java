@@ -113,6 +113,12 @@ public class VisitRecord {
      */
     @Column(name = "isReceive")
     private String isReceive;
+    @Transient
+    private Company company;
+    @Transient
+    private String vstatus;
+    @Transient
+    private User user;
 
     public Long getId() {
         return id;
@@ -264,5 +270,29 @@ public class VisitRecord {
 
     public void setIsReceive(String isReceive) {
         this.isReceive = isReceive;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
+    }
+
+    public String getVstatus() {
+        return vstatus;
+    }
+
+    public void setVstatus(String vstatus) {
+        this.vstatus = vstatus;
     }
 }

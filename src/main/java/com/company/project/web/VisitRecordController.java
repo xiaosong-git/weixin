@@ -1,17 +1,17 @@
 package com.company.project.web;
-import com.company.project.annotation.AuthCheckAnnotation;
+
 import com.company.project.configurer.MvcConfig;
 import com.company.project.core.Result;
 import com.company.project.core.ResultGenerator;
 import com.company.project.model.VisitRecord;
 import com.company.project.service.visitRecordService;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 /**
 * Created by CodeGenerator on 2019/09/22.
@@ -23,37 +23,6 @@ public class VisitRecordController {
     private visitRecordService visitRecordService;
 
     private final org.slf4j.Logger logger = LoggerFactory.getLogger(MvcConfig.class);
-    @PostMapping("/add")
-    public Result add(VisitRecord visitRecord) {
-        visitRecordService.save(visitRecord);
-        return ResultGenerator.genSuccessResult();
-    }
-//
-//    @PostMapping("/delete")
-//    public Result delete(@RequestParam Integer id) {
-//        visitRecordService.deleteById(id);
-//        return ResultGenerator.genSuccessResult();
-//    }
-//
-//    @PostMapping("/update")
-//    public Result update(visitRecord visitRecord) {
-//        visitRecordService.update(visitRecord);
-//        return ResultGenerator.genSuccessResult();
-//    }
-    @AuthCheckAnnotation(checkLogin = false,checkVerify = false)
-    @PostMapping("/detail")
-    public Result detail(@RequestParam Integer id) {
-        VisitRecord visitRecord = visitRecordService.findById(id);
-        return ResultGenerator.genSuccessResult(visitRecord);
-    }
-    @AuthCheckAnnotation(checkLogin = false,checkVerify = false)
-    @PostMapping("/list")
-    public Result list(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size) {
-        PageHelper.startPage(page, size);
-        List<VisitRecord> list = visitRecordService.findAll();
-        PageInfo pageInfo = new PageInfo(list);
-        return ResultGenerator.genSuccessResult(pageInfo);
-    }
     /**
      * @param hour 结束时间
      * @return result
@@ -64,15 +33,59 @@ public class VisitRecordController {
      @PostMapping("/visitRequest")
     public Result visitRequest(VisitRecord visitRecord, @RequestParam() String hour)
              throws Exception {
+         try {
+             return visitRecordService.visitRequest( visitRecord, hour);
+         } catch (Exception e) {
+             e.printStackTrace();
+         }
 
-        return visitRecordService.visitRequest( visitRecord, hour);
+         return ResultGenerator.genFailResult("系统异常");
+
     }
 
     @PostMapping("/inviteRequest")
     public Result inviteRequest(VisitRecord visitRecord, @RequestParam() String hour)
             throws Exception {
+        try {
+            return visitRecordService.inviteRequest( visitRecord, hour);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ResultGenerator.genFailResult("系统异常");
 
-        return visitRecordService.inviteRequest( visitRecord, hour);
     }
+    /**
+     *
+     * @param userId 用户id
+     * @return
+     * @throws Exception
+     */
+    @PostMapping("/record")
+    public Result record(@RequestParam() Long userId)
+            throws Exception {
+        try {
+            return visitRecordService.record( userId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ResultGenerator.genFailResult("系统异常");
 
+    }
+    /**
+     *
+     * @param userId 用户id
+     * @return
+     * @throws Exception
+     */
+    @PostMapping("/recordDetail")
+    public Result recordDetail(@RequestParam() Long userId)
+            throws Exception {
+        try {
+            return visitRecordService.recordDetail( userId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ResultGenerator.genFailResult("系统异常");
+
+    }
 }

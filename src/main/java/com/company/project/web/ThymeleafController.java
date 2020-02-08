@@ -55,6 +55,7 @@ public class ThymeleafController {
             model.addAttribute("userId",user.getId());
             model.addAttribute("isAuth",user.getIsauth());
             model.addAttribute("loginName",user.getRealname());
+            model.addAttribute("loginName",user.getPhone());
             return "login";
         }
 

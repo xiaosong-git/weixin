@@ -568,6 +568,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
     @Override
     public Result bindWxPhone(Long userId, String phone,String openId) {
         User byPhone = userMapper.findByPhone(phone);
+
         int save=0;
         //没有手机号
         if (byPhone == null) {

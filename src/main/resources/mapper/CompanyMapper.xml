@@ -20,6 +20,18 @@
     <result column="companyFloor" jdbcType="VARCHAR" property="companyfloor" />
     <result column="companyFloor2" jdbcType="VARCHAR" property="companyfloor2" />
   </resultMap>
+  <resultMap id="ResultCompanyMap" type="com.company.project.model.Company">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="companyName" jdbcType="VARCHAR" property="companyname" />
+    <collection property="org" ofType="com.company.project.model.Org">
+      <result column="org_code" jdbcType="VARCHAR" property="orgCode" />
+    </collection>
+    <collection property="users" ofType="com.company.project.model.User">
+
+      <id column="uid" jdbcType="BIGINT" property="id" />
+      <result column="companyId" jdbcType="BIGINT" property="companyId" />
+    </collection>
+  </resultMap>
   <sql id="companyUserOrg">
    c.id ,c.companyName,o.org_code,u.companyId ,u.id uid
   </sql>
@@ -43,16 +55,5 @@
     and u.companyId=c.id
     and u.id=#{userId}
   </select>
-  <resultMap id="ResultCompanyMap" type="com.company.project.model.Company">
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="companyName" jdbcType="VARCHAR" property="companyname" />
-  <collection property="org" ofType="com.company.project.model.Org">
-    <result column="org_code" jdbcType="VARCHAR" property="orgCode" />
-  </collection>
-  <collection property="users" ofType="com.company.project.model.User">
 
-    <id column="uid" jdbcType="BIGINT" property="id" />
-    <result column="companyId" jdbcType="BIGINT" property="companyId" />
-  </collection>
-  </resultMap>
 </mapper>

@@ -74,7 +74,8 @@
     <result column="isReceive" jdbcType="VARCHAR" property="isReceive" />
     <result column="vstatus" jdbcType="VARCHAR" property="vstatus" />
   </resultMap>
-  <sql id="visitorMessage">
+  <sql id="visitorDetail">
+        vr.*,realName,companyName
    </sql>
   <select id="record" parameterType="Long" resultMap="visitorMessageResultMap">
     select * from tbl_visitor_record vr left join tbl_user u on vr.visitorId=u.id
@@ -86,17 +87,17 @@
     where  visitorId=#{userId}
   </select>
 
-  <select id="recordDetail" parameterType="Long" resultMap="visitorDetailResultMap">
+  <select id="recordDetail" parameterType="Long" resultMap="visitorMessageResultMap">
     select *,(case when DATE_FORMAT(endDate,'%Y-%m-%d %H:%i:%s')&lt;NOW() then '过期' else (case cstatus when 'Cancle' then '取消'  when 'applyFail' then '拒绝' when 'applySuccess' then '通过' else '待审核' end
     )  end )
     vstatus from (
-    (select vr.* from tbl_visitor_record vr left join tbl_user u on vr.visitorId=u.id
+    (select <include refid="visitorDetail" /> from tbl_visitor_record vr left join tbl_user u on vr.visitorId=u.id
     left join tbl_company c on c.id=vr.companyId
-    where  userId=#{userId} )
+    where  userId=#{userId} and visitorId=#{visitorId} )
     union
-    (select vr.* from tbl_visitor_record vr left join tbl_user u on vr.userId=u.id
+    (select <include refid="visitorDetail" /> from tbl_visitor_record vr left join tbl_user u on vr.userId=u.id
     left join tbl_company c on c.id=vr.companyId
-    where  visitorId=#{userId}) )x
+    where  visitorId=#{userId} and userId=#{visitorId}) )x
 
     ORDER BY startDate>NOW() desc,  IF(startDate > NOW(), FIELD(cstatus,'Cancle','applyFail',  'applySuccess','applyConfirm'), startDate ) desc,startDate desc,endDate asc
   </select>

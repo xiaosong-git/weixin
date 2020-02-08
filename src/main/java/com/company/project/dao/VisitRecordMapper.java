@@ -22,5 +22,5 @@ public interface VisitRecordMapper extends Mapper<VisitRecord> {
     //sql放xml中
     List<VisitRecord> record(Long userId);
     //sql放xml中
-    List<VisitRecord> recordDetail(Long userId);
+    List<VisitRecord> recordDetail(Long userId,Long visitorId);
 }

@@ -65,8 +65,8 @@ public class visitRecordServiceImpl extends AbstractService<VisitRecord> impleme
     }
 
     @Override
-    public Result recordDetail(Long userId) {
-        return ResultGenerator.genSuccessResult(visitorRecordMapper.recordDetail(userId));
+    public Result recordDetail(Long userId,Long visitorId) {
+        return ResultGenerator.genSuccessResult(visitorRecordMapper.recordDetail(userId,visitorId));
     }
 
     public Result visitCommon(VisitRecord visitRecord, String hour){

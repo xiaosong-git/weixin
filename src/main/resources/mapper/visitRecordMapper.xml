@@ -79,20 +79,25 @@
   <select id="record" parameterType="Long" resultMap="visitorMessageResultMap">
     select * from tbl_visitor_record vr left join tbl_user u on vr.visitorId=u.id
     left join tbl_company c on c.id=vr.companyId
-    where  userId=125
+    where  userId=#{userId}
     union
     select * from tbl_visitor_record vr left join tbl_user u on vr.userId=u.id
     left join tbl_company c on c.id=vr.companyId
-    where  visitorId=125
+    where  visitorId=#{userId}
   </select>
 
   <select id="recordDetail" parameterType="Long" resultMap="visitorDetailResultMap">
-    select vr.*,'待处理' vstatus from tbl_visitor_record vr left join tbl_user u on vr.visitorId=u.id
+    select *,(case when DATE_FORMAT(endDate,'%Y-%m-%d %H:%i:%s')&lt;NOW() then '过期' else (case cstatus when 'Cancle' then '取消'  when 'applyFail' then '拒绝' when 'applySuccess' then '通过' else '待审核' end
+    )  end )
+    vstatus from (
+    (select vr.* from tbl_visitor_record vr left join tbl_user u on vr.visitorId=u.id
     left join tbl_company c on c.id=vr.companyId
-    where  userId=125
+    where  userId=#{userId} )
     union
-    select vr.*,'待处理' vstatus from tbl_visitor_record vr left join tbl_user u on vr.userId=u.id
+    (select vr.* from tbl_visitor_record vr left join tbl_user u on vr.userId=u.id
     left join tbl_company c on c.id=vr.companyId
-    where  visitorId=125
+    where  visitorId=#{userId}) )x
+
+    ORDER BY startDate>NOW() desc,  IF(startDate > NOW(), FIELD(cstatus,'Cancle','applyFail',  'applySuccess','applyConfirm'), startDate ) desc,startDate desc,endDate asc
   </select>
 </mapper>

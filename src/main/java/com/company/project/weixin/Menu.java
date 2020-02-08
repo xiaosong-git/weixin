@@ -57,10 +57,10 @@ public class Menu {
 //        btn3_2.setType(WxConsts.MENU_BUTTON_CLICK);
 //        btn3_2.setKey(MenuKey.SHARE_RECORD);
 //        btn3_2.setName("共享记录");
-//        WxMenu.WxMenuButton btn3_3 = new WxMenu.WxMenuButton();
-//        btn3_3.setType(WxConsts.MENU_BUTTON_VIEW);
-//        btn3_3.setUrl(URL+"auth");
-//        btn3_3.setName("实名认证");
+        WxMenu.WxMenuButton btn3_3 = new WxMenu.WxMenuButton();
+        btn3_3.setType(WxConsts.MENU_BUTTON_VIEW);
+        btn3_3.setUrl(URL+"auth");
+        btn3_3.setName("实名认证");
         String url=null;
 
 //        WxMenu.WxMenuButton btn1_2 = new WxMenu.WxMenuButton();
@@ -83,7 +83,7 @@ public class Menu {
 //        subList1.addAll(Arrays.asList(btn1_1, btn1_2));
 //        subList1.addAll(Arrays.asList( btn1_2));
 //        subList2.addAll(Arrays.asList(btn2_1, btn2_2));
-        subList3.addAll(Arrays.asList(btn3_1,btn3_4));
+        subList3.addAll(Arrays.asList(btn3_1,btn3_3,btn3_4));
         //子按钮绑定父按钮
 //        btn1.setSub_button(subList1);
 //        btn2.setSub_button(subList2);

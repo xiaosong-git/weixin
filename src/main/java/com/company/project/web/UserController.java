@@ -88,7 +88,7 @@ public class UserController {
         }
         return ResultGenerator.genFailResult("系统异常");
     }
-    @AuthCheckAnnotation(checkLogin = true,checkVerify = false)
+    @AuthCheckAnnotation(checkLogin = false,checkVerify = false)
     @RequestMapping("/uploadVerify")
     @ResponseBody
     public Result uploadPhoto(@RequestParam String userId, @RequestParam() String  mediaId,@RequestParam() String  type)   {

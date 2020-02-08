@@ -491,9 +491,9 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
     public Result uploadPhoto(String userId, String mediaId, String type) throws Exception {
         String time = DateUtil.getSystemTimeFourteen();
         //临时图片地址
-        File file=new File("/project/weixin/tempotos");
+//        File file=new File("/project/weixin/tempotos");
+        File file=new File("D:\\test\\tempotos");
         File newFile = iService.downloadTempMedia(mediaId, file);
-        System.out.println(newFile);
         OkHttpUtil okHttpUtil=new OkHttpUtil();
         Map<String,Object> map=new HashMap();
         map.put("userId",userId);

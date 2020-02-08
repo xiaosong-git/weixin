@@ -109,6 +109,11 @@ public class ThymeleafController {
         return "bindphone";
     }
 
+    @AuthCheckAnnotation(checkLogin = false,checkVerify = false)
+    @RequestMapping(value = "/firstrecord",method= RequestMethod.GET)
+    public String firstrecord() {
+        return "firstrecord";
+    }
 //        @AuthCheckAnnotation(checkLogin = false,checkVerify = false)
 //        @RequestMapping({"static/MP_verify_I4XWI1ZSKeFojwT6.txt"})
 //        private String returnConfigFile(HttpServletResponse response) {

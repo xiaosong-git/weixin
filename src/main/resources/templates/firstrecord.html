@@ -59,23 +59,54 @@
 
 <body ontouchstart>
 
-<div class="weui-cell">
-    <div class="weui-cell__hd"><img src=""></div>
-    <div class="weui-cell__bd">
-        <p>标题文字</p>
-    </div>
-    <div class="weui-cell__ft">说明文字</div>
-    <div class="weui-cell__hd"><img src=""></div>
-    <div class="weui-cell__bd">
-        <p>标题文字</p>
-    </div>
-    <div class="weui-cell__ft">说明文字</div>
-</div>
+<div id="recorddiv"></div>
+
 
 <script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
 <script src="https://cdn.bootcss.com/jquery-weui/1.2.1/js/jquery-weui.min.js"></script>
 <script src="https://cdn.bootcss.com/fastclick/1.0.6/fastclick.js"></script>
 <script src="js/myUtil.js"></script>
-<script></script>
+<script>
+    $(function () {
+        getRecord();
+    })
+    function getRecord() {
+        $.ajax({
+            type: 'POST',
+            contentType: "application/x-www-form-urlencoded",
+            url: "/pybl/visit/record/record",
+            data: {userId: "125"},
+            success: function (result) {
+                if (result.code == 200) {
+                    var data = result.data;
+                    for (var i in data) {
+                        var username = data[i].user.realname;
+                        var date = data[i].startDate.substring(0,10);
+                        var startTime = data[i].startDate.substring(11,16)
+                        var endTime = data[i].endDate.substring(11,16)
+                        var addr = data[i].company.companyname
+                        console.log(data[i])
+
+                       $("#recorddiv").append("<a href=\"javascript:void(0);\" class=\"weui-media-box weui-media-box_appmsg\">\n" +
+                            "\n" +
+                            "    <div class=\"weui-media-box__bd\">\n" +
+                            "        <p class=\"weui-cell__bd\" style=\"font-size: 18px;\">"+username+"</p><br>\n" +
+                            "        <p class=\"weui-cell__bd\">访问时间&nbsp;&nbsp;&nbsp;"+date+" "+startTime+"-"+endTime+"</p>\n" +
+                            "        <p class=\"weui-cell__bd\">访问地址&nbsp;&nbsp;&nbsp;"+addr+"</p>\n" +
+                            "    </div>\n" +
+                            "    <div class=\"weui-panel__ft\">\n" +
+                            "        <div class=\"weui-cell__bd\">查看更多></div>\n" +
+                            "    </div>\n" +
+                            "</a>")
+
+                    }
+
+                }
+            }
+        })
+
+    }
+
+</script>
 </body>
 </html>

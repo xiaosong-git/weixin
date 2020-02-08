@@ -186,12 +186,47 @@
                 }
             });
         }
+        //公司获取
+        function getCompany(){
+            $.ajax({
+                type: 'POST',
+                contentType: "application/x-www-form-urlencoded",
+                url: "/pybl/company/findByPhone",
+                data: { phone:getCookie("phone")  },
+                success: function(result) {
+                    var companys = [];
+                    for(var i in result.data){
+                        companys.push(result.data[i].companyname)
+                    }
+                    $("#address").picker({
+                        title: "请选择地址",
+                        cols: [
+                            {
+                                textAlign: 'center',
+                                values: companys
+                            }
+                        ],
+                        onChange: function (p, v, dv) {
+                            console.log(p, v, dv);
+                        },
+                        onClose: function (p, v, d) {
+                            console.log("close");
+                        }
+                    });
+                }
+            });
+        }
         $(function () {
 
-            console.log(getCookie("isAuth"))
+           /console.log(getCookie("isAuth"))
             if(getCookie("isAuth")!="T"){
                 window.location.href=authUrl;
-            }else{
+                $.showLoading();
+            }else if(getCookie("phone")==""){
+                window.location.href=bindphoneUrl;
+                $.showLoading();
+            } else{
+                getCompany();
                 FastClick.attach(document.body);
                 $("#start-time").val(formatDateTime(0, 0, 0));
                 testt();

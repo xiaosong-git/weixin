@@ -61,7 +61,9 @@
             <div class="weui-uploader">
                 <div class="weui-uploader__bd" style="
     padding-left: 30px" >
-                    <ul class="weui-uploader__files" id="uploaderFiles"></ul>
+                    <ul class="weui-uploader__files" id="uploaderFiles">
+<!--                        <li class="weui-uploader__file weui-uploader__file_status" style="background-image:url(images/user.png)">-->
+                    </ul>
                     <div class="weui-uploader__input-box" id="photoDiv" value="">
                         <span class="weui-uploader__input" onclick="jssdkimg(this)" id="choose" value=""></span>
                     </div>
@@ -122,10 +124,12 @@
 
     });
     function removeimg(obj){
-        $.confirm('您确定要删除吗?', '确认删除?', function() {$(obj).remove();});
-        $("#choose").val('');
-        // $("#photoDiv").show();
-        return false;
+        $.confirm('您确定要删除吗?', '确认删除?', function() {
+            $(obj).remove();
+            $("#choose").val('');
+            $("#photoDiv").show();
+        });
+
     }
     function jssdkimg(obj){
         wx.chooseImage({
@@ -135,7 +139,6 @@
             success: function (res) {
                 var localIds = res.localIds; //本地图片id
                 $(obj).val(localIds);
-
                 wx.uploadImage({
                     localId:'' + $("#choose").val(), // 需要上传的图片的本地ID，由chooseImage接口获得
                     isShowProgressTips: 1, // 默认为1，显示进度提示
@@ -143,7 +146,6 @@
 
                         var serverId = res.serverId; // 返回图片的服务器端ID
                         $.toptip("检测人脸中！","success");
-                        // alert(serverId);
                         $.ajax({
                             //请求方式
                             type : "POST",
@@ -166,6 +168,7 @@
                                     $.toptip("人脸识别成功","success");
                                     //图片服务器中的图片地址
                                     $("#photoDiv").val(result.data);
+                                    $("#photoDiv").hide();
                                     $("#uploaderFiles").parent().prev().html('<li onclick="removeimg(this)" class="weui-uploader__file" style="background-image:url('+localIds+')"><input value=""  type="hidden"  name="file" /></li>');
                                 }
                             }

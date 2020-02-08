@@ -17,5 +17,5 @@ public interface visitRecordService extends Service<VisitRecord> {
 
     Result record(Long userId);
 
-    Result recordDetail(Long userId);
+    Result recordDetail(Long userId, Long visitorId);
 }

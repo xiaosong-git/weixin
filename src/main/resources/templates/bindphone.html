@@ -150,6 +150,7 @@
                     if (result.code==200){
                         $.toptip("验证成功",'success');
                         setCookie('phone', phone, 365);
+                        setCookie('userId', result.data.userId, 365);
                         window.location.href=invitformUrl;
                     }else if (result.code==400) {
                         $.toptip(result.message);

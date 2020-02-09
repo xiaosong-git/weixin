@@ -58,60 +58,67 @@
 </head>
 
 <body ontouchstart>
-<div class="page-hd">
-    <div class="weui-cell">
-    <div class="weui-cell__hd"><img src="images/user.png" style="width: 40px;height: 40px;"></div>
-    <div class="weui-cell__bd">
-        <p>李思思</p>
-    </div>
-        <div class="weui-cell__ft">Ta和我有 <font color="blue">8</font> 条来往记录</div>
-    </div>
-</div>
-<a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">
+<div id="recordHead"></div>
+<div id="recordBody"></div>
 
-    <div class="weui-media-box__bd">
-        <p class="weui-cell__bd">访问时间&nbsp;&nbsp;&nbsp; 2019-03-12 15:30-18:00</p>
-        <p class="weui-cell__bd">访问地址&nbsp;&nbsp;&nbsp; 福州市IFC</p>
-    </div>
-    <div class=\"weui-panel__ft\">
-        <div class=\"weui-cell__bd\">状态</div>
-    </div>
-</a>
-<a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">
-
-    <div class="weui-media-box__bd">
-        <p class="weui-cell__bd">访问时间&nbsp;&nbsp;&nbsp; 2019-03-12 15:30-18:00</p>
-        <p class="weui-cell__bd">访问地址&nbsp;&nbsp;&nbsp; 福州市IFC</p>
-    </div>
-    <div class=\"weui-panel__ft\">
-        <div class=\"weui-cell__bd\">状态</div>
-    </div>
-</a><a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">
-
-    <div class="weui-media-box__bd">
-        <p class="weui-cell__bd">访问时间&nbsp;&nbsp;&nbsp; 2019-03-12 15:30-18:00</p>
-        <p class="weui-cell__bd">访问地址&nbsp;&nbsp;&nbsp; 福州市IFC</p>
-    </div>
-    <div class=\"weui-panel__ft\">
-        <div class=\"weui-cell__bd\">状态</div>
-    </div>
-</a>
+<div class=\"weui-cell__bd\"><font color="#696969">拒绝</font></div>
 <script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
 <script src="https://cdn.bootcss.com/jquery-weui/1.2.1/js/jquery-weui.min.js"></script>
 <script src="https://cdn.bootcss.com/fastclick/1.0.6/fastclick.js"></script>
 <script src="js/myUtil.js"></script>
 <script>
     $(function () {
-
+        getRecord2();
     })
-    function getRecord() {
+    function getRecord2() {
         $.ajax({
             type: 'POST',
             contentType: "application/x-www-form-urlencoded",
-            url: "/pybl/visit/record/record",
-            data: {userId: "125"},
+            url: "visit/record/recordDetail",
+            data: {visitorId: window.localStorage.getItem("rVisitorId"),
+                userId:getCookie("userId")},
             success: function (result) {
 
+                var data = result.data;
+                $("#recordHead").append("<div class=\"page-hd\">\n" +
+                    "    <div class=\"weui-cell\">\n" +
+                    "    <div class=\"weui-cell__hd\"><img src=\"images/user.png\" style=\"width: 40px;height: 40px;\"></div>\n" +
+                    "    <div class=\"weui-cell__bd\">\n" +
+                    "        <p>"+window.localStorage.getItem("rName")+"</p>\n" +
+                    "    </div>\n" +
+                    "        <div class=\"weui-cell__ft\">Ta和我有 <font color=\"blue\">"+data.length+"</font> 条来往记录</div>\n" +
+                    "    </div>\n" +
+                    "</div>");
+
+                console.log(result)
+                for(var i in data){
+
+                    var date = data[i].startDate.substring(0, 10);
+                    var startTime = data[i].startDate.substring(11, 16)
+                    var endTime = data[i].endDate.substring(11, 16)
+                    var divShow ="";
+                    if(data[i].vstatus=="access"){
+                        divShow = "<div class=\\\"weui-cell__bd\\\"><font color=\"#006400\">通过</font></div>";
+                    }else if (data[i].vstatus=="refuse"){
+                        divShow = "<div class=\\\"weui-cell__bd\\\"><font color=\"#8b0000\">拒绝</font></div>";
+                    }else if(data[i].vstatus=="unaudited"){
+                        divShow = "<div class=\\\"weui-cell__bd\\\"><font color=\"blue\">待审核</font></div>";
+                    }else if(data[i].vstatus=="expired"){
+                        divShow = "<div class=\\\"weui-cell__bd\\\"><font color=\"#696969\">过期</font></div>";
+                    }else{
+                        divShow = "<div class=\\\"weui-cell__bd\\\">未知状态</div>";
+                    }
+                    $("#recordBody").append("<a href=\"javascript:void(0);\" class=\"weui-media-box weui-media-box_appmsg\">\n" +
+                        "\n" +
+                        "    <div class=\"weui-media-box__bd\">\n" +
+                        "        <p class=\"weui-cell__bd\">访问时间&nbsp;&nbsp;&nbsp; "+date+" "+startTime+"-"+endTime+"</p><br>\n" +
+                        "        <p class=\"weui-cell__bd\">访问地址&nbsp;&nbsp;&nbsp; 福州市IFC</p>\n" +
+                        "    </div>\n" +
+                        "    <div class=\\\"weui-panel__ft\\\">\n" +
+                        divShow+
+                        "    </div>\n" +
+                        "</a>");
+                }
             }
         })
 

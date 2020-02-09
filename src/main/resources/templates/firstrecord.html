@@ -64,7 +64,6 @@
          style="height:100%; margin-top: 1px;overflow:auto;  z-index: 1">
         <!--    内容展示区-->
         <div class="weui-form-preview" id="recorddiv">
-
         </div>
         <div class="weui-loadmore" id="loading" style="padding-bottom:30px;height:20px;display: none">
             <i class="weui-loading"></i>
@@ -121,7 +120,7 @@
                         var addr = list[i].company.companyname
                         console.log(list[i])
 
-                        $("#recorddiv").append("<a href=\"javascript:void(0);\" class=\"weui-media-box weui-media-box_appmsg\">\n" +
+                        $("#recorddiv").append("<a href=\"javascript:void(0);\" class=\"weui-media-box weui-media-box_appmsg\" onclick=\"toSecond('"+username+"','"+list[i].visitorId+"')\">\n" +
                             "\n" +
                             "    <div class=\"weui-media-box__bd\">\n" +
                             "        <p class=\"weui-cell__bd\" style=\"font-size: 18px;\">" + username + "</p><br>\n" +
@@ -143,7 +142,13 @@
                 }
             }
         })
-
+        
+    }
+    
+    function toSecond(username,visitorId) {
+        window.localStorage.setItem("rName", username);
+        window.localStorage.setItem("rVisitorId", visitorId);
+        window.location.href=secondRecordUrl;
     }
 
 </script>

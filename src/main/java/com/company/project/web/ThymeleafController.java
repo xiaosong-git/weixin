@@ -114,6 +114,16 @@ public class ThymeleafController {
     public String firstrecord() {
         return "firstrecord";
     }
+    @AuthCheckAnnotation(checkLogin = false,checkVerify = false)
+    @RequestMapping(value = "/secondrecord",method= RequestMethod.GET)
+    public String secondrecord() {
+        return "secondrecord";
+    }
+    @AuthCheckAnnotation(checkLogin = false,checkVerify = false)
+    @RequestMapping(value = "/recorddetail",method= RequestMethod.GET)
+    public String recorddetail() {
+        return "recorddetail";
+    }
 //        @AuthCheckAnnotation(checkLogin = false,checkVerify = false)
 //        @RequestMapping({"static/MP_verify_I4XWI1ZSKeFojwT6.txt"})
 //        private String returnConfigFile(HttpServletResponse response) {

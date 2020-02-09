@@ -15,7 +15,7 @@ public interface visitRecordService extends Service<VisitRecord> {
 
     Result inviteRequest(VisitRecord visitRecord, String hour);
 
-    Result record(Long userId);
+    Result record(Long userId, int pages, int sizes);
 
     Result recordDetail(Long userId, Long visitorId);
 }

@@ -61,10 +61,10 @@ public class VisitRecordController {
      * @throws Exception
      */
     @PostMapping("/record")
-    public Result record(@RequestParam() Long userId)
+    public Result record(@RequestParam() Long userId,@RequestParam() int pages,@RequestParam() int sizes)
             throws Exception {
         try {
-            return visitRecordService.record( userId);
+            return visitRecordService.record( userId,pages,sizes);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -1,5 +1,6 @@
 package com.company.project.service.impl;
 
+import com.company.project.core.AbstractService;
 import com.company.project.core.Result;
 import com.company.project.core.ResultGenerator;
 import com.company.project.dao.VisitRecordMapper;
@@ -8,16 +9,18 @@ import com.company.project.model.VisitRecord;
 import com.company.project.service.CodeService;
 import com.company.project.service.UserService;
 import com.company.project.service.visitRecordService;
-import com.company.project.core.AbstractService;
 import com.company.project.util.DateUtil;
 import com.company.project.util.GTNotification;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -60,8 +63,11 @@ public class visitRecordServiceImpl extends AbstractService<VisitRecord> impleme
     }
 
     @Override
-    public Result record(Long userId) {
-        return ResultGenerator.genSuccessResult(visitorRecordMapper.record(userId));
+    public Result record(Long userId, int pages, int sizes) {
+        PageHelper.startPage(pages,sizes);
+        List<VisitRecord> record = visitorRecordMapper.record(userId);
+        PageInfo<VisitRecord> page=new PageInfo<>(record);
+        return ResultGenerator.genSuccessResult(page);
     }
 
     @Override

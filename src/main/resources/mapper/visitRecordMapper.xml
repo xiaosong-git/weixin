@@ -75,14 +75,14 @@
     <result column="vstatus" jdbcType="VARCHAR" property="vstatus" />
   </resultMap>
   <sql id="visitorDetail">
-        vr.*,realName,companyName
+        vr.*,realName,IF(companyName is null ,'',companyName) companyName
    </sql>
   <select id="record" parameterType="Long" resultMap="visitorMessageResultMap">
-    select * from tbl_visitor_record vr left join tbl_user u on vr.visitorId=u.id
+    select <include refid="visitorDetail" /> from tbl_visitor_record vr left join tbl_user u on vr.visitorId=u.id
     left join tbl_company c on c.id=vr.companyId
     where  userId=#{userId}
     union
-    select * from tbl_visitor_record vr left join tbl_user u on vr.userId=u.id
+    select <include refid="visitorDetail" /> from tbl_visitor_record vr left join tbl_user u on vr.userId=u.id
     left join tbl_company c on c.id=vr.companyId
     where  visitorId=#{userId}
   </select>

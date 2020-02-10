@@ -71,7 +71,7 @@ import java.util.Map;
             rule().event(WxConsts.EVT_CLICK).eventKey(MenuKey.INVITE).handler(new VisitHandler()).end().
             rule().event(WxConsts.EVT_CLICK).eventKey(MenuKey.MEETING).handler(new ShareRoomHandler()).next().
             rule().event(WxConsts.EVT_CLICK).eventKey(MenuKey.TEA).handler(new ShareRoomHandler()).end().
-            rule().event(WxConsts.EVT_CLICK).eventKey(MenuKey.INVITE_RECORD).handler(new MyHandler()).next().
+            rule().event(WxConsts.EVT_CLICK).eventKey(MenuKey.FIRST_RECORD).handler(new MyHandler()).next().
             rule().event(WxConsts.EVT_CLICK).eventKey(MenuKey.SHARE_RECORD).handler(new MyHandler()).end();
             // 把消息传递给路由器进行处理
             WxXmlOutMessage xmlOutMsg = router.route(wx);

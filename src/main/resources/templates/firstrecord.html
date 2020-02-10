@@ -82,15 +82,17 @@
 <script src="js/myUtil.js"></script>
 <script>
     $(function () {
+        $.showLoading();
         getRecord();
+
     });
     var pages = 1;
     var sizes = 8;
     var loading = false;  //状态标记
-    var hasNextPage=true;
+    var hasNextPage = true;
     $("#listwrap").infinite().on("infinite", function () {
         if (loading) return;
-        if (!hasNextPage)  return;
+        if (!hasNextPage) return;
         loading = true;
         pages++; //页数
         console.log(pages);
@@ -111,6 +113,7 @@
                 userId: "125"
             },//需要改为从cookie获取
             success: function (result) {
+                $.hideLoading();
                 if (result.code == 200) {
                     var list = result.data.list;
                     for (var i in list) {
@@ -121,7 +124,7 @@
                         var addr = list[i].org.addr
                         console.log(list[i])
 
-                        $("#recorddiv").append("<a href=\"javascript:void(0);\" class=\"weui-media-box weui-media-box_appmsg\" onclick=\"toSecond('"+username+"','"+list[i].visitorId+"')\">\n" +
+                        $("#recorddiv").append("<a href=\"javascript:void(0);\" class=\"weui-media-box weui-media-box_appmsg\" onclick=\"toSecond('" + username + "','" + list[i].visitorId + "')\">\n" +
                             "\n" +
                             "    <div class=\"weui-media-box__bd\">\n" +
                             "        <p class=\"weui-cell__bd\" style=\"font-size: 18px;\">" + username + "</p><br>\n" +
@@ -136,20 +139,25 @@
                     }
                     $('.weui-loadmore').hide();
                     loading = false;
-                    hasNextPage=result.data.hasNextPage;
+                    hasNextPage = result.data.hasNextPage;
                     if (!hasNextPage) {
                         $('#over').show();
                     }
                 }
+            },
+            error: function (e) {
+                $.hideLoading();
+                alert("发送错误");
+
             }
         })
-        
+
     }
-    
-    function toSecond(username,visitorId) {
+
+    function toSecond(username, visitorId) {
         window.localStorage.setItem("rName", username);
         window.localStorage.setItem("rVisitorId", visitorId);
-        window.location.href=secondRecordUrl;
+        window.location.href = secondRecordUrl;
     }
 
 </script>

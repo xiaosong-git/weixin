@@ -61,44 +61,47 @@
 <div id="recordHead"></div>
 
 
-    <div class="content"
-         style="background-color: #FFFFFF; width: 100%;height:100%;position: absolute; margin-bottom:45px;padding:0px; overflow: hidden;">
-        <div class="list-main-mian weui-form-preview infinite weui-pull-to-refresh" id="listwrap"
-             style="height:100%; margin-top: 1px;overflow:auto;  z-index: 1">
-            <!--    内容展示区-->
-            <div class="weui-form-preview" id="recordBody">
-            </div>
-            <div class="weui-loadmore" id="loading" style="padding-bottom:30px;height:20px;display: none">
-                <i class="weui-loading"></i>
-                <span class="weui-loadmore__tips">正在加载</span>
-            </div>
-            <div class="weui-loadmore weui-loadmore_line" id="over" style="padding-bottom:30px;height:20px;display: none">
-                <span class="weui-loadmore__tips">没有更多数据了</span>
-            </div>
+<div class="content"
+     style="background-color: #FFFFFF; width: 100%;height:100%;position: absolute; margin-bottom:45px;padding:0px; overflow: hidden;">
+    <div class="list-main-mian weui-form-preview infinite weui-pull-to-refresh" id="listwrap"
+         style="height:100%; margin-top: 1px;overflow:auto;  z-index: 1">
+        <!--    内容展示区-->
+        <div class="weui-form-preview" id="recordBody">
+        </div>
+        <div class="weui-loadmore" id="loading" style="padding-bottom:30px;height:20px;display: none">
+            <i class="weui-loading"></i>
+            <span class="weui-loadmore__tips">正在加载</span>
+        </div>
+        <div class="weui-loadmore weui-loadmore_line" id="over" style="padding-bottom:30px;height:20px;display: none">
+            <span class="weui-loadmore__tips">没有更多数据了</span>
         </div>
     </div>
+</div>
 <script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
 <script src="https://cdn.bootcss.com/jquery-weui/1.2.1/js/jquery-weui.min.js"></script>
 <script src="https://cdn.bootcss.com/fastclick/1.0.6/fastclick.js"></script>
 <script src="js/myUtil.js"></script>
 <script>
     $(function () {
+        $.showLoading();
         getRecord2();
+
     });
     var pages = 1;
-    var sizes = 8;
+    var sizes = 10;
     var loading = false;  //状态标记
-    var hasNextPage=true;
+    var hasNextPage = true;
     $("#listwrap").infinite().on("infinite", function () {
         if (loading) return;
-        if (!hasNextPage)  return;
+        if (!hasNextPage) return;
         loading = true;
         pages++; //页数
         console.log(pages);
         $('#loading').show();
-        getRecord();
+        getRecord2();
 
     });
+
     function getRecord2() {
         $.ajax({
             type: 'POST',
@@ -106,50 +109,51 @@
             url: "visit/record/recordDetail",
             data: {
 
-                pages:pages,
-                sizes :sizes,
+                pages: pages,
+                sizes: sizes,
                 visitorId: 17,
-                userId:125},
+                userId: 125
+            },
             // visitorId: window.localStorage.getItem("rVisitorId"),
-                // userId:getCookie("userId")},
+            // userId:getCookie("userId")},
             success: function (result) {
-
+                $.hideLoading();
                 var list = result.data.list;
                 $("#recordHead").append("<div class=\"page-hd\">\n" +
                     "    <div class=\"weui-cell\">\n" +
                     "    <div class=\"weui-cell__hd\"><img src=\"images/user.png\" style=\"width: 40px;height: 40px;\"></div>\n" +
                     "    <div class=\"weui-cell__bd\">\n" +
-                    "        <p>"+window.localStorage.getItem("rName")+"</p>\n" +
+                    "        <p>" + window.localStorage.getItem("rName") + "</p>\n" +
                     "    </div>\n" +
-                    "        <div class=\"weui-cell__ft\">Ta和我有 <font color=\"blue\">"+list.length+"</font> 条来往记录</div>\n" +
+                    "        <div class=\"weui-cell__ft\">Ta和我有 <font color=\"blue\">" + list.length + "</font> 条来往记录</div>\n" +
                     "    </div>\n" +
                     "</div>");
 
                 console.log(result)
-                for(var i in list){
+                for (var i in list) {
                     var date = list[i].startDate.substring(0, 10);
                     var startTime = list[i].startDate.substring(11, 16)
                     var endTime = list[i].endDate.substring(11, 16)
-                    var divShow ="";
-                    if(list[i].vstatus=="access"){
+                    var divShow = "";
+                    if (list[i].vstatus == "access") {
                         divShow = "<div class=\\\"weui-cell__bd\\\"><font color=\"#006400\">通过</font></div>";
-                    }else if (list[i].vstatus=="refuse"){
+                    } else if (list[i].vstatus == "refuse") {
                         divShow = "<div class=\\\"weui-cell__bd\\\"><font color=\"#8b0000\">拒绝</font></div>";
-                    }else if(list[i].vstatus=="unaudited"){
+                    } else if (list[i].vstatus == "unaudited") {
                         divShow = "<div class=\\\"weui-cell__bd\\\"><font color=\"blue\">待审核</font></div>";
-                    }else if(list[i].vstatus=="expired"){
+                    } else if (list[i].vstatus == "expired") {
                         divShow = "<div class=\\\"weui-cell__bd\\\"><font color=\"#696969\">过期</font></div>";
-                    }else{
+                    } else {
                         divShow = "<div class=\\\"weui-cell__bd\\\">未知状态</div>";
                     }
                     $("#recordBody").append("<a href=\"javascript:void(0);\" class=\"weui-media-box weui-media-box_appmsg\">\n" +
                         "\n" +
                         "    <div class=\"weui-media-box__bd\">\n" +
-                        "        <p class=\"weui-cell__bd\">访问时间&nbsp;&nbsp;&nbsp; "+date+" "+startTime+"-"+endTime+"</p><br>\n" +
-                        "        <p class=\"weui-cell__bd\">访问地址&nbsp;&nbsp;&nbsp; "+list[i].addr+"</p>\n" +
+                        "        <p class=\"weui-cell__bd\">访问时间&nbsp;&nbsp;&nbsp; " + date + " " + startTime + "-" + endTime + "</p><br>\n" +
+                        "        <p class=\"weui-cell__bd\">访问地址&nbsp;&nbsp;&nbsp; " + list[i].addr + "</p>\n" +
                         "    </div>\n" +
                         "    <div class=\\\"weui-panel__ft\\\">\n" +
-                        divShow+
+                        divShow +
                         "    </div>\n" +
                         "</a>");
 
@@ -157,10 +161,15 @@
                 }
                 $('.weui-loadmore').hide();
                 loading = false;
-                hasNextPage=result.data.hasNextPage;
+                hasNextPage = result.data.hasNextPage;
                 if (!hasNextPage) {
                     $('#over').show();
                 }
+            },
+            error: function (e) {
+                $.hideLoading();
+                alert("发送错误");
+
             }
         })
 

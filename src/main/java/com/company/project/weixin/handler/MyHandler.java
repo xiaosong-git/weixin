@@ -42,9 +42,9 @@ public class MyHandler implements WxMessageHandler {
     private StringBuilder  execute(WxXmlMessage wxMessage) {
         StringBuilder stringBuilder = new StringBuilder();
         switch (wxMessage.getEventKey()) {
-            case MenuKey.INVITE_RECORD:
-                stringBuilder.append("访客记录暂未开放");
-                break;
+//            case MenuKey.FIRST_RECORD:
+//                stringBuilder.append("访客记录暂未开放");
+//                break;
             case   MenuKey.SHARE_RECORD:
                 stringBuilder.append("共享记录");
                 break;

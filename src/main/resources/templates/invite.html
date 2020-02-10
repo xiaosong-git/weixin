@@ -178,8 +178,6 @@
             });
         }
         $(function () {
-
-           /console.log(getCookie("isAuth"))
             if(getCookie("isAuth")!="T"){
                 window.location.href=authUrl;
                 $.showLoading();

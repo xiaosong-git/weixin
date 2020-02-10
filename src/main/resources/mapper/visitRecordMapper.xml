@@ -78,7 +78,32 @@
     <result column="vstatus" jdbcType="VARCHAR" property="vstatus" />
   </resultMap>
   <sql id="visitorDetail">
-        vr.*,u.realName,IF(companyName is null ,'',companyName) companyName,IF(o.addr is null ,'',o.addr) addr
+
+ vr.visitDate,
+ vr.visitTime,
+ vr.userId,
+ vr.visitorId,
+ vr.reason,
+ vr.cstatus,
+ vr.dateType,
+ vr.startDate,
+ vr.endDate,
+ vr.answerContent,
+ vr.orgCode,
+ vr.companyId,
+ vr.vitype,
+ vr.recordType,
+ if(replyDate is null,'',replyDate) replyDate,
+ if(replyTime is null,'',replyTime) replyTime,
+ vr.replyUserId,
+ vr.isReceive,
+ vr.isFlag,
+ vr.remarkName,
+ vr.originType,
+ vr.toType,
+ vr.originId,
+ toId,
+ u.realName,IF(companyName is null ,'',companyName) companyName,IF(o.addr is null ,'',o.addr) addr
    </sql>
   <select id="record" parameterType="Long" resultMap="visitorMessageResultMap">
     select <include refid="visitorDetail" /> from tbl_visitor_record vr

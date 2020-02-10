@@ -65,7 +65,7 @@ public class UserController {
         }catch (Exception e){
             e.printStackTrace();
         }
-        return ResultGenerator.genFailResult("系统异常");
+        return ResultGenerator.genFailResult("系统异常","");
     }
     /**
      * 实名认证
@@ -86,7 +86,7 @@ public class UserController {
         }catch (Exception e){
             e.printStackTrace();
         }
-        return ResultGenerator.genFailResult("系统异常");
+        return ResultGenerator.genFailResult("系统异常","");
     }
     @AuthCheckAnnotation(checkLogin = false,checkVerify = false)
     @RequestMapping("/uploadVerify")
@@ -102,7 +102,7 @@ public class UserController {
             e.printStackTrace();
         }
 
-        return ResultGenerator.genFailResult("系统异常");
+        return ResultGenerator.genFailResult("系统异常","");
     }
 
     /**
@@ -121,7 +121,7 @@ public class UserController {
             e.printStackTrace();
         }
 
-        return ResultGenerator.genFailResult("系统异常");
+        return ResultGenerator.genFailResult("系统异常","");
     }
     /**
      * 通过手机号绑定微信账号
@@ -135,6 +135,6 @@ public class UserController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return ResultGenerator.genFailResult("系统异常");
+        return ResultGenerator.genFailResult("系统异常","");
     }
 }

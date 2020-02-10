@@ -39,7 +39,7 @@ public class VisitRecordController {
              e.printStackTrace();
          }
 
-         return ResultGenerator.genFailResult("系统异常");
+         return ResultGenerator.genFailResult("系统异常","");
 
     }
 
@@ -51,7 +51,7 @@ public class VisitRecordController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return ResultGenerator.genFailResult("系统异常");
+        return ResultGenerator.genFailResult("系统异常","");
 
     }
     /**
@@ -68,7 +68,7 @@ public class VisitRecordController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return ResultGenerator.genFailResult("系统异常");
+        return ResultGenerator.genFailResult("系统异常","");
 
     }
     /**
@@ -85,7 +85,7 @@ public class VisitRecordController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return ResultGenerator.genFailResult("系统异常");
+        return ResultGenerator.genFailResult("系统异常","");
 
     }
 }

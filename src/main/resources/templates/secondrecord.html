@@ -19,7 +19,18 @@
 </head>
 
 <body ontouchstart>
-<div id="recordHead"></div>
+<div id="recordHead">
+    <div class="page-hd">
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><img src="images/user.png" style="width: 40px;height: 40px;"></div>
+            <div class="weui-cell__bd">
+                    <p id="his-name"> 暂无</p>
+                </div>
+                <div class="weui-cell__ft">Ta和我有 <font color="blue" id ="record-count">0 </font> 条来往记录</div>
+            </div>
+    </div>
+
+</div>
 
 
 <div class="content"
@@ -46,7 +57,7 @@
     $(function () {
         $.showLoading();
         getRecord2();
-
+        $("#his-name").html(window.localStorage.getItem("rName"));
     });
     var pages = 1;
     var sizes = 10;
@@ -80,17 +91,8 @@
             success: function (result) {
                 $.hideLoading();
                 var list = result.data.list;
-                $("#recordHead").append("<div class=\"page-hd\">\n" +
-                    "    <div class=\"weui-cell\">\n" +
-                    "    <div class=\"weui-cell__hd\"><img src=\"images/user.png\" style=\"width: 40px;height: 40px;\"></div>\n" +
-                    "    <div class=\"weui-cell__bd\">\n" +
-                    "        <p>" + window.localStorage.getItem("rName") + "</p>\n" +
-                    "    </div>\n" +
-                    "        <div class=\"weui-cell__ft\">Ta和我有 <font color=\"blue\">" + list.length + "</font> 条来往记录</div>\n" +
-                    "    </div>\n" +
-                    "</div>");
 
-                console.log(result)
+                $("#record-count").html(result.data.total);
                 for (var i in list) {
                     var date = list[i].startDate.substring(0, 10);
                     var startTime = list[i].startDate.substring(11, 16)
@@ -118,8 +120,6 @@
                         divShow +
                         "    </div>\n" +
                         "</a>");
-
-
                 }
                 $('.weui-loadmore').hide();
                 loading = false;

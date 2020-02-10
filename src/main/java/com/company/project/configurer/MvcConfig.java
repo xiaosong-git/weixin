@@ -52,7 +52,6 @@ public class MvcConfig implements WebMvcConfigurer {
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
         FastJsonHttpMessageConverter converter = new FastJsonHttpMessageConverter();
         FastJsonConfig config = new FastJsonConfig();
-//        int config1 = SerializerFeature.config(JSON.DEFAULT_GENERATE_FEATURE, SerializerFeature.SkipTransientField, false);
 //        config.setSerializerFeatures(SerializerFeature.SkipTransientField);//保留空的字段
         //SerializerFeature.WriteNullStringAsEmpty,//String null -> ""
         //SerializerFeature.WriteNullNumberAsZero//Number null -> 0

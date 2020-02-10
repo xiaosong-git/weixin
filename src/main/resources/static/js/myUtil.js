@@ -10,7 +10,7 @@ if (IS_DEVELOP){//生产环境
     loginUrl="https://open.weixin.qq.com/connect/oauth2/authorize?appid="+appId+"&redirect_uri=http%3A%2F%2F"+uri+"%2Fpybl%2Flogin&response_type=code&scope=snsapi_userinfo&state=233#wechat_redirect";
 } else{
     appId="wx73d294462904125c";
-    uri="ie87v8.natappfree.cc";
+    uri="wzxrva.natappfree.cc";
     url= "http://"+uri+"/";
     loginUrl="https://open.weixin.qq.com/connect/oauth2/authorize?appid="+appId+"&redirect_uri=http%3A%2F%2F"+uri+"%2Fpybl%2Flogin&response_type=code&scope=snsapi_userinfo&state=233#wechat_redirect";
 }
@@ -20,6 +20,8 @@ var visitUrl=url+suffix+"visit";
 var authUrl=url+suffix+"auth";
 var formUrl=url+suffix+"form";
 var invitformUrl=url+suffix+"invitform";
+var secondRecordUrl=url+suffix+"secondrecord";
+var recordDetailUrl=url+suffix+"recorddetail";
 function setCookie(c_name,value,expiredays)
 {
     var exdate=new Date()

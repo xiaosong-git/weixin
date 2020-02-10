@@ -4,6 +4,7 @@
     <title>访问邀约记录</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="referrer" content="no-referrer">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <meta name="description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
 ">
@@ -70,7 +71,7 @@
             <span class="weui-loadmore__tips">正在加载</span>
         </div>
         <div class="weui-loadmore weui-loadmore_line" id="over" style="padding-bottom:30px;height:20px;display: none">
-            <span class="weui-loadmore__tips">暂无数据</span>
+            <span class="weui-loadmore__tips">没有更多数据了</span>
         </div>
     </div>
 </div>
@@ -117,7 +118,7 @@
                         var date = list[i].startDate.substring(0, 10);
                         var startTime = list[i].startDate.substring(11, 16)
                         var endTime = list[i].endDate.substring(11, 16)
-                        var addr = list[i].company.companyname
+                        var addr = list[i].org.addr
                         console.log(list[i])
 
                         $("#recorddiv").append("<a href=\"javascript:void(0);\" class=\"weui-media-box weui-media-box_appmsg\" onclick=\"toSecond('"+username+"','"+list[i].visitorId+"')\">\n" +

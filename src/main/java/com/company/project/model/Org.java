@@ -1,5 +1,8 @@
 package com.company.project.model;
 
+import com.alibaba.fastjson.annotation.JSONField;
+import com.alibaba.fastjson.serializer.SerializerFeature;
+
 import javax.persistence.*;
 
 @Table(name = "`t_org`")

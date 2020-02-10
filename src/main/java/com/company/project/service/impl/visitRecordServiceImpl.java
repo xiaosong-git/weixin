@@ -21,6 +21,7 @@ import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -71,8 +72,11 @@ public class visitRecordServiceImpl extends AbstractService<VisitRecord> impleme
     }
 
     @Override
-    public Result recordDetail(Long userId,Long visitorId) {
-        return ResultGenerator.genSuccessResult(visitorRecordMapper.recordDetail(userId,visitorId));
+    public Result recordDetail(Long userId, Long visitorId, int pages, int sizes) {
+        PageHelper.startPage(pages,sizes);
+        List<Map<String, Object>> list = visitorRecordMapper.recordDetail(userId, visitorId);
+        PageInfo<Map<String, Object>> page=new PageInfo<>(list);
+        return ResultGenerator.genSuccessResult(page);
     }
 
     public Result visitCommon(VisitRecord visitRecord, String hour){

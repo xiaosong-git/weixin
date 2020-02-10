@@ -116,6 +116,8 @@ public class VisitRecord {
     @Transient
     private Company company;
     @Transient
+    private Org org;
+    @Transient
     private String vstatus;
     @Transient
     private User user;
@@ -294,5 +296,13 @@ public class VisitRecord {
 
     public void setVstatus(String vstatus) {
         this.vstatus = vstatus;
+    }
+
+    public Org getOrg() {
+        return org;
+    }
+
+    public void setOrg(Org org) {
+        this.org = org;
     }
 }

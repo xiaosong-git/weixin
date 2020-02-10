@@ -51,6 +51,9 @@
     <collection property="company" ofType="com.company.project.model.Company">
       <result column="companyName" jdbcType="VARCHAR" property="companyname" />
     </collection>
+    <collection property="org" ofType="com.company.project.model.Org">
+      <result column="addr" jdbcType="VARCHAR" property="addr" />
+    </collection>
   </resultMap>
   <resultMap id="visitorDetailResultMap" type="com.company.project.model.VisitRecord">
     <id column="id" jdbcType="BIGINT" property="id" />
@@ -75,28 +78,36 @@
     <result column="vstatus" jdbcType="VARCHAR" property="vstatus" />
   </resultMap>
   <sql id="visitorDetail">
-        vr.*,realName,IF(companyName is null ,'',companyName) companyName
+        vr.*,u.realName,IF(companyName is null ,'',companyName) companyName,IF(o.addr is null ,'',o.addr) addr
    </sql>
   <select id="record" parameterType="Long" resultMap="visitorMessageResultMap">
-    select <include refid="visitorDetail" /> from tbl_visitor_record vr left join tbl_user u on vr.visitorId=u.id
+    select <include refid="visitorDetail" /> from tbl_visitor_record vr
+    left join tbl_user u on vr.visitorId=u.id
     left join tbl_company c on c.id=vr.companyId
+    left join t_org o on vr.orgCode=o.org_code
     where  userId=#{userId}
     union
-    select <include refid="visitorDetail" /> from tbl_visitor_record vr left join tbl_user u on vr.userId=u.id
+    select <include refid="visitorDetail" /> from tbl_visitor_record vr
+    left join tbl_user u on vr.userId=u.id
     left join tbl_company c on c.id=vr.companyId
+    left join t_org o on vr.orgCode=o.org_code
     where  visitorId=#{userId}
   </select>
 
-  <select id="recordDetail" parameterType="Long" resultMap="visitorMessageResultMap">
-    select *,(case when DATE_FORMAT(endDate,'%Y-%m-%d %H:%i:%s')&lt;NOW() then '过期' else (case cstatus when 'Cancle' then '取消'  when 'applyFail' then '拒绝' when 'applySuccess' then '通过' else '待审核' end
+  <select id="recordDetail" parameterType="Long" resultType="map">
+    select *,(case when DATE_FORMAT(endDate,'%Y-%m-%d %H:%i:%s')&lt;NOW() then 'expired' else (case cstatus when 'applyFail' then 'refuse' when 'applySuccess' then 'access' else 'unaudited' end
     )  end )
     vstatus from (
-    (select <include refid="visitorDetail" /> from tbl_visitor_record vr left join tbl_user u on vr.visitorId=u.id
+    (select <include refid="visitorDetail" /> from tbl_visitor_record vr
+    left join tbl_user u on vr.visitorId=u.id
     left join tbl_company c on c.id=vr.companyId
+    left join t_org o on vr.orgCode=o.org_code
     where  userId=#{userId} and visitorId=#{visitorId} )
     union
-    (select <include refid="visitorDetail" /> from tbl_visitor_record vr left join tbl_user u on vr.userId=u.id
+    (select <include refid="visitorDetail" /> from tbl_visitor_record vr
+     left join tbl_user u on vr.userId=u.id
     left join tbl_company c on c.id=vr.companyId
+    left join t_org o on vr.orgCode=o.org_code
     where  visitorId=#{userId} and userId=#{visitorId}) )x
 
     ORDER BY startDate>NOW() desc,  IF(startDate > NOW(), FIELD(cstatus,'Cancle','applyFail',  'applySuccess','applyConfirm'), startDate ) desc,startDate desc,endDate asc

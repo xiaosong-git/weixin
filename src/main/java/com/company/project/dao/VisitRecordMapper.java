@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
+import java.util.Map;
 
 public interface VisitRecordMapper extends Mapper<VisitRecord> {
 
@@ -22,5 +23,5 @@ public interface VisitRecordMapper extends Mapper<VisitRecord> {
     //sql放xml中
     List<VisitRecord> record(Long userId);
     //sql放xml中
-    List<VisitRecord> recordDetail(Long userId,Long visitorId);
+    List<Map<String,Object>> recordDetail(Long userId, Long visitorId);
 }

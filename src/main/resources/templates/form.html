@@ -10,46 +10,7 @@
     <link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.3/style/weui.min.css">
     <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.1/css/jquery-weui.min.css">
     <style type="text/css">
-        .img_circle {
-            width: 30px;
-            height: 30px;
-            display: flex;
-            border-radius: 100%;
-            align-items: center;
-            justify-content: space-around;
-            overflow: hidden;
-            margin-right: 10px;
-        }
-
-        .img_circle img {
-            border-radius: 100%;
-            border: 1px solid black;
-
-        }
-
-        div {
-            font-size: 14px;
-        }
-
-        label {
-            text-align: right;
-        }
-
-        input {
-            margin-left: 20px;
-            border: 5px solid red;
-        }
-
-        .circle {
-            width: 40px;
-            height: 40px;
-            background: grey;
-            border-radius: 50%;
-            text-align: center;
-            padding-top: 20px;
-        }
-
-
+        @import url("css/comon.css");
     </style>
     <title>
         <h3 class="demos-title">访问</h3>
@@ -62,7 +23,8 @@
     <div class="weui-cell">
         <div class="weui-cell__hd"><label class="weui-label">受访人姓名</label></div>
         <div class="weui-cell__bd">
-            <input class="weui-input" id="visitorName" type="text" placeholder="请输入受访人姓名" onBlur ="postNP()" visitorId="">
+            <input class="weui-input" id="visitorName" type="text" placeholder="请输入受访人姓名" onBlur="postNP()"
+                   visitorId="">
         </div>
     </div>
     <div class="weui-cell">
@@ -70,7 +32,7 @@
             <label class="weui-label">受访人手机号</label>
         </div>
         <div class="weui-cell__bd">
-            <input class="weui-input" id="visitorPhone" type="tel" placeholder="请输入受访人手机号" onBlur ="postNP()">
+            <input class="weui-input" id="visitorPhone" type="tel" placeholder="请输入受访人手机号" onBlur="postNP()">
         </div>
     </div>
     <div class="weui-cell">
@@ -99,7 +61,7 @@
 
     <div class="weui-tab">
         <div class="weui-navbar">
-            <a class="weui-navbar__item weui-bar__item--on" >
+            <a class="weui-navbar__item weui-bar__item--on">
                 常用联系人
             </a>
         </div>
@@ -139,189 +101,195 @@
             </div>
 
 
-
         </div>
     </div>
-    </div>
-    <script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
-    <script src="https://cdn.bootcss.com/jquery-weui/1.2.1/js/jquery-weui.min.js"></script>
-    <script src="https://cdn.bootcss.com/fastclick/1.0.6/fastclick.js"></script>
-    <script src="js/myUtil.js"></script>
-    <script>
-        function testt(){
-            $.ajax({
-                type: 'POST',
-                contentType: "application/x-www-form-urlencoded",
-                url: "/pybl/user/frequentContacts",
-                data: { userId:getCookie("userId") },
-                success: function(result) {
+</div>
+<script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery-weui/1.2.1/js/jquery-weui.min.js"></script>
+<script src="https://cdn.bootcss.com/fastclick/1.0.6/fastclick.js"></script>
+<script src="js/myUtil.js"></script>
+<script>
+    function testt() {
+        $.ajax({
+            type: 'POST',
+            contentType: "application/x-www-form-urlencoded",
+            url: "/pybl/user/frequentContacts",
+            data: {userId: getCookie("userId")},
+            success: function (result) {
 
-                    var data = result.data;
-                    var personSize = result.data.length;
-                    $("#contactPerson").append("<div class=\"weui-cells\">")
-                    for(var i in data){
-                        console.log(data[i].id);
-                        var realname = data[i].realname;
-                        var phone = data[i].phone
-                        var visitorid = data[i].id
-                        $("#contactPerson").append(" <div class=\"weui-cell\">\n" +
-                            "                      <div class=\"weui-cell__hd\"><img src=\"images\\user.png\" style=\"width: 30px;height: 30px\"></div>\n" +
-                            "                        <div class=\"weui-cell__bd\">\n" +
-                            "                             <p>"+data[i].realname+"</p>\n" +
-                            "                        </div>\n" +
-                            "                        <div class=\"weui-cell__ft\">\n" +
-                            "                           <a href=\"javascript:void(0);\" style=\"font-size:25px;\" onclick=\"addPersonInfo('"+realname+"','"+phone+"','"+visitorid+"')\">+</a>\n" +
-                            "                        </div>\n" +
-                            "                    </div>")
-                    }
-                    $("#contactPerson").append("</div>")
-                },
-                error : function(e){
-                    alert("error"+e.message)
+                var data = result.data;
+                var personSize = result.data.length;
+                $("#contactPerson").append("<div class=\"weui-cells\">")
+                for (var i in data) {
+                    console.log(data[i].id);
+                    var realname = data[i].realname;
+                    var phone = data[i].phone
+                    var visitorid = data[i].id
+                    $("#contactPerson").append(" <div class=\"weui-cell\">\n" +
+                        "                      <div class=\"weui-cell__hd\"><img src=\"images\\user.png\" style=\"width: 30px;height: 30px\"></div>\n" +
+                        "                        <div class=\"weui-cell__bd\">\n" +
+                        "                             <p>" + data[i].realname + "</p>\n" +
+                        "                        </div>\n" +
+                        "                        <div class=\"weui-cell__ft\">\n" +
+                        "                           <a href=\"javascript:void(0);\" style=\"font-size:25px;\" onclick=\"addPersonInfo('" + realname + "','" + phone + "','" + visitorid + "')\">+</a>\n" +
+                        "                        </div>\n" +
+                        "                    </div>")
                 }
-            });
-        }
-        $(function () {
-            if(!isLogin()){
+                $("#contactPerson").append("</div>")
+            },
+            error: function (e) {
+                alert("error" + e.message)
+            }
+        });
+    }
+
+    $(function () {
+        if (!isLogin()) {
             FastClick.attach(document.body);
             $("#start-time").val(formatDateTime(0, 0, 0));
             testt();
+        }
+    });
+    $("#start-time").datetimePicker();
+    $("#hour").picker({
+        title: "请选择拜访时长",
+        cols: [
+            {
+                textAlign: 'center',
+                values: ['0.5', '1', '1.5', '2', '2.5', '3', '3.5', '6']
             }
-        });
-        $("#start-time").datetimePicker();
-        $("#hour").picker({
-            title: "请选择拜访时长",
-            cols: [
-                {
-                    textAlign: 'center',
-                    values: ['0.5', '1', '1.5', '2', '2.5', '3', '3.5', '6']
-                }
-            ],
-            onChange: function (p, v, dv) {
-                console.log(p, v, dv);
+        ],
+        onChange: function (p, v, dv) {
+            console.log(p, v, dv);
+        },
+        onClose: function (p, v, d) {
+            console.log("close");
+        }
+    });
+    $("#reason").picker({
+        title: "请选择拜访原因",
+        cols: [
+            {
+                textAlign: 'center',
+                values: ['商务拜访', '配送服务', '面试', '找人', '其他']
+            }
+        ],
+        onChange: function (p, v, dv) {
+            console.log(p, v, dv);
+        },
+        onClose: function (p, v, d) {
+            console.log("close");
+        }
+    });
+    $('.weui-cell_swiped').swipeout('open')
+
+
+    $("#showTooltips").click(function () {
+        var isAuth = getCookie("isAuth")
+        if (isAuth != "T") {
+            $.toptip('请先进行实名认证');
+            window.location.href = authUrl;
+        } else {
+            var tel = $('#visitorPhone').val();
+            if (!tel || !/1[3|4|5|7|8]\d{9}/.test(tel)) {
+                $.toptip('请输入手机号');
+            } else {
+                visit();
+            }
+        }
+    });
+
+    //输入完姓名与电话查找visitorId
+    function postNP() {
+        var visitorName = $("#visitorName").val();
+        var visitorPhone = $("#visitorPhone").val();
+        if (visitorName == "") {
+            $.toptip("拜访姓名不能为空");
+            return;
+        }
+        if (visitorPhone == "") {
+            $.toptip("手机号不能为空");
+            return;
+        }
+        $.ajax({
+            type: 'POST',
+            contentType: "application/x-www-form-urlencoded",
+            url: "user/namePhone",
+            data: {
+                realName: visitorName,
+                phone: visitorPhone
             },
-            onClose: function (p, v, d) {
-                console.log("close");
+            success: function (result) {
+                var data = result.data;
+                if (result.code == 400) {
+                    $.toptip(result.message);
+                } else if (result.code == 200) {
+                    $("#visitorName").attr("visitorId", data[0].id);
+                } else {
+                    $.toptip("系统错误");
+                }
             }
         });
-        $("#reason").picker({
-            title: "请选择拜访原因",
-            cols: [
-                {
-                    textAlign: 'center',
-                    values: ['商务拜访', '配送服务', '面试', '找人', '其他']
-                }
-            ],
-            onChange: function (p, v, dv) {
-                console.log(p, v, dv);
+    }
+
+    //发起成功访问
+    function visit() {
+        $.showLoading();
+        var startDate = $("#start-time").val();
+        var hour = $("#hour").val();
+        var reason = $("#reason").val();
+        $.ajax({
+            type: 'POST',
+            contentType: "application/x-www-form-urlencoded",
+            url: "visit/record/visitRequest",
+            data: {
+                //从跳转页获取用户id
+                userId: getCookie('userId'),
+                visitorId: $("#visitorName").attr("visitorId"),
+                reason: reason,
+                startDate: startDate,
+                hour: hour,
+
             },
-            onClose: function (p, v, d) {
-                console.log("close");
+            success: function (result) {
+                $.hideLoading();
+                if (result.code == 400) {
+                    $.toptip(result.message);
+                } else if (result.code == 200) {
+                    $.toast("发起访问成功", 'success');
+                    alert("发起访问成功，对方同意后将在《朋悦比邻》公众号提示，请注意查收！");
+                    location.reload();
+                } else {
+                    $.toptip("系统错误");
+                }
             }
         });
-        $('.weui-cell_swiped').swipeout('open')
 
+    }
 
-        $("#showTooltips").click(function () {
-            var isAuth = getCookie("isAuth")
-           if(isAuth != "T"){
-               $.toptip('请先进行实名认证');
-               window.location.href = authUrl;
-            }else{
-               var tel = $('#visitorPhone').val();
-               if (!tel || !/1[3|4|5|7|8]\d{9}/.test(tel)) {
-                   $.toptip('请输入手机号');
-               }else {
-                   visit();
-               }
-            }
-        });
-        //输入完姓名与电话查找visitorId
-        function postNP(){
-            var visitorName = $("#visitorName").val();
-            var visitorPhone = $("#visitorPhone").val();
-            if(visitorName=="") {
-                $.toptip("拜访姓名不能为空");
-                return;
-            }
-            if(visitorPhone=="") {
-                $.toptip("手机号不能为空");
-                return;
-            }
-            $.ajax({
-                type: 'POST',
-                contentType: "application/x-www-form-urlencoded",
-                url: "user/namePhone",
-                data: {realName:visitorName,
-                    phone:visitorPhone},
-                success: function(result) {
-                    var data=result.data;
-                    if(result.code == 400){
-                        $.toptip(result.message);
-                    }else if(result.code == 200){
-                        $("#visitorName").attr("visitorId",data[0].id);
-                    }else{
-                        $.toptip("系统错误");
-                    }
-                }
-            });
-        }
-        //发起成功访问
-        function visit(){
-            $.showLoading();
-            var startDate = $("#start-time").val();
-            var hour = $("#hour").val();
-            var reason = $("#reason").val();
-            $.ajax({
-                type: 'POST',
-                contentType: "application/x-www-form-urlencoded",
-                url: "visit/record/visitRequest",
-                data: {
-                    //从跳转页获取用户id
-                    userId: getCookie('userId'),
-                    visitorId: $("#visitorName").attr("visitorId"),
-                    reason: reason,
-                    startDate: startDate,
-                    hour: hour,
+    function formatDateTime(year, day, hours) {
+        var date = new Date();
+        var y = date.getFullYear() + year;
+        var m = date.getMonth() + 1;
+        m = m < 10 ? ('0' + m) : m;
+        var d = date.getDate() - day;
+        d = d < 10 ? ('0' + d) : d;
+        var h = date.getHours() + hours;
+        h = h < 10 ? ('0' + h) : h;
+        var minute = date.getMinutes();
+        var second = date.getSeconds();
+        minute = minute < 10 ? ('0' + minute) : minute;
+        // second = second < 10 ? ('0' + second) : second;
 
-                },
-                success: function(result) {
-                    $.hideLoading();
-                    if (result.code==400){
-                        $.toptip(result.message);
-                    }else if(result.code==200){
-                        $.toast("发起访问成功",'success');
-                        alert("发起访问成功，对方同意后将在《朋悦比邻》公众号提示，请注意查收！");
-                        location.reload();
-                    }else{
-                        $.toptip("系统错误");
-                    }
-                }
-            });
+        return y + '-' + m + '-' + d + ' ' + h + ':' + minute;
+        //2017-12-12 12:23:34
+    }
 
-        }
-        function formatDateTime(year, day, hours) {
-            var date = new Date();
-            var y = date.getFullYear() + year;
-            var m = date.getMonth() + 1;
-            m = m < 10 ? ('0' + m) : m;
-            var d = date.getDate() - day;
-            d = d < 10 ? ('0' + d) : d;
-            var h = date.getHours() + hours;
-            h = h < 10 ? ('0' + h) : h;
-            var minute = date.getMinutes();
-            var second = date.getSeconds();
-            minute = minute < 10 ? ('0' + minute) : minute;
-            // second = second < 10 ? ('0' + second) : second;
-
-            return y + '-' + m + '-' + d + ' ' + h + ':' + minute;
-            //2017-12-12 12:23:34
-        }
-        function addPersonInfo(name,phone,visitorId) {
-            $("#visitorName").val(name);
-            $("#visitorPhone").val(phone);
-            $("#visitorName").attr("visitorId",visitorId);
-        }
-    </script>
+    function addPersonInfo(name, phone, visitorId) {
+        $("#visitorName").val(name);
+        $("#visitorPhone").val(phone);
+        $("#visitorName").attr("visitorId", visitorId);
+    }
+</script>
 </body>
 </html>

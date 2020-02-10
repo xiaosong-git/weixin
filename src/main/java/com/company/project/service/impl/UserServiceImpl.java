@@ -526,7 +526,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
         }
         List<User> users = userMapper.frequentContacts(userId);
         if (users==null||users.isEmpty()){
-            return ResultGenerator.genFailResult("暂无数据");
+            return ResultGenerator.genFailResult("暂无数据","");
         }
         String imageServerUrl = paramService.findValueByName("imageServerUrl");
         for (User user : users) {

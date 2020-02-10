@@ -96,6 +96,7 @@
                     var startTime = list[i].startDate.substring(11, 16)
                     var endTime = list[i].endDate.substring(11, 16)
                     var divShow = "";
+
                     if (list[i].vstatus == "access") {
                         divShow = "<div class=\\\"weui-cell__bd\\\"><font color=\"#006400\">通过</font></div>";
                     } else if (list[i].vstatus == "refuse") {
@@ -107,7 +108,7 @@
                     } else {
                         divShow = "<div class=\\\"weui-cell__bd\\\">未知状态</div>";
                     }
-                    $("#recordBody").append("<a href=\"javascript:void(0);\" class=\"weui-media-box weui-media-box_appmsg\">\n" +
+                    $("#recordBody").append("<a href=\"javascript:void(0);\" class=\"weui-media-box weui-media-box_appmsg\" onclick=\"toDetail('"+encodeURI(JSON.stringify(list[i]))+"')\">\n" +
                         "\n" +
                         "    <div class=\"weui-media-box__bd\">\n" +
                         "        <p class=\"weui-cell__bd\">访问时间&nbsp;&nbsp;&nbsp; " + date + " " + startTime + "-" + endTime + "</p><br>\n" +
@@ -133,6 +134,12 @@
 
             }
         })
+
+    }
+
+    function toDetail(obj) {
+        window.localStorage.setItem("detailRecord", decodeURI(obj));
+        window.location.href = recordDetailUrl;
 
     }
 

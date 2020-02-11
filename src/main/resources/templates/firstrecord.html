@@ -85,7 +85,7 @@
                         var addr = list[i].org.addr
                         console.log(list[i])
 
-                        $("#recorddiv").append("<a href=\"javascript:void(0);\" class=\"weui-media-box weui-media-box_appmsg\" onclick=\"toSecond('" + username + "','" + list[i].visitorId + "')\">\n" +
+                        $("#recorddiv").append("<a href=\"javascript:void(0);\" class=\"weui-media-box weui-media-box_appmsg\" onclick=\"toSecond('" + username + "','" + list[i].userId + "','" + list[i].visitorId + "')\">\n" +
                             "\n" +
                             "    <div class=\"weui-media-box__bd\">\n" +
                             "        <p class=\"weui-cell__bd\" style=\"font-size: 18px;\">" + username + "</p><br>\n" +
@@ -115,8 +115,9 @@
 
     }
 
-    function toSecond(username, visitorId) {
+    function toSecond(username, userId,visitorId) {
         window.localStorage.setItem("rName", username);
+        window.localStorage.setItem("rUserId", userId);
         window.localStorage.setItem("rVisitorId", visitorId);
         window.location.href = secondRecordUrl;
     }

@@ -389,15 +389,22 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
     public Result uploadPhoto(String userId, String mediaId, String type) throws Exception {
         String time = DateUtil.getSystemTimeFourteen();
         //临时图片地址
-        File file=new File("/project/weixin/tempotos");
-//        File file=new File("D:\\test\\tempotos");
+//        String url="D:\\test\\tempotos";
+        String url="/project/weixin/tempotos";
+        File file=new File(url);
         File newFile = iService.downloadTempMedia(mediaId, file);
+        String fileName = newFile.getName();
+        String suffix = fileName.substring(fileName.lastIndexOf(".") + 1);
+        String newFileName = url+File.separator+userId+System.currentTimeMillis() + "."+suffix;
+        File newNameFile=new File(newFileName);
+        boolean b = newFile.renameTo(newNameFile);
+
+        String name = newNameFile.getAbsolutePath();
         OkHttpUtil okHttpUtil=new OkHttpUtil();
         Map<String,Object> map=new HashMap();
         map.put("userId",userId);
         map.put("type",type);
-        map.put("file",newFile);
-        System.out.println(newFile.getName());
+        map.put("file",newNameFile);
         String imageServerApiUrl = paramService.findValueByName("imageServerApiUrl");
         String s = okHttpUtil.postFile(imageServerApiUrl, map, "multipart/form-data");//上传图片
         JSONObject jsonObject=JSONObject.parseObject(s);
@@ -412,9 +419,9 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
             return ResultGenerator.genFailResult(verify.get("desc").toString());
         }
         Map data=JSON.parseObject(resultMap.get("data").toString());
-//
+        data.put("img",name);
         //返回图片在服务器的地址
-        return ResultGenerator.genSuccessResult(data.get("imageFileName"));
+        return ResultGenerator.genSuccessResult(data);
     }
 
     @Override
@@ -548,6 +555,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
         itemJSONObj.put("userName", userName);
 //        itemJSONObj.put("certNo", "350424199009031238");
         itemJSONObj.put("certNo", certNo);
+//        String photo= Base64.encode(FilesUtils.getImageFromNetByUrl(idHandleImgUrl));
         itemJSONObj.put("imgData", Configuration.GetImageStrFromPath(idHandleImgUrl,30));
         HttpClient httpClient = new SSLClient();
         HttpPost postMethod = new HttpPost("http://t.pyblkj.cn:8082/wisdom/entrance/pub");

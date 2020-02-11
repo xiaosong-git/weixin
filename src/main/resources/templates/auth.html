@@ -46,7 +46,7 @@
             <div class="weui-uploader">
                 <div class="weui-uploader__bd" style="
     padding-left: 30px" >
-                    <ul class="weui-uploader__files" id="uploaderFiles">
+                    <ul class="weui-uploader__files" id="uploaderFiles" value="">
 <!--                        <li class="weui-uploader__file weui-uploader__file_status" style="background-image:url(images/user.png)">-->
                     </ul>
                     <div class="weui-uploader__input-box" id="photoDiv" value="">
@@ -148,7 +148,11 @@
                         setCookie('isAuth',result.data.isauth,365);
                         setCookie('myName', result.data.realname, 365);
                         // setCookie('imageServerUrl',result.data.imageServerUrl,365);
-                        $.toptip("验证成功",'success');
+                        $.toptip("登入成功",'success');
+                        if (result.data.isauth!=="T") {
+                            $.toptip("对不起，该用户未实名，请实名后再使用哦");
+                            return;
+                        }
                         window.history.go(-1);
                         //判断用户
                         // console.log("该用户不存在")
@@ -209,9 +213,12 @@
                                 }else {
                                     $.toptip("人脸识别成功","success");
                                     //图片服务器中的图片地址
-                                    $("#photoDiv").val(result.data);
+                                    // $("#uploaderFiles").val
+                                        $("#photoDiv").val(result.data.img);
+                                        alert($("#photoDiv").val());
                                     $("#photoDiv").hide();
-                                    $("#uploaderFiles").parent().prev().html('<li onclick="removeimg(this)" class="weui-uploader__file" style="background-image:url('+localIds+')"><input value=""  type="hidden"  name="file" /></li>');
+
+                                    $("#uploaderFiles").append('<li onclick="removeimg(this)" class="weui-uploader__file" style="background-image:url('+localIds+')"><input value=""  type="hidden"  name="file" /></li>');
                                 }
                             }
                         });

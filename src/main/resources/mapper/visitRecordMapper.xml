@@ -77,8 +77,7 @@
     <result column="isReceive" jdbcType="VARCHAR" property="isReceive" />
     <result column="vstatus" jdbcType="VARCHAR" property="vstatus" />
   </resultMap>
-  <sql id="visitorDetail">
-
+    <sql id="record">
  vr.visitDate,
  vr.visitTime,
  vr.userId,
@@ -99,38 +98,43 @@
  vr.isReceive,
  vr.isFlag,
  vr.remarkName,
- u.realName,IF(companyName is null ,'',companyName) companyName,IF(o.addr is null ,'',o.addr) addr
+ IF(companyName is null ,'',companyName) companyName,IF(o.addr is null ,'',o.addr) addr
    </sql>
+  <sql id="visitorDetail">
+      <include refid="record" />,if(userId=#{loginId},u.realName,vu.realName) realName,(case when DATE_FORMAT(endDate,'%Y-%m-%d %H:%i:%s')&lt;NOW() then 'expired' else (case cstatus when 'applyFail' then 'refuse' when 'applySuccess' then 'access' else 'unaudited' end ) end ) vstatus
+
+   </sql>
+
   <select id="record" parameterType="Long" resultMap="visitorMessageResultMap">
-   select * from ( select <include refid="visitorDetail" /> from tbl_visitor_record vr
-    left join tbl_user u on vr.visitorId=u.id
-    left join tbl_company c on c.id=vr.companyId
-    left join t_org o on vr.orgCode=o.org_code
-    where  userId=#{userId} and u.realName is not null
-    union
-    select <include refid="visitorDetail" /> from tbl_visitor_record vr
-    left join tbl_user u on vr.userId=u.id
-    left join tbl_company c on c.id=vr.companyId
-    left join t_org o on vr.orgCode=o.org_code
-    where  visitorId=#{userId} and u.realName is not null)x order by startDate desc
+select <include refid="record" />,if(userId=#{userId},u.realName,vu.realName) realName from  tbl_visitor_record vr
+      LEFT JOIN tbl_user u ON vr.visitorId = u.id
+      left join tbl_user vu on vr.userId=vu.id
+      LEFT JOIN tbl_company c ON c.id = vr.companyId
+      LEFT JOIN t_org o ON vr.orgCode = o.org_code
+
+      where u.realName is not null and vu.realName is not null and   vr.id in(
+	select IF(a.startDate>b.startDate,a.id,b.id) id from (
+	select vr.id,vr.userId,vr.visitorId,vr.startDate,recordType
+from tbl_visitor_record vr
+inner join  (select visitorId,Max(startDate) startDate
+from tbl_visitor_record where userId=#{userId}  GROUP BY visitorId)x
+on x.visitorId=vr.visitorId and x.startDate =vr.startDate) a left join
+
+(select vr.id,vr.userId,vr.visitorId,vr.startDate,recordType
+from tbl_visitor_record vr
+inner join  (select userId,Max(startDate) startDate
+from tbl_visitor_record where visitorId=#{userId}  GROUP BY userId)x
+on x.userId=vr.userId and x.startDate =vr.startDate)b on a.userId=b.visitorId and a.visitorId=b.userId)
+
   </select>
 
   <select id="recordDetail" parameterType="Long" resultType="map">
-    select *,(case when DATE_FORMAT(endDate,'%Y-%m-%d %H:%i:%s')&lt;NOW() then 'expired' else (case cstatus when 'applyFail' then 'refuse' when 'applySuccess' then 'access' else 'unaudited' end
-    )  end )
-    vstatus from (
-    (select <include refid="visitorDetail" /> from tbl_visitor_record vr
+    select <include refid="visitorDetail" /> from tbl_visitor_record vr
     left join tbl_user u on vr.visitorId=u.id
+    left join tbl_user vu on vr.userId=vu.id
     left join tbl_company c on c.id=vr.companyId
     left join t_org o on vr.orgCode=o.org_code
-    where  userId=#{userId} and visitorId=#{visitorId} )
-    union
-    (select <include refid="visitorDetail" /> from tbl_visitor_record vr
-     left join tbl_user u on vr.userId=u.id
-    left join tbl_company c on c.id=vr.companyId
-    left join t_org o on vr.orgCode=o.org_code
-    where  visitorId=#{userId} and userId=#{visitorId}) )x
-
+    where  (userId=#{visitorId} and visitorId=#{userId}) or(userId=#{userId} and visitorId=#{visitorId})
     ORDER BY startDate>NOW() desc,  IF(startDate > NOW(), FIELD(cstatus,'Cancle','applyFail',  'applySuccess','applyConfirm'), startDate ) desc,startDate desc,endDate asc
   </select>
 </mapper>

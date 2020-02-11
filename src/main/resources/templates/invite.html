@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>jQuery WeUI</title>
+    <title>发起邀约</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
@@ -114,14 +114,27 @@
     <script src="https://cdn.bootcss.com/fastclick/1.0.6/fastclick.js"></script>
     <script src="js/myUtil.js"></script>
     <script>
-
+        $(function () {
+            if(getCookie("isAuth")!=="T"){
+                window.location.href=authUrl;
+                $.showLoading();
+            }else if(getCookie("phone")===""){
+                window.location.href=bindphoneUrl;
+                $.showLoading();
+            } else{
+                getCompany();
+                FastClick.attach(document.body);
+                $("#start-time").val(formatDateTime(0, 0, 0));
+                getContacts();
+            }
+        });
         //联系人获取
-        function testt(){
+        function getContacts(){
             $.ajax({
                 type: 'POST',
                 contentType: "application/x-www-form-urlencoded",
                 url: "user/frequentContacts",
-                data: {userId:'3'},
+                data: {userId:getCookie("userId")},
                 success: function(result) {
 
                     var data = result.data;
@@ -177,21 +190,7 @@
                 }
             });
         }
-        $(function () {
-            if(getCookie("isAuth")!="T"){
-                window.location.href=authUrl;
-                $.showLoading();
-            }else if(getCookie("phone")==""){
-                window.location.href=bindphoneUrl;
-                $.showLoading();
-            } else{
-                getCompany();
-                FastClick.attach(document.body);
-                $("#start-time").val(formatDateTime(0, 0, 0));
-                testt();
-            }
 
-        });
         $("#start-time").datetimePicker();
         $("#hour").picker({
             title: "请选择拜访时长",

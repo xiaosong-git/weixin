@@ -28,13 +28,13 @@ public class Menu {
 
         //按钮一
         WxMenu.WxMenuButton btn1 = new WxMenu.WxMenuButton();
-        btn1.setName("发起访问申请");
+        btn1.setName("发起访问");
         btn1.setUrl(URL+MenuKey.VISIT);
         List<WxMenu.WxMenuButton> subList2 = new ArrayList<>();
         List<WxMenu.WxMenuButton> subList3 = new ArrayList<>();
 
         WxMenu.WxMenuButton btn2=new WxMenu.WxMenuButton();
-        btn2.setName("发起邀约申请");
+        btn2.setName("发起邀约");
         btn2.setUrl(URL+MenuKey.INVITE);
         WxMenu.WxMenuButton btn3 = new WxMenu.WxMenuButton();
         btn3.setName("我的");
@@ -62,7 +62,7 @@ public class Menu {
         //授权登入
         btn3_4.setName("登入");
         //子按钮加入列表
-        subList3.addAll(Arrays.asList(btn3_1,btn3_3,btn3_4));
+        subList3.addAll(Arrays.asList(btn3_1));
         //子按钮绑定父按钮
         btn3.setSub_button(subList3);
 

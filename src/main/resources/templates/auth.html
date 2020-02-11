@@ -18,6 +18,7 @@
     <p class="page-hd-desc"></p>
 </div>
 <div class="weui-cells weui-cells_form">
+    <div class="weui-cells__title">如果您已经在朋悦比邻app上注册并实名认证过，您也可以使用手机号登入！</div>
 
     <div class="weui-cell">
         <div class="weui-cell__hd">
@@ -58,6 +59,7 @@
 
 <div class="weui-btn-area">
     <a class="weui-btn weui-btn_primary" href="javascript:" id="btn" onclick="upload()">确定</a>
+    <a class="weui-btn weui-btn_primary" href="javascript:" id="show-login" onclick="login()" >app用户登录</a>
 </div>
 <br>
 <br>
@@ -71,6 +73,7 @@
 <script src="https://cdn.bootcss.com/fastclick/1.0.6/fastclick.js"></script>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
 <script src="js/myUtil.js"></script>
+<script src="js/md5.js"></script>
 <script>
     // var appid = ['[${config.appid}]'];
     // var config = '[[${config.jsApiList}]]';
@@ -107,6 +110,60 @@
         })
 
     });
+    function login(){
+        $.login({
+            title: '朋悦比邻app用户登入',
+            text: '使用朋悦比邻app注册过，并实名认证的用户登入',
+
+            onOK: function (username, password) {
+                //点击确认
+                password= $.md5(password);
+                console.log(password);
+                pwdLogin(username, password);
+            },
+            onCancel: function () {
+                //点击取消
+            }
+        });
+    }
+    function pwdLogin(username,password){
+            $.showLoading();
+            //做发送信息
+            $.ajax({
+                type: 'POST',
+                contentType: "application/x-www-form-urlencoded",
+                url: "user/login",
+                data: {phone:username,
+                    password:password,
+                    openId:getCookie("openId")
+                },
+                success: function(result) {
+                    $.hideLoading();
+                    console.log(result);
+                    if (result.code==200){
+                        // setCookie('token',result.data.user.token,365);
+                        setCookie('phone',username,365);
+                        setCookie('userId',result.data.id,365);
+                        setCookie('isAuth',result.data.isauth,365);
+                        setCookie('loginName', result.data.realname, 365);
+                        // setCookie('imageServerUrl',result.data.imageServerUrl,365);
+                        $.toptip("验证成功",'success');
+                        window.history.go(-1);
+                        //判断用户
+                        // console.log("该用户不存在")
+                    }else if (result.code==400) {
+                        $.toptip(result.message);
+                    }else {
+                        $.toptip("验证失败，请输入正确密码");
+                    }
+                },
+                //请求失败，包含具体的错误信息
+                error : function(e){
+                    $.hideLoading();
+                    $.toptip(e.message);
+                }
+            });
+        }
     function removeimg(obj){
         $.confirm('您确定要删除吗?', '确认删除?', function() {
             $(obj).remove();
@@ -180,7 +237,7 @@
                 url : "user/verify",
                 //数据，json字符串
                 data : {userId:getCookie("userId"),
-                    token:getCookie(("token")),
+                    // token:getCookie(("token")),
                     idHandleImgUrl: $("#photoDiv").val(),
                     idNO:$("#idNo").val(),
                     realName:$("#realName").val()
@@ -195,56 +252,60 @@
                         $.hideLoading();
                     }else {
                         $.hideLoading();
-                        $.toptip("认证成功！发起访问中。。。",'success');
-                        $.showLoading();
+                        $.toptip("认证成功！",'success');
+                        window.history.go(-1);
+                        // $.showLoading();
                         //发起访问
-                        $.ajax({
-                            type: 'POST',
-                            contentType: "application/x-www-form-urlencoded",
-                            url: "visit/record/visitRequest",
-                            data: {
-                                //从跳转页获取用户id
-                                userId: getCookie('userId'),
-                                visitorId: getCookie('visitorId'),
-                                // companyId: $("#company").attr("data-values"),
-                                reason: getCookie('reason'),
-                                startDate: getCookie('startTime'),
-                                endDate: getCookie('endTime'),
-                                token: getCookie('token')
-                                // orgCode: $("#orgCode").attr("orgCode")
-                            },
-                            success: function(result) {
-                                $.hideLoading();
-                                var data = result.data;
-                                console.log(result);
-                                if (result.code==400){
-                                    $.toptip(result.message);
-                                    //登入过期
-                                    if (data=='overTime'){
-                                        window.location.href=loginUrl;
-                                        $.showLoading();
-                                        //实名认证失败
-                                    }else if ('verifyFail'==data){
-
-                                        window.location.href=authUrl;
-                                        $.showLoading();
-                                    }else if ('tokenFail'==data){
-                                        window.location.href=loginUrl;
-                                        $.showLoading();
-                                    }else if ('userFail'==data) {
-                                        window.location.href=loginUrl;
-                                        $.showLoading();
-                                    }
-                                }else{
-                                    $.toast("发起访问成功",'success');
-                                    alert("发起访问成功，对方同意后将在《朋悦比邻》公众号提示，请注意查收！");
-                                    wx.closeWindow();
-                                }
-                            }
-                        });
+                        // $.ajax({
+                        //     type: 'POST',
+                        //     contentType: "application/x-www-form-urlencoded",
+                        //     url: "visit/record/visitRequest",
+                        //     data: {
+                        //         //从跳转页获取用户id
+                        //         userId: getCookie('userId'),
+                        //         visitorId: getCookie('visitorId'),
+                        //         // companyId: $("#company").attr("data-values"),
+                        //         reason: getCookie('reason'),
+                        //         startDate: getCookie('startTime'),
+                        //         endDate: getCookie('endTime'),
+                        //         token: getCookie('token')
+                        //         // orgCode: $("#orgCode").attr("orgCode")
+                        //     },
+                        //     success: function(result) {
+                        //         $.hideLoading();
+                        //         var data = result.data;
+                        //         console.log(result);
+                        //         if (result.code==400){
+                        //             $.toptip(result.message);
+                        //             //登入过期
+                        //             if (data=='overTime'){
+                        //                 window.location.href=loginUrl;
+                        //                 $.showLoading();
+                        //                 //实名认证失败
+                        //             }else if ('verifyFail'==data){
+                        //
+                        //                 window.location.href=authUrl;
+                        //                 $.showLoading();
+                        //             }else if ('tokenFail'==data){
+                        //                 window.location.href=loginUrl;
+                        //                 $.showLoading();
+                        //             }else if ('userFail'==data) {
+                        //                 window.location.href=loginUrl;
+                        //                 $.showLoading();
+                        //             }
+                        //         }else{
+                        //             $.toast("发起访问成功",'success');
+                        //             alert("发起访问成功，对方同意后将在《朋悦比邻》公众号提示，请注意查收！");
+                        //             // wx.closeWindow();
+                        //         }
+                        //     }
+                        // });
 
 
                     }
+                },
+                error:function (e) {
+                    $.toptip("网络错误!");
                 }
             });
         }
@@ -300,6 +361,7 @@
             });
         }
     }
+    //如果参数过多，建议通过 object 方式传入
 
 </script>
 <script src="https://cdn.bootcss.com/webcamjs/1.0.25/webcam.js"></script>

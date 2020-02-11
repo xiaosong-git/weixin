@@ -53,8 +53,8 @@ public class ThymeleafController {
             User user = userService.getUser(wxUser1.getOpenid());
             model.addAttribute("userId",user.getId());
             model.addAttribute("isAuth",user.getIsauth());
-            model.addAttribute("loginName",user.getRealname());
-            model.addAttribute("loginName",user.getPhone());
+            model.addAttribute("myName",user.getRealname());
+            model.addAttribute("phone",user.getPhone());
             return "login";
         }
 //

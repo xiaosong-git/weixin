@@ -59,14 +59,19 @@ public class UserController {
     @RequestMapping("/login")
     @ResponseBody
     public Result login(@RequestParam(defaultValue = "0") String phone, @RequestParam(defaultValue = "0") String code,
-                        @RequestParam String openId ){
+                        @RequestParam String openId,@RequestParam(defaultValue = "0") String password ){
         try {
-                return userService.loginByVerifyCode(phone,code,openId);
+            if ("0".equals(code)){
+                return userService.login(phone, password, openId);
+            }else {
+                return userService.loginByVerifyCode(phone, code, openId);
+            }
         }catch (Exception e){
             e.printStackTrace();
         }
         return ResultGenerator.genFailResult("系统异常","");
     }
+
     /**
      * 实名认证
      * @param userId 用户Id
@@ -76,7 +81,7 @@ public class UserController {
      * @param addr 住址
      * @return
      */
-    @AuthCheckAnnotation(checkLogin = true,checkVerify = false)
+    @AuthCheckAnnotation(checkLogin = false,checkVerify = false)
     @RequestMapping("/verify")
     @ResponseBody
     public Result verify(@RequestParam long userId,@RequestParam String idNO,
@@ -88,6 +93,14 @@ public class UserController {
         }
         return ResultGenerator.genFailResult("系统异常","");
     }
+
+    /**
+     * 实人认证图片上传
+     * @param userId 用户id
+     * @param mediaId 微信临时图片
+     * @param type 状态
+     * @return
+     */
     @AuthCheckAnnotation(checkLogin = false,checkVerify = false)
     @RequestMapping("/uploadVerify")
     @ResponseBody

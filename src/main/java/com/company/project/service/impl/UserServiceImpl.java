@@ -94,8 +94,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
         return list;
     }
     @Override
-    public Result login(Map<String, Object> paramMap) throws Exception {
-        String phone = paramMap.get("phone")+"";
+    public Result login(String phone,String password,String openId) throws Exception {
          User user = findBy("phone",phone);
         if(user == null){
             return  ResultGenerator.genFailResult("用户不存在");
@@ -111,21 +110,8 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
         if(userAccount == null){
             return  ResultGenerator.genFailResult("找不到用户的账户信息","fail");
         }
-        String loginStyle = null;
-        Object obj = paramMap.get("style");
-        if(obj == null){
-            //默认选择：密码登录
-            loginStyle = Status.LOGIN_STYLE_PWD;
-        }else{
-            loginStyle = obj.toString();
-        }
-        String password = paramMap.get("sysPwd")+"";//用户输入密码
-        String dbPassword = null;
-        if(Status.LOGIN_STYLE_PWD.equals(loginStyle)){
-            dbPassword = userAccount.getSyspwd()+"";//正确密码
-        }else{
-            dbPassword = userAccount.getGesturepwd()+"";//正确密码
-        }
+          String dbPassword = userAccount.getSyspwd()+"";//正确密码
+
         if(password.equals(dbPassword)){
             //重置允许用户输入错误密码次数
             passwordService.resetPwdInputNum(String.valueOf(userId), Status.PWD_TYPE_SYS);
@@ -135,107 +121,19 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
 
                 userUpdate.setId(userId);
                 userUpdate.setToken(UUID.randomUUID().toString());
+                userUpdate.setWxOpenId(openId);
                 this.update(userUpdate);
                 user = this.findById(userId);
-                //实名有效日期过了
-                if ("T".equals(user.getIsauth())){
-                    if (user.getValiditydate()!=null && !user.getValiditydate().equals("") && !StringUtils.isBlank(user.getValiditydate())){
-                        String validityDate = user.getValiditydate();
-                        Calendar curr = Calendar.getInstance();
-                        Calendar start = Calendar.getInstance();
-                        start.setTime(new SimpleDateFormat("yyyy-MM-dd").parse(validityDate));
-                        if (curr.after(start)){
-                            User userValidity=new User();
-                            userValidity.setId(userId);
-                            userValidity.setAuthdate("");
-                            userValidity.setAuthtime("");
-                            userValidity.setIdhandleimgurl("");
-                            userValidity.setRealname( "");
-                            userValidity.setIsauth( "F");//F:未实名 T：实名 N:正在审核中 E：审核失败
-                            userValidity.setIdtype("");
-                            userValidity.setIdno( "");
-                            userValidity.setValiditydate("");
-                            userValidity.setAddr( "");
-                            this.update(userValidity);
-                            user = this.findById(userId);
-                        }
-                    }
-                }
                 //更新缓存中的Token,实名
                 String token = user.getToken();
                 String isAuth = user.getIsauth();
                 updateRedisTokenAndAuth(String.valueOf(user.getId()), token, isAuth);
-//                /** update by cwf  2019/9/24 10:08 Reason:添加储存设备号用来推送消息
-//                 */
-//                updateDeviceToken(userId,paramMap);
                 //获取密钥
                 String workKey = keyService.findKeyByStatus(TableList.KEY_STATUS_NORMAL);
                 if(workKey != null){
                     user.setWorkkey(workKey);
                 }
-                /**
-                 * 获取用户的公告
-                 */
-//                Map<String,Object> noticeUser = noticeUserService.findByUserId(userId);
-//                List<Map<String,Object>> notices = null;
-                Map<String,Object> result = new HashMap<String, Object>();
-//                Integer apiNewAuthCheckRedisDbIndex = Integer.valueOf(paramService.findValueByName("apiNewAuthCheckRedisDbIndex"));//存储在缓存中的位置
-//                Integer expire = Integer.valueOf(paramService.findValueByName("apiAuthCheckRedisExpire"));//过期时间(分钟)
-//                String redisValue = null;
-//                if(noticeUser == null || noticeUser.isEmpty()){
-//                    //获取所有"normal"的公告
-//                    notices  = noticeService.findList(" select * ", "from "+TableList.NOTICE +" where cstatus = 'normal' order by createDate desc ");
-//                    if(notices != null && !notices.isEmpty()){
-//                        //获取最新的公告id
-//                        Integer maxNoticeId = (Integer) baseDao.queryForObject("select max(id) from "+TableList.NOTICE,Integer.class);
-//                        Map<String,Object> userNotice = new HashMap<String, Object>();
-//                        userNotice.put("userId",userId);
-//                        userNotice.put("maxNoticeId",maxNoticeId);
-//                        noticeUserService.save(TableList.USER_NOTICE,userNotice);
-//                        userNotice = noticeUserService.findByUserId(userId);
-//                        redisValue = JSON.toJSONString(userNotice);
-//                        //redis修改
-//                        RedisUtil.setStr(userId+"_noticeUser",redisValue , apiNewAuthCheckRedisDbIndex, expire*60);
-//                    }
-//                }else{
-//                    //查询是否有最新的公告
-//                    notices = noticeService.findList(" select * ",
-//                            "from "+TableList.NOTICE +" where cstatus = 'normal' and id > "+noticeUser.get("maxNoticeId")+" order by createDate desc ");
-//                    if(notices != null && !notices.isEmpty()) {
-//                        Integer maxNoticeId = (Integer) baseDao.queryForObject("select max(id) from " + TableList.NOTICE, Integer.class);
-//                        Map<String, Object> userNotice = new HashMap<String, Object>();
-//                        userNotice.put("maxNoticeId", maxNoticeId);
-//                        userNotice.put("id", BaseUtil.objToInteger(noticeUser.get("id"), 0));
-//                        noticeUserService.update(TableList.USER_NOTICE, userNotice);
-//                        redisValue = JSON.toJSONString(userNotice);
-//                        //redis修改
-//                        RedisUtil.setStr(userId+"_noticeUser",redisValue , apiNewAuthCheckRedisDbIndex, expire*60);
-//                    }
-//                }
-//                result.put("notices",notices);
-//                result.put("user",user);
-                String  applyType="";
-                String  companyName="";
-
-                if (user.getCompanyId()!=null){
-                    Company company=companyService.findById(user.getCompanyId());
-
-                    if(company!=null){
-                        if (company.getApplytype()!=null){
-                            applyType = company.getApplytype();
-                        }
-                        if (company.getCompanyname()!=null){
-                            companyName = company.getCompanyname();
-                        }
-                    }
-                }
-//                user.put("applyType",applyType);
-//                user.put("companyName",companyName);
-//                //增加获取orgCode
-//                String orgCode = BaseUtil.objToStr(orgService.findOrgCodeByUserId(userId),"无");
-//                user.put("orgCode",orgCode);
-                result.put("user",user);
-                return ResultGenerator.genSuccessResult(result);
+                return ResultGenerator.genSuccessResult(user);
             }else{
                 //返回登录失败原因
                 String handleCause = userAccount.getHandlecause();
@@ -491,8 +389,8 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
     public Result uploadPhoto(String userId, String mediaId, String type) throws Exception {
         String time = DateUtil.getSystemTimeFourteen();
         //临时图片地址
-//        File file=new File("/project/weixin/tempotos");
-        File file=new File("D:\\test\\tempotos");
+        File file=new File("/project/weixin/tempotos");
+//        File file=new File("D:\\test\\tempotos");
         File newFile = iService.downloadTempMedia(mediaId, file);
         OkHttpUtil okHttpUtil=new OkHttpUtil();
         Map<String,Object> map=new HashMap();
@@ -530,10 +428,14 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
         }
         String imageServerUrl = paramService.findValueByName("imageServerUrl");
         for (User user : users) {
+            try {
             if (user.getIdhandleimgurl()==null||"".equals(user.getIdhandleimgurl())){
                 continue;
             }
-            user.setIdhandleimgurl(Base64.encode(FilesUtils.getImageFromNetByUrl(imageServerUrl + user.getIdhandleimgurl())));
+                user.setIdhandleimgurl(Base64.encode(FilesUtils.getImageFromNetByUrl(imageServerUrl + user.getIdhandleimgurl())));
+            }catch (Exception e){
+               logger.error("图片地址有误，无法生成图片 用户Id：{}",user.getId());
+            }
         }
         return ResultGenerator.genSuccessResult(users);
     }

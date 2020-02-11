@@ -15,7 +15,7 @@ public interface UserService extends Service<User> {
 
     List<User> findByNamePhone(String realName, String phone);
 
-    Result login(Map<String, Object> paramMap) throws Exception;
+    Result login(String phone, String password, String openId) throws Exception;
 
     void updateRedisTokenAndAuth(String userId, String token, String isAuth) throws Exception;
 

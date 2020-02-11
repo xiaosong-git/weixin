@@ -124,8 +124,7 @@
                                 setCookie('userId',result.data.user.id,365);
                                 // setCookie('imageServerUrl',result.data.imageServerUrl,365);
                                 $.toptip("验证成功",'success');
-
-                                window.location.href=visitUrl;
+                               window.history.go(-2);
                                 //判断用户
                                 // console.log("该用户不存在")
                             }else if (result.code==400) {

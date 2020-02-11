@@ -71,7 +71,7 @@
             data: {
                 pages: pages,
                 sizes: sizes,
-                userId: "125"
+                userId: getCookie("userId")
             },//需要改为从cookie获取
             success: function (result) {
                 $.hideLoading();

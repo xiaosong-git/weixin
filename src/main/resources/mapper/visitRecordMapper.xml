@@ -99,24 +99,20 @@
  vr.isReceive,
  vr.isFlag,
  vr.remarkName,
- vr.originType,
- vr.toType,
- vr.originId,
- toId,
  u.realName,IF(companyName is null ,'',companyName) companyName,IF(o.addr is null ,'',o.addr) addr
    </sql>
   <select id="record" parameterType="Long" resultMap="visitorMessageResultMap">
-    select <include refid="visitorDetail" /> from tbl_visitor_record vr
+   select * from ( select <include refid="visitorDetail" /> from tbl_visitor_record vr
     left join tbl_user u on vr.visitorId=u.id
     left join tbl_company c on c.id=vr.companyId
     left join t_org o on vr.orgCode=o.org_code
-    where  userId=#{userId}
+    where  userId=#{userId} and u.realName is not null
     union
     select <include refid="visitorDetail" /> from tbl_visitor_record vr
     left join tbl_user u on vr.userId=u.id
     left join tbl_company c on c.id=vr.companyId
     left join t_org o on vr.orgCode=o.org_code
-    where  visitorId=#{userId}
+    where  visitorId=#{userId} and u.realName is not null)x order by startDate desc
   </select>
 
   <select id="recordDetail" parameterType="Long" resultType="map">

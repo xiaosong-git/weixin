@@ -61,13 +61,16 @@
 
     <div class="weui-tab">
         <div class="weui-navbar">
-            <a class="weui-navbar__item weui-bar__item--on">
+            <a class="weui-navbar__item weui-bar__item--on" href="#tab1">
                 常用联系人
+            </a>
+            <a class="weui-navbar__item" href="#tab2" onclick="getRecord()">
+                访问记录
             </a>
         </div>
         <div class="weui-tab__bd">
             <div id="tab1" class="weui-tab__bd-item weui-tab__bd-item--active">
-                <div class="weui-search-bar" id="searchBar" style="display: none">
+                <div class="weui-search-bar" id="searchBar" >
                     <form class="weui-search-bar__form" action="#">
                         <div class="weui-search-bar__box"  >
                             <i class="weui-icon-search"></i>
@@ -99,7 +102,21 @@
                 </div>
 -->
             </div>
-
+            <div id="tab2" class="weui-tab__bd-item">
+                <div class="list-main-mian weui-form-preview infinite weui-pull-to-refresh" id="listwrap"
+                     style="height:100%; margin-top: 1px;overflow:auto;  z-index: 1">
+                    <!--    内容展示区-->
+                    <div class="weui-form-preview" id="recorddiv">
+                    </div>
+                    <div class="weui-loadmore" id="loading" style="padding-bottom:30px;height:20px;display: none">
+                        <i class="weui-loading"></i>
+                        <span class="weui-loadmore__tips">正在加载</span>
+                    </div>
+                    <div class="weui-loadmore weui-loadmore_line" id="over" style="padding-bottom:30px;height:20px;display: none">
+                        <span class="weui-loadmore__tips">没有更多数据了</span>
+                    </div>
+                </div>
+            </div>
 
         </div>
     </div>
@@ -296,6 +313,76 @@
         $("#visitorPhone").val(phone);
         $("#visitorName").attr("visitorId", visitorId);
         $("html,body").animate({scrollTop:0},250);
+    }
+
+    var pages = 1;
+    var sizes = 8;
+    var loading = false;  //状态标记
+    var hasNextPage = true;
+    $("#listwrap").infinite().on("infinite", function () {
+        if (loading) return;
+        if (!hasNextPage) return;
+        loading = true;
+        pages++; //页数
+        console.log(pages);
+        $('#loading').show();
+        getRecord();
+
+    });
+    //访问记录
+    function getRecord() {
+        $.ajax({
+            type: 'POST',
+            contentType: "application/x-www-form-urlencoded",
+            url: "visit/record/record",
+            data: {
+                pages: pages,
+                sizes: sizes,
+                userId: getCookie("userId")
+            },//需要改为从cookie获取
+            success: function (result) {
+                $.hideLoading();
+                if (result.code == 200) {
+                    var list = result.data.list;
+                    for (var i in list) {
+                        var username = list[i].user.realname;
+                        var date = list[i].startDate.substring(0, 10);
+                        var startTime = list[i].startDate.substring(11, 16)
+                        var endTime = list[i].endDate.substring(11, 16)
+                        var addr = list[i].org.addr
+                        console.log(list[i])
+
+                        $("#recorddiv").append("<a href=\"javascript:void(0);\" class=\"weui-media-box weui-media-box_appmsg\" onclick=\"toSecond('" + username + "','" + list[i].visitorId + "')\">\n" +
+                            "\n" +
+                            "    <div class=\"weui-media-box__bd\">\n" +
+                            "        <p class=\"weui-cell__bd\" ><strong>" + username + "</strong></p><br>\n" +
+                            "        <p class=\"weui-cell__bd\">访问时间&nbsp;&nbsp;&nbsp;" + date + " " + startTime + "-" + endTime + "</p>\n" +
+                            "        <p class=\"weui-cell__bd\">访问地址&nbsp;&nbsp;&nbsp;" + addr + "</p>\n" +
+                            "    </div>\n" +
+                            "    <div class=\"weui-panel__ft\">\n" +
+                            "        <div class=\"weui-cell__bd\">查看更多》</div>\n" +
+                            "    </div>\n" +
+                            "</a>")
+
+                    }
+                    $('.weui-loadmore').hide();
+                    loading = false;
+                    hasNextPage = result.data.hasNextPage;
+                    if (!hasNextPage) {
+                        $('#over').show();
+                    }
+                }
+            },
+            error: function (e) {
+                $.hideLoading();
+                alert("发送错误");
+            }
+        })
+    }
+    function toSecond(username, visitorId) {
+        window.localStorage.setItem("rName", username);
+        window.localStorage.setItem("rVisitorId", visitorId);
+        window.location.href = secondRecordUrl;
     }
 </script>
 </body>

@@ -84,7 +84,7 @@
                             <span>搜索</span>
                         </label>
                     </form>
-                    <a href="javascript:" class="weui-search-bar__cancel-btn" id="searchCancel">取消</a>
+                    <a href="javascript:" class="weui-search-bar__cancel-btn" id="searchCancel" onclick="getContacts('')">取消</a>
                 </div>
 
                 <!-- 联系人列表-->
@@ -126,32 +126,31 @@
 <script src="https://cdn.bootcss.com/fastclick/1.0.6/fastclick.js"></script>
 <script src="js/myUtil.js"></script>
 <script>
-    function getContacts() {
+    function getContacts(searchName) {
         $.ajax({
             type: 'POST',
             contentType: "application/x-www-form-urlencoded",
             url: "user/frequentContacts",
             data: {userId: getCookie("userId")},
             success: function (result) {
-                console.log(result);
+                $("#contactPerson").empty();
                 var data = result.data;
-                console.log(data);
-                var personSize = result.data.length;
                 $("#contactPerson").append("<div class=\"weui-cells\">")
                 for (var i in data) {
-                    console.log(data[i].id);
-                    var realname = data[i].realname;
                     var phone = data[i].phone
                     var visitorid = data[i].id
-                    $("#contactPerson").append(" <div class=\"weui-cell\">\n" +
-                        "                      <div class=\"weui-cell__hd\"><img src=\"images\\user.png\" style=\"width: 30px;height: 30px\"></div>\n" +
-                        "                        <div class=\"weui-cell__bd\">\n" +
-                        "                             <p>" + data[i].realname + "</p>\n" +
-                        "                        </div>\n" +
-                        "                        <div class=\"weui-cell__ft\">\n" +
-                        "                           <a href=\"javascript:void(0);\" style=\"font-size:25px;\" onclick=\"addPersonInfo('" + realname + "','" + phone + "','" + visitorid + "')\">+</a>\n" +
-                        "                        </div>\n" +
-                        "                    </div>")
+                    var realname = data[i].realname;
+                    if(realname.indexOf(searchName)>=0){
+                       $("#contactPerson").append(" <div class=\"weui-cell\">\n" +
+                           "                      <div class=\"weui-cell__hd\"><img src=\"images\\user.png\" style=\"width: 30px;height: 30px\"></div>\n" +
+                           "                        <div class=\"weui-cell__bd\">\n" +
+                           "                             <p>" + data[i].realname + "</p>\n" +
+                           "                        </div>\n" +
+                           "                        <div class=\"weui-cell__ft\">\n" +
+                           "                           <a href=\"javascript:void(0);\" style=\"font-size:25px;\" onclick=\"addPersonInfo('" + realname + "','" + phone + "','" + visitorid + "')\">+</a>\n" +
+                           "                        </div>\n" +
+                           "                    </div>")
+                   }
                 }
                 $("#contactPerson").append("</div>")
             },
@@ -169,7 +168,13 @@
             }else {
                 FastClick.attach(document.body);
                 $("#start-time").val(formatDateTime(0, 0, 0));
-                getContacts();
+                var searchName = "";
+                getContacts(searchName);
+                $("#searchInput").bind("input propertychange", function() {
+                    searchName =  $("#searchInput").val();
+                    console.log(searchName)
+                    getContacts(searchName);
+                });
             }
         }
     });

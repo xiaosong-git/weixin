@@ -352,6 +352,7 @@
                 userId: getCookie("userId")
             },//需要改为从cookie获取
             success: function (result) {
+                $("#recorddiv").empty();
                 $.hideLoading();
                 if (result.code == 200) {
                     var list = result.data.list;

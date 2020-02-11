@@ -19,7 +19,7 @@
 </head>
 
 <body ontouchstart>
-<div class="weui-cells weui-cells_form">
+<div  class="weui-cells weui-cells_form">
     <div class="weui-cell">
         <div class="weui-cell__hd"><label class="weui-label">受访人姓名</label></div>
         <div class="weui-cell__bd">
@@ -295,6 +295,7 @@
         $("#visitorName").val(name);
         $("#visitorPhone").val(phone);
         $("#visitorName").attr("visitorId", visitorId);
+        $("html,body").animate({scrollTop:0},250);
     }
 </script>
 </body>

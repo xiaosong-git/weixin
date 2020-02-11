@@ -60,6 +60,7 @@
 <div class="weui-btn-area">
     <a class="weui-btn weui-btn_primary" href="javascript:" id="btn" onclick="upload()">确定</a>
     <a class="weui-btn weui-btn_primary" href="javascript:" id="show-login" onclick="login()" >app用户登录</a>
+    <a class="weui-btn weui-btn_warn" href="javascript:" id="quit" onclick="quit()" >退出界面</a>
 </div>
 <br>
 <br>
@@ -145,7 +146,7 @@
                         setCookie('phone',username,365);
                         setCookie('userId',result.data.id,365);
                         setCookie('isAuth',result.data.isauth,365);
-                        setCookie('loginName', result.data.realname, 365);
+                        setCookie('myName', result.data.realname, 365);
                         // setCookie('imageServerUrl',result.data.imageServerUrl,365);
                         $.toptip("验证成功",'success');
                         window.history.go(-1);
@@ -219,6 +220,11 @@
 
             }
         });}
+        //退出
+    function quit(){
+        wx.closeWindow();
+    }
+    //上传图片
     function upload() {
         if (isEmpty($("#realName").val())){
             $.toptip("请输入您的真实姓名！");
@@ -310,58 +316,8 @@
             });
         }
 
-        function test(test){
-            if(test!=2333){
-                console.log("错误密令！")
-                return ;
-            }
-            $.ajax({
-                type: 'POST',
-                contentType: "application/x-www-form-urlencoded",
-                url: "visit/record/visitRequest",
-                data: {
-                    //从跳转页获取用户id
-                    userId: getCookie('userId'),
-                    visitorId: getCookie('visitorId'),
-                    // companyId: $("#company").attr("data-values"),
-                    reason: getCookie('reason'),
-                    startDate: getCookie('startTime'),
-                    endDate: getCookie('endTime'),
-                    token: getCookie('token')
-                    // orgCode: $("#orgCode").attr("orgCode")
-                },
-                success: function(result) {
-                    $.hideLoading();
-                    var data = result.data;
-                    console.log(result);
-                    if (result.code==400){
-                        $.toptip(result.message);
-                        //登入过期
-                        if (data=='overTime'){
-                            window.location.href=loginUrl;
-                            $.showLoading();
-                            //实名认证失败
-                        }else if ('verifyFail'==data){
-
-                            window.location.href=authUrl;
-                            $.showLoading();
-                        }else if ('tokenFail'==data){
-                            window.location.href=loginUrl;
-                            $.showLoading();
-                        }else if ('userFail'==data) {
-                            window.location.href=loginUrl;
-                            $.showLoading();
-                        }
-                    }else{
-                        $.toast("发起访问成功",'success');
-                        alert("发起访问成功，对方同意后将在《朋悦比邻》公众号提示，请注意查收！");
-                        wx.closeWindow();
-                    }
-                }
-            });
-        }
     }
-    //如果参数过多，建议通过 object 方式传入
+
 
 </script>
 <script src="https://cdn.bootcss.com/webcamjs/1.0.25/webcam.js"></script>

@@ -34,20 +34,20 @@
             <label class="weui-label">身份证号</label>
         </div>
         <div class="weui-cell__bd">
-            <input class="weui-input" placeholder="请输入您的身份证号" type="text" id="idNo" value="" >
+            <input class="weui-input" placeholder="请输入您的身份证号" type="text" id="idNo" value="">
         </div>
 
     </div>
     <div class="weui-cell">
-    <div class="weui-cell__hd">
-        <label class="weui-label" >人像图片上传</label>
-    </div>
+        <div class="weui-cell__hd">
+            <label class="weui-label">人像图片上传</label>
+        </div>
         <div class="weui-cell__hd">
             <div class="weui-uploader">
                 <div class="weui-uploader__bd" style="
-    padding-left: 30px" >
+    padding-left: 30px">
                     <ul class="weui-uploader__files" id="uploaderFiles" value="">
-<!--                        <li class="weui-uploader__file weui-uploader__file_status" style="background-image:url(images/user.png)">-->
+                        <!--                        <li class="weui-uploader__file weui-uploader__file_status" style="background-image:url(images/user.png)">-->
                     </ul>
                     <div class="weui-uploader__input-box" id="photoDiv" value="">
                         <span class="weui-uploader__input" onclick="jssdkimg(this)" id="choose" value=""></span>
@@ -57,13 +57,13 @@
         </div>
     </div>
 
-<div class="weui-btn-area">
-    <a class="weui-btn weui-btn_primary" href="javascript:" id="btn" onclick="upload()">确定</a>
-    <a class="weui-btn weui-btn_primary" href="javascript:" id="show-login" onclick="login()" >app用户登录</a>
-    <a class="weui-btn weui-btn_warn" href="javascript:" id="quit" onclick="quit()" >退出界面</a>
-</div>
-<br>
-<br>
+    <div class="weui-btn-area">
+        <a class="weui-btn weui-btn_primary" href="javascript:" id="btn" onclick="upload()">确定</a>
+        <a class="weui-btn weui-btn_primary" href="javascript:" id="show-login" onclick="login()">app用户登录</a>
+        <a class="weui-btn weui-btn_warn" href="javascript:" id="quit" onclick="quit()">退出界面</a>
+    </div>
+    <br>
+    <br>
 
 </div>
 
@@ -82,43 +82,46 @@
     wx.config({
         debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
         appId: '[[${config.appid}]]', // 必填，公众号的唯一标识
-        timestamp:'[[${config.timestamp}]]' , // 必填，生成签名的时间戳
+        timestamp: '[[${config.timestamp}]]', // 必填，生成签名的时间戳
         nonceStr: '[[${config.noncestr}]]', // 必填，生成签名的随机串
         signature: '[[${config.signature}]]',// 必填，签名
-        jsApiList: ['[[${config.jsApiList[0]}]]','[[${config.jsApiList[1]}]]',
-            '[[${config.jsApiList[2]}]]','[[${config.jsApiList[3]}]]','[[${config.jsApiList[4]}]]'] // 必填，需要使用的JS接口列表 这里填写需要用到的微信api openlocation为使用微信内置地图查看位置接口
+        jsApiList: ['[[${config.jsApiList[0]}]]', '[[${config.jsApiList[1]}]]',
+            '[[${config.jsApiList[2]}]]', '[[${config.jsApiList[3]}]]', '[[${config.jsApiList[4]}]]'] // 必填，需要使用的JS接口列表 这里填写需要用到的微信api openlocation为使用微信内置地图查看位置接口
     });
     wx.ready(function () {
         wx.checkJsApi({
-            jsApiList: ['[[${config.jsApiList[0]}]]','[[${config.jsApiList[1]}]]'],
+            jsApiList: ['[[${config.jsApiList[0]}]]', '[[${config.jsApiList[1]}]]'],
             success: function (res) {
                 console.log(res)
             }
         });
     });
-    wx.error(function(res){
+    wx.error(function (res) {
         console.log(res);
     });
 
-    $(function(){
+    $(function () {
+        if (!isLogin("auth")) {
+            if ("T" == getCookie("isAuth")) {
+                $.toast("您已实名，页面即将关闭");
+                //点击确认后的回调函数
+                setTimeout(function () {
+                    quit();
+                }, 1500);
+            }
 
-        //解决表单控件不能回弹 只有微信ios有这个问题
-        $("input,select,textarea").blur(function(){
-            setTimeout(() => {
-                const scrollHeight = document.documentElement.scrollTop || document.body.scrollTop || 0;
-            window.scrollTo(0, Math.max(scrollHeight - 1, 0));
-        }, 100);
-        })
+        }
 
     });
-    function login(){
+
+    function login() {
         $.login({
             title: '朋悦比邻app用户登入',
             text: '使用朋悦比邻app注册过，并实名认证的用户登入',
 
             onOK: function (username, password) {
                 //点击确认
-                password= $.md5(password);
+                password = $.md5(password);
                 console.log(password);
                 pwdLogin(username, password);
             },
@@ -127,57 +130,61 @@
             }
         });
     }
-    function pwdLogin(username,password){
-            $.showLoading();
-            //做发送信息
-            $.ajax({
-                type: 'POST',
-                contentType: "application/x-www-form-urlencoded",
-                url: "user/login",
-                data: {phone:username,
-                    password:password,
-                    openId:getCookie("openId")
-                },
-                success: function(result) {
-                    $.hideLoading();
-                    console.log(result);
-                    if (result.code==200){
-                        // setCookie('token',result.data.user.token,365);
-                        setCookie('phone',username,365);
-                        setCookie('userId',result.data.id,365);
-                        setCookie('isAuth',result.data.isauth,365);
-                        setCookie('myName', result.data.realname, 365);
-                        // setCookie('imageServerUrl',result.data.imageServerUrl,365);
-                        $.toptip("登入成功",'success');
-                        if (result.data.isauth!=="T") {
-                            $.toptip("对不起，该用户未实名，请实名后再使用哦");
-                            return;
-                        }
-                        window.history.go(-1);
-                        //判断用户
-                        // console.log("该用户不存在")
-                    }else if (result.code==400) {
-                        $.toptip(result.message);
-                    }else {
-                        $.toptip("验证失败，请输入正确密码");
+
+    function pwdLogin(username, password) {
+        $.showLoading();
+        //做发送信息
+        $.ajax({
+            type: 'POST',
+            contentType: "application/x-www-form-urlencoded",
+            url: "user/login",
+            data: {
+                phone: username,
+                password: password,
+                openId: getCookie("openId")
+            },
+            success: function (result) {
+                $.hideLoading();
+                console.log(result);
+                if (result.code == 200) {
+                    // setCookie('token',result.data.user.token,365);
+                    setCookie('phone', username, 365);
+                    setCookie('userId', result.data.id, 365);
+                    setCookie('isAuth', result.data.isauth, 365);
+                    setCookie('myName', result.data.realname, 365);
+                    // setCookie('imageServerUrl',result.data.imageServerUrl,365);
+                    $.toptip("登入成功", 'success');
+                    if (result.data.isauth !== "T") {
+                        $.toptip("对不起，账户未实名，请实名后再使用哦");
+                        return;
                     }
-                },
-                //请求失败，包含具体的错误信息
-                error : function(e){
-                    $.hideLoading();
-                    $.toptip(e.message);
+                    window.history.go(-1);
+                    //判断用户
+                    // console.log("该用户不存在")
+                } else if (result.code == 400) {
+                    $.toptip(result.message);
+                } else {
+                    $.toptip("验证失败，请输入正确密码");
                 }
-            });
-        }
-    function removeimg(obj){
-        $.confirm('您确定要删除吗?', '确认删除?', function() {
+            },
+            //请求失败，包含具体的错误信息
+            error: function (e) {
+                $.hideLoading();
+                $.toptip(e.message);
+            }
+        });
+    }
+
+    function removeimg(obj) {
+        $.confirm('您确定要删除吗?', '确认删除?', function () {
             $(obj).remove();
             $("#choose").val('');
             $("#photoDiv").show();
         });
 
     }
-    function jssdkimg(obj){
+
+    function jssdkimg(obj) {
         wx.chooseImage({
             count: 1, // 默认9
             sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
@@ -186,39 +193,40 @@
                 var localIds = res.localIds; //本地图片id
                 $(obj).val(localIds);
                 wx.uploadImage({
-                    localId:'' + $("#choose").val(), // 需要上传的图片的本地ID，由chooseImage接口获得
+                    localId: '' + $("#choose").val(), // 需要上传的图片的本地ID，由chooseImage接口获得
                     isShowProgressTips: 1, // 默认为1，显示进度提示
                     success: function (res) {
 
                         var serverId = res.serverId; // 返回图片的服务器端ID
-                        $.toptip("检测人脸中！","success");
+                        $.toptip("检测人脸中！", "success");
                         $.ajax({
                             //请求方式
-                            type : "POST",
+                            type: "POST",
                             //请求的媒体类型
                             contentType: "application/x-www-form-urlencoded",
                             //请求地址
-                            url : "user/uploadVerify",
+                            url: "user/uploadVerify",
                             //数据，json字符串
-                            data : {userId:getCookie("userId"),
+                            data: {
+                                userId: getCookie("userId"),
                                 // token:getCookie(("token")),
-                                mediaId:serverId,
-                                type:3
+                                mediaId: serverId,
+                                type: 3
                                 // imgname:rst.base64
                             },
                             //请求成功
-                            success : function(result) {
-                                if (result.code==400){
+                            success: function (result) {
+                                if (result.code == 400) {
                                     $.toptip(result.message);
-                                }else {
-                                    $.toptip("人脸识别成功","success");
+                                } else {
+                                    $.toptip("人脸识别成功", "success");
                                     //图片服务器中的图片地址
                                     // $("#uploaderFiles").val
-                                        $("#photoDiv").val(result.data.img);
-                                        alert($("#photoDiv").val());
+                                    $("#photoDiv").val(result.data.img);
+                                    alert($("#photoDiv").val());
                                     $("#photoDiv").hide();
 
-                                    $("#uploaderFiles").append('<li onclick="removeimg(this)" class="weui-uploader__file" style="background-image:url('+localIds+')"><input value=""  type="hidden"  name="file" /></li>');
+                                    $("#uploaderFiles").append('<li onclick="removeimg(this)" class="weui-uploader__file" style="background-image:url(' + localIds + ')"><input value=""  type="hidden"  name="file" /></li>');
                                 }
                             }
                         });
@@ -226,46 +234,50 @@
                 });
 
             }
-        });}
-        //退出
-    function quit(){
+        });
+    }
+
+    //退出
+    function quit() {
         wx.closeWindow();
     }
+
     //上传图片
     function upload() {
-        if (isEmpty($("#realName").val())){
+        if (isEmpty($("#realName").val())) {
             $.toptip("请输入您的真实姓名！");
-        }else if (isEmpty($("#idNo").val())){
+        } else if (isEmpty($("#idNo").val())) {
             $.toptip("请输入身份证号！");
-        } else if (isEmpty($("#photoDiv").val())){
+        } else if (isEmpty($("#photoDiv").val())) {
             $.toptip("请选择人脸图片！");
-        }else {
+        } else {
             $.showLoading();
             $.ajax({
                 //请求方式
-                type : "POST",
+                type: "POST",
                 //请求的媒体类型
                 contentType: "application/x-www-form-urlencoded",
                 //请求地址
-                url : "user/verify",
+                url: "user/verify",
                 //数据，json字符串
-                data : {userId:getCookie("userId"),
+                data: {
+                    openId: getCookie("openId"),
                     // token:getCookie(("token")),
                     idHandleImgUrl: $("#photoDiv").val(),
-                    idNO:$("#idNo").val(),
-                    realName:$("#realName").val()
+                    idNO: $("#idNo").val(),
+                    realName: $("#realName").val()
 
                     // imgname:rst.base64
                 },
                 //请求成功
-                success : function(result) {
-                    if (result.code==400){
+                success: function (result) {
+                    if (result.code == 400) {
                         $.toptip(result.message);
                         alert(result.message);
                         $.hideLoading();
-                    }else {
+                    } else {
                         $.hideLoading();
-                        $.toptip("认证成功！",'success');
+                        $.toptip("认证成功！", 'success');
                         window.history.go(-1);
                         // $.showLoading();
                         //发起访问
@@ -317,14 +329,13 @@
 
                     }
                 },
-                error:function (e) {
+                error: function (e) {
                     $.toptip("网络错误!");
                 }
             });
         }
 
     }
-
 
 </script>
 <script src="https://cdn.bootcss.com/webcamjs/1.0.25/webcam.js"></script>

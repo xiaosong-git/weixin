@@ -51,10 +51,17 @@ public class ThymeleafController {
             WxUserList.WxUser wxUser1 = iService.oauth2ToGetUserInfo(wxOAuth2AccessTokenResult.getAccess_token(), wxUser);
             model.addAttribute("openId",wxUser1.getOpenid());
             User user = userService.getUser(wxUser1.getOpenid());
-            model.addAttribute("userId",user.getId());
-            model.addAttribute("isAuth",user.getIsauth());
-            model.addAttribute("myName",user.getRealname());
-            model.addAttribute("phone",user.getPhone());
+            if (user!=null) {
+                model.addAttribute("userId", user.getId());
+                model.addAttribute("isAuth", user.getIsauth());
+                model.addAttribute("myName", user.getRealname());
+                model.addAttribute("phone", user.getPhone());
+            }else {
+                model.addAttribute("userId", 0);
+                model.addAttribute("isAuth", "F");
+                model.addAttribute("myName", "");
+                model.addAttribute("phone", "");
+            }
             return "login";
         }
 //
@@ -90,13 +97,14 @@ public class ThymeleafController {
 //        return "visit";
 //    }
 
-    @AuthCheckAnnotation(checkLogin = false, checkVerify = false)
     @RequestMapping(value = "/visit", method = RequestMethod.GET)
     public String visit() {
         return "visit";
         }
-
-    @AuthCheckAnnotation(checkLogin = false,checkVerify = false)
+    @RequestMapping(value = "/clear", method = RequestMethod.GET)
+    public String clear() {
+        return "clear";
+    }
     @RequestMapping(value = "/invite",method= RequestMethod.GET)
     public String invite() {
         return "invite";

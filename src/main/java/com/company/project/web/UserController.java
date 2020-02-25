@@ -74,7 +74,7 @@ public class UserController {
 
     /**
      * 实名认证
-     * @param userId 用户Id
+     * @param openId 微信对应公众号openId
      * @param idNO 验证码
      * @param realName 真实姓名
      * @param idHandleImgUrl 图片地址
@@ -84,10 +84,10 @@ public class UserController {
     @AuthCheckAnnotation(checkLogin = false,checkVerify = false)
     @RequestMapping("/verify")
     @ResponseBody
-    public Result verify(@RequestParam long userId,@RequestParam String idNO,
+    public Result verify(@RequestParam String openId,@RequestParam String idNO,
                          @RequestParam String realName,@RequestParam String idHandleImgUrl,@RequestParam(defaultValue = "无") String addr){
         try {
-                return userService.verify(userId, idNO, realName, idHandleImgUrl, addr);
+                return userService.verify(openId, idNO, realName, idHandleImgUrl, addr);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -96,7 +96,7 @@ public class UserController {
 
     /**
      * 实人认证图片上传
-     * @param userId 用户id
+     * @param openId 用户id
      * @param mediaId 微信临时图片
      * @param type 状态
      * @return
@@ -104,13 +104,12 @@ public class UserController {
     @AuthCheckAnnotation(checkLogin = false,checkVerify = false)
     @RequestMapping("/uploadVerify")
     @ResponseBody
-    public Result uploadPhoto(@RequestParam String userId, @RequestParam() String  mediaId,@RequestParam() String  type)   {
+    public Result uploadPhoto(@RequestParam String openId, @RequestParam() String  mediaId,@RequestParam() String  type)   {
 
         try {
-            System.out.println(userId);
             System.out.println(mediaId);
             System.out.println(type);
-            return userService.uploadPhoto(userId, mediaId, type);
+            return userService.uploadPhoto(openId, mediaId, type);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -150,4 +149,5 @@ public class UserController {
         }
         return ResultGenerator.genFailResult("系统异常","");
     }
+
 }

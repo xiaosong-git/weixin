@@ -1,5 +1,7 @@
 package com.company.project.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
+import com.company.project.compose.TableList;
 import com.company.project.core.AbstractService;
 import com.company.project.core.Result;
 import com.company.project.core.ResultGenerator;
@@ -11,8 +13,11 @@ import com.company.project.service.UserService;
 import com.company.project.service.visitRecordService;
 import com.company.project.util.DateUtil;
 import com.company.project.util.GTNotification;
+import com.company.project.weixin.WxController;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -36,6 +42,8 @@ public class visitRecordServiceImpl extends AbstractService<VisitRecord> impleme
     private CodeService codeService;
     @Autowired
     private UserService userService;
+
+    Logger logger = LoggerFactory.getLogger(visitRecordServiceImpl.class);
     /**
 
      * @param hour 结束时间
@@ -78,7 +86,40 @@ public class visitRecordServiceImpl extends AbstractService<VisitRecord> impleme
         PageInfo<Map<String, Object>> page=new PageInfo<>(list);
         return ResultGenerator.genSuccessResult(page);
     }
-
+    @Override
+    public Result recordReply(VisitRecord visitRecord,Long loginId) {
+        String replyDate = DateUtil.getCurDate();
+        String replyTime = DateUtil.getCurTime();
+        visitRecord.setReplyDate(replyDate);
+        visitRecord.setReplyTime(replyTime);
+        visitRecord.setIsReceive("F");
+        int update = this.update(visitRecord);
+        String apply = "同意";
+        if ("applyFail".equals(visitRecord.getCstatus())) {
+            apply = "拒绝";
+        }
+        if (update > 0) {
+            Long other = visitRecord.getUserId().equals(loginId) ? visitRecord.getUserId() : visitRecord.getVisitorId();
+            //发送推送
+            User otherUser = userService.findById(other);
+                String notification_title = "回应信息提醒";
+                String msg_content = "您好，您有一条回应信息，请登入app查收!";
+                boolean single = false;
+            String devicetoken = otherUser.getDevicetoken();
+            String phone = otherUser.getPhone();
+            if (devicetoken !=null&&!"".equals(devicetoken)&& phone !=null&&!"".equals(phone)){
+                single = GTNotification.Single(devicetoken, phone, notification_title, msg_content, msg_content);
+            }
+                logger.info("发送个推 推送成功? 设备号{}", single);
+//                        if (!isYmSuc) {
+//				          codeService.sendMsg(phone, 3, visitorResult, visitorBy, visitorDateTime, null);
+//			                }
+            // todo 推送微信
+            return ResultGenerator.genSuccessResult( apply + "成功！");
+        } else {
+            return ResultGenerator.genSuccessResult( apply + "失败！");
+        }
+    }
     public Result visitCommon(VisitRecord visitRecord, String hour){
         String cstatus = "applyConfirm";
         Long userId = visitRecord.getUserId();

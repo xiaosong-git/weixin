@@ -4,6 +4,7 @@ import com.soecode.wxtools.api.IService;
 import com.soecode.wxtools.api.WxConsts;
 import com.soecode.wxtools.api.WxService;
 import com.soecode.wxtools.bean.WxMenu;
+import com.soecode.wxtools.bean.result.WxUserTagResult;
 import com.soecode.wxtools.exception.WxErrorException;
 
 import java.util.ArrayList;
@@ -24,48 +25,51 @@ public class Menu {
     public static void creatMenu(){
         IService iService = new WxService();
         WxMenu menu = new WxMenu();
-        List<WxMenu.WxMenuButton> btnList = new ArrayList<>();
+
 
         //按钮一
         WxMenu.WxMenuButton btn1 = new WxMenu.WxMenuButton();
         btn1.setName("发起访问");
         btn1.setUrl(URL+MenuKey.VISIT);
+        btn1.setType(WxConsts.MENU_BUTTON_VIEW);
         List<WxMenu.WxMenuButton> subList2 = new ArrayList<>();
         List<WxMenu.WxMenuButton> subList3 = new ArrayList<>();
 
         WxMenu.WxMenuButton btn2=new WxMenu.WxMenuButton();
         btn2.setName("发起邀约");
         btn2.setUrl(URL+MenuKey.INVITE);
+        btn2.setType(WxConsts.MENU_BUTTON_VIEW);
         WxMenu.WxMenuButton btn3 = new WxMenu.WxMenuButton();
         btn3.setName("我的");
         WxMenu.WxMenuButton btn3_1 = new WxMenu.WxMenuButton();
         btn3_1.setType(WxConsts.MENU_BUTTON_VIEW);
-        btn3_1.setName("访客记录");
+        btn3_1.setName("访问记录");
         btn3_1.setUrl(URL+MenuKey.FIRST_RECORD);
         WxMenu.WxMenuButton btn3_3 = new WxMenu.WxMenuButton();
         btn3_3.setType(WxConsts.MENU_BUTTON_VIEW);
         btn3_3.setUrl(URL+"auth");
         btn3_3.setName("实名认证");
-        String url=null;
-
-        btn1.setType(WxConsts.MENU_BUTTON_VIEW);
-        btn2.setType(WxConsts.MENU_BUTTON_VIEW);
-        try {
-            //通过公众号访问地址授权
-            url = iService.oauth2buildAuthorizationUrl(URL + "login", "snsapi_userinfo", "233");
-        }catch (WxErrorException w){
-            w.getStackTrace();
-        }
-        WxMenu.WxMenuButton btn3_4 = new WxMenu.WxMenuButton();
-        btn3_4.setType(WxConsts.MENU_BUTTON_VIEW);
-        btn3_4.setUrl(url);
-        //授权登入
-        btn3_4.setName("登入");
+        WxMenu.WxMenuButton btn3_2 = new WxMenu.WxMenuButton();
+        btn3_2.setType(WxConsts.MENU_BUTTON_VIEW);
+        btn3_2.setName("清除缓存");
+        btn3_2.setUrl(URL+"clear");
+//        String url=null;
+//        try {
+//            //通过公众号访问地址授权
+//            url = iService.oauth2buildAuthorizationUrl(URL + "login", "snsapi_userinfo", "233");
+//        }catch (WxErrorException w){
+//            w.getStackTrace();
+//        }
+//        WxMenu.WxMenuButton btn3_4 = new WxMenu.WxMenuButton();
+//        btn3_4.setType(WxConsts.MENU_BUTTON_VIEW);
+//        btn3_4.setUrl(url);
+//        //授权登入
+//        btn3_4.setName("登入");
         //子按钮加入列表
-        subList3.addAll(Arrays.asList(btn3_1));
+        subList3.addAll(Arrays.asList(btn3_1,btn3_3,btn3_2));
         //子按钮绑定父按钮
         btn3.setSub_button(subList3);
-
+        List<WxMenu.WxMenuButton> btnList = new ArrayList<>();
         //将三个按钮设置进btnList
         btnList.add(btn1);
         btnList.add(btn2);
@@ -80,8 +84,23 @@ public class Menu {
             e.printStackTrace();
         }
     }
-    public static void main(String[] args) {
+    public static void checkMenu() throws WxErrorException {
+        IService iService = new WxService();
+        try {
+            WxUserTagResult wxUserTagResult = iService.queryAllUserTag();
+            List<WxUserTagResult.WxUserTag> tags = wxUserTagResult.getTags();
+            for (WxUserTagResult.WxUserTag tag : tags) {
+                System.out.println("-----tag_id:"+tag.getId());
+            }
+            String s = iService.menuTryMatch("otlyluFmKy3-oThjxdBYGQj2hzLI");
+            System.out.println(s);
+        } catch (WxErrorException e) {
+            e.printStackTrace();
+        }
+    }
+    public static void main(String[] args) throws WxErrorException {
         creatMenu();
+        checkMenu();
 
     }
 

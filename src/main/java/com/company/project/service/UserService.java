@@ -25,7 +25,7 @@ public interface UserService extends Service<User> {
 
     Result loginByVerifyCode(String phone, String code, String openId) throws Exception;
 
-    Result verify(long userId, String idNO, String name, String idHandleImgUrl, String addr);
+    Result verify(String  openId, String idNO, String name, String idHandleImgUrl, String addr);
 
     boolean isVerify(long userId);
 
@@ -38,4 +38,6 @@ public interface UserService extends Service<User> {
     User getUser(String openId);
 
     Result bindWxPhone(Long userId, String phone, String openId);
+
+//    Result userAuthInfo(String openId);
 }

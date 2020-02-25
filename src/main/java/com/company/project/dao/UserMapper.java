@@ -17,4 +17,6 @@ public interface UserMapper extends Mapper<User> {
     User getUserFromOpenId(Object openId);
     @Select("select id from "+TableList.USER+" where phone=#{phone} limit 1")
     User findByPhone(String phone);
+    @Select("select * from "+TableList.USER+" where realName=#{name} and idNO=#{idNO} limit 1")
+    User findByNameIdNo(String name, String idNO);
 }

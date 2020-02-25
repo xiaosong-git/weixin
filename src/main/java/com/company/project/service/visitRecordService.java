@@ -19,4 +19,7 @@ public interface visitRecordService extends Service<VisitRecord> {
 
 
     Result recordDetail(Long userId, Long visitorId, Long loginId, int pages, int sizes);
+
+
+    Result recordReply(VisitRecord visitRecord, Long loginId);
 }

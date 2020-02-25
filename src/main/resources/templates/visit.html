@@ -161,7 +161,7 @@
     }
 
     $(function () {
-        if (!isLogin()) {
+        if (!isLogin("visit")) {
             if(getCookie("isAuth")!="T"){
                 window.location.href=authUrl;
                 $.showLoading();

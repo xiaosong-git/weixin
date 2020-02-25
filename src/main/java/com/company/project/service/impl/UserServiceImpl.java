@@ -20,6 +20,7 @@ import com.company.project.util.Base64;
 import com.company.project.util.*;
 import com.soecode.wxtools.api.IService;
 import com.soecode.wxtools.api.WxService;
+import com.soecode.wxtools.exception.WxErrorException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -265,11 +266,14 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
         }
     }
     @Override
-    public Result verify(long userId, String idNO, String name, String idHandleImgUrl, String addr) {
+    public Result verify(String openId, String idNO, String name, String idHandleImgUrl, String addr) {
         try {
 //            paramMap.remove("token");
-            if (isVerify(userId)) {
-                return ResultGenerator.genFailResult( "已经实名认证过","fail");
+            User user = userMapper.getUserFromOpenId(openId);
+            if (user!=null){
+                if (isVerify(user.getId())) {
+                    return ResultGenerator.genFailResult( "已经实名认证过","fail");
+                }
             }
             String realName = URLDecoder.decode(name, "UTF-8");
             if(idNO == null){
@@ -286,10 +290,6 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
             /**
              * 验证 身份证
              */
-            // update by cwf  2019/10/15 10:54 Reason:改为加密后进行数据判断 原 idNO 现idNoMw
-//            if(this.isExistIdNo(userId,idNoMW)){
-//                return ResultGenerator.genFailResult( "该身份证已实名，无法再次进行实名认证！","fail");
-//            }
             //非空判断
             if(idHandleImgUrl == null){
                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();//回滚
@@ -297,12 +297,11 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
             }
             idHandleImgUrl = URLDecoder.decode(idHandleImgUrl, "UTF-8");
             try{
-                // update by cwf  2019/10/15 10:54 Reason:改为加密后进行数据判断 原 idNO 现idNoMw
                 //本地实人认证
                 UserAuth userAuth = userAuthMapper.localPhoneResult(idNoMW, realName);
                 if (userAuth!=null){
-                    idHandleImgUrl=userAuth.getIdhandleimgurl();//目前存在无法两张人像比对的bug
-                    logger.info("本地实人认证成功上一张成功图片为：{}",userAuth.getIdhandleimgurl());
+//                    idHandleImgUrl=userAuth.getIdhandleimgurl();//目前存在无法两张人像比对的bug
+//                    logger.info("本地实人认证成功上一张成功图片为：{}",userAuth.getIdhandleimgurl());
                 }else{
                     String photoResult = auth(idNO, realName, idHandleImgUrl);
                     if (!"success".equals(photoResult)) {
@@ -316,33 +315,35 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
             Date date = new Date();
             String authDate = new SimpleDateFormat("yyyy-MM-dd").format(date);
             String authTime = new SimpleDateFormat("HH:mm:ss").format(date);
-            User verifyUser = new User();
-            verifyUser.setAuthdate( authDate);
-            verifyUser.setAuthtime( authTime);
-            verifyUser.setId(userId);
-            verifyUser.setIdhandleimgurl( idHandleImgUrl);
-            verifyUser.setRealname(realName);
-            String isAuth = "T";
-            verifyUser.setIsauth(isAuth);//F:未实名 T：实名 N:正在审核中 E：审核失败
-            verifyUser.setIdtype("01");
-            verifyUser.setIdno(idNoMW);
+            if (user==null){
+                 user = userMapper.findByNameIdNo(name, idNoMW);
+                 if (user==null){
+                user=new User();
+                user.setWxOpenId(openId);
+                 }
+            }
+            user.setAuthdate( authDate);
+            user.setAuthtime( authTime);
+            user.setIdhandleimgurl( idHandleImgUrl);
+            user.setRealname(realName);
+            user.setIsauth("T");//F:未实名 T：实名 N:正在审核中 E：审核失败
+            user.setIdtype("01");
+            user.setIdno(idNoMW);
             String verifyTermOfValidity = paramService.findValueByName("verifyTermOfValidity");
             Calendar c = Calendar.getInstance();
             c.add(Calendar.YEAR, Integer.parseInt(verifyTermOfValidity));
             String validityDate = new SimpleDateFormat("yyyy-MM-dd").format(c.getTime());
-            verifyUser.setValiditydate(validityDate);
+            user.setValiditydate(validityDate);
             if( addr != null){
-                verifyUser.setAddr( addr);
+                user.setAddr( addr);
             }
-            if(update( verifyUser) > 0){
+            if(update( user) > 0){
                 Integer apiNewAuthCheckRedisDbIndex = Integer.valueOf(paramService.findValueByName("apiNewAuthCheckRedisDbIndex"));//存储在缓存中的位置
-                String key = userId + "_isAuth";
+                String key = user.getId() + "_isAuth";
                 //redis修改
                 RedisUtil.setStr(key, "T", apiNewAuthCheckRedisDbIndex, null);
                 Map<String, Object> resultMap = new HashMap<String, Object>();
-                resultMap.put("isAuth", isAuth);
-                User userMap = findById(userId);
-                resultMap.put("isSetTransPwd",userMap.getIssettranspwd()==null?userMap.getIssettranspwd():"F");
+                resultMap.put("isAuth", "T");
                 resultMap.put("validityDate",validityDate);
                 return ResultGenerator.genSuccessResult(resultMap);
             }
@@ -384,46 +385,52 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
         System.out.println(!user.isEmpty());
         return user != null&&!user.isEmpty();
     }
-
     @Override
-    public Result uploadPhoto(String userId, String mediaId, String type) throws Exception {
-        String time = DateUtil.getSystemTimeFourteen();
+    public Result uploadPhoto(String openId, String mediaId, String type) throws Exception {
+//        String time = DateUtil.getSystemTimeFourteen();
         //临时图片地址
-//        String url="D:\\test\\tempotos";
-        String url="/project/weixin/tempotos";
-        File file=new File(url);
-        File newFile = iService.downloadTempMedia(mediaId, file);
-        String fileName = newFile.getName();
+//        String url = "D:\\test\\community\\tempotos";
+        String url="/project/weixin/community/tempotos";
+        File file = new File(url);
+        File newFile = null;
+        try {
+            newFile = iService.downloadTempMedia(mediaId, file);
+        } catch (WxErrorException e) {
+            e.printStackTrace();
+        }
+        String fileName = newFile.getAbsolutePath();
         String suffix = fileName.substring(fileName.lastIndexOf(".") + 1);
-        String newFileName = url+File.separator+userId+System.currentTimeMillis() + "."+suffix;
-        File newNameFile=new File(newFileName);
-        boolean b = newFile.renameTo(newNameFile);
-
-        String name = newNameFile.getAbsolutePath();
-        OkHttpUtil okHttpUtil=new OkHttpUtil();
-        Map<String,Object> map=new HashMap();
-        map.put("userId",userId);
-        map.put("type",type);
-        map.put("file",newNameFile);
+        //获取文件
+        byte[] photo = FilesUtils.getPhoto(fileName);
+        //压缩
+        String newFileName = openId + System.currentTimeMillis() + "." + suffix;
+        File compressImg = FilesUtils.getFileFromBytes(FilesUtils.compressUnderSize(photo, 10240L), url + File.separator, newFileName);
+        String name = compressImg.getAbsolutePath();
+        logger.info(name);
+        OkHttpUtil okHttpUtil = new OkHttpUtil();
+        Map<String, Object> map = new HashMap<>();
+        map.put("userId", openId);
+        map.put("type", type);
+        map.put("file", compressImg);
         String imageServerApiUrl = paramService.findValueByName("imageServerApiUrl");
         String s = okHttpUtil.postFile(imageServerApiUrl, map, "multipart/form-data");//上传图片
-        JSONObject jsonObject=JSONObject.parseObject(s);
+        JSONObject jsonObject = JSONObject.parseObject(s);
         Map resultMap = JSON.parseObject(jsonObject.toString());
-        if (resultMap.isEmpty()){
+        if (resultMap.isEmpty()) {
             return ResultGenerator.genFailResult("检测服务异常");
         }
         System.out.println(jsonObject.toString());
-        Map verify=JSON.parseObject(resultMap.get("verify").toString());
+        Map verify = JSON.parseObject(resultMap.get("verify").toString());
         //人脸验证失败，返回值
-        if ("fail".equals(verify.get("sign"))){
+        if ("fail".equals(verify.get("sign"))) {
             return ResultGenerator.genFailResult(verify.get("desc").toString());
         }
-        Map data=JSON.parseObject(resultMap.get("data").toString());
-        data.put("img",name);
+        Map data = JSON.parseObject(resultMap.get("data").toString());
+        data.put("img", name);
         //返回图片在服务器的地址
         return ResultGenerator.genSuccessResult(data);
     }
-
+    //最近联系人
     @Override
     public Result frequentContacts(String userId) {
         if (userId == null||"".equals(userId)) {
@@ -455,16 +462,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
     @Override
     public User getUser(String openId){
 
-        User user = userMapper.getUserFromOpenId(openId);
-        if (user==null){
-            user=new User();
-            user.setCreatedate(DateUtil.getCurDate());
-            user.setCreatetime(DateUtil.getCurTime());
-            user.setWxOpenId(openId);
-            int save = this.save(user);
-
-        }
-        return user;
+        return userMapper.getUserFromOpenId(openId);
     }
 
     /**
@@ -503,44 +501,13 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
         TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();//回滚
         return ResultGenerator.genFailResult("绑定手机号失败，系统错误！");
     }
-    //旧实人认证
-    public String phoneResult(String idNO,String realName,String idHandleImgUrl) throws Exception{
-        String merchOrderId = OrderNoUtil.genOrderNo("V", 16);//商户请求订单号
-        String merchantNo="100000000000006";//商户号
-        String productCode="0003";//请求的产品编码
-        String key="2B207D1341706A7R4160724854065152";//秘钥
-        String dateTime= DateUtil.getSystemTimeFourteen();//时间戳
-        String certNo = DESUtil.encode(key,idNO);
-        System.out.println("名称加密前为："+realName);
-        String userName =DESUtil.encode(key,realName);
-        System.out.println("名称加密后为："+userName);
-        String imageServerUrl = paramService.findValueByName("imageServerUrl");
-        String photo= Base64.encode(FilesUtils.getImageFromNetByUrl(imageServerUrl+idHandleImgUrl));
-        String signSource = merchantNo + merchOrderId + dateTime + productCode + key;//原始签名值
-        String sign = MD5Util.MD5Encode(signSource);//签名值
 
-        Map<String, String> map = new HashMap<String, String>();
-        map.put("merchOrderId", merchOrderId);
-        System.out.println(merchOrderId);
-        map.put("merchantNo", merchantNo);
-        map.put("productCode", productCode);
-        map.put("userName", userName);//加密
-        map.put("certNo", certNo);// 加密);
-        map.put("dateTime", dateTime);
-        map.put("photo", photo);//加密
-        map.put("sign", sign);
-        String userIdentityUrl = paramService.findValueByName("userIdentityUrl");
-        ThirdResponseObj obj	=	HttpUtil.http2Nvp(userIdentityUrl,map,"UTF-8");
-        String makePlanJsonResult = obj.getResponseEntity();
-        JSONObject jsonObject = JSONObject.parseObject(makePlanJsonResult);
-        Map resultMap = JSON.parseObject(jsonObject.toString());
-        System.out.println(jsonObject.toString());
-        if ("1".equals(resultMap.get("bankResult").toString())){
-            return "success";
-        }else{
-            return resultMap.get("message").toString();
-        }
-    }
+//    @Override
+//    public Result userAuthInfo(String openId) {
+//        return null;
+//    }
+
+    //实人认证
     public  String auth(String idNO,String realName,String idHandleImgUrl) throws Exception {
         String string= String.valueOf(System.currentTimeMillis())+new Random().nextInt(10);
         JSONObject itemJSONObj =new JSONObject();

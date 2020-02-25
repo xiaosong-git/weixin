@@ -52,8 +52,8 @@ public class VisitRecordController {
             e.printStackTrace();
         }
         return ResultGenerator.genFailResult("系统异常","");
-
     }
+
     /**
      *
      * @param userId 用户id
@@ -69,7 +69,6 @@ public class VisitRecordController {
             e.printStackTrace();
         }
         return ResultGenerator.genFailResult("系统异常","");
-
     }
     /**
      *
@@ -87,5 +86,24 @@ public class VisitRecordController {
         }
         return ResultGenerator.genFailResult("系统异常","");
 
+    }
+
+    /**
+     * 审核访问或邀约
+     * @param visitRecord 访问记录
+     * @param loginId 登入人id
+     * @return
+     * @throws Exception
+     */
+    @PostMapping("/recordReply")
+    public Result recordReply(VisitRecord visitRecord,
+                              @RequestParam() Long loginId)
+            throws Exception {
+        try {
+            return visitRecordService.recordReply(visitRecord,loginId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ResultGenerator.genFailResult("系统异常","");
     }
 }

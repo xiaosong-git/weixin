@@ -29,7 +29,16 @@
             setCookie('userId', '[[${userId}]]', 365);
             setCookie('isAuth', '[[${isAuth}]]', 365);
             $.toptip("验证成功", 'success');
-            window.history.go(-2);
+            if("auth"=='[[${state}]]'){
+                window.location.href=authUrl;
+            }else if("visit"=='[[${state}]]'){
+                window.location.href=visitUrl;
+            }else if ("invite"=='[[${state}]]') {
+                window.location.href=invitUrl;
+            }else if ("firstrecord"=='[[${state}]]') {
+                window.location.href=firstRecordUrl;
+            }
+
         })
     </script>
 

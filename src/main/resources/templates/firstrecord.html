@@ -43,6 +43,10 @@
 <script src="js/myUtil.js"></script>
 <script>
     $(function () {
+        if (isLogin("firstrecord")){
+            return;
+
+        }
         $.showLoading();
         getRecord();
 

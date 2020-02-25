@@ -1,24 +1,32 @@
-var IS_DEVELOP=true;//是否生产环境
+var IS_DEVELOP = true;//是否生产环境
 var uri;
 var url;
-var loginUrl;
-var appId="wx1ddcdc86c83bc9a1";
-if (IS_DEVELOP){//生产环境
-    uri="f.pyblkj.cn";
-    url= "http://"+uri+"/";
-    //重定向地址
-    loginUrl="https://open.weixin.qq.com/connect/oauth2/authorize?appid="+appId+"&redirect_uri=http%3A%2F%2F"+uri+"%2Fpybl%2Flogin&response_type=code&scope=snsapi_userinfo&state=233#wechat_redirect";
-} else{
-    appId="wx2a1951f46acc4371";
-    uri="ymms7i.natappfree.cc";
-    url= "http://"+uri+"/";
-    loginUrl="https://open.weixin.qq.com/connect/oauth2/authorize?appid="+appId+"&redirect_uri=http%3A%2F%2F"+uri+"%2Fpybl%2Flogin&response_type=code&scope=snsapi_userinfo&state=233#wechat_redirect";
+var appId = "wx1ddcdc86c83bc9a1";
+if (IS_DEVELOP) {//生产环境
+    uri = "f.pyblkj.cn";
+    url = "http://" + uri + "/";
+} else {
+    appId = "wx2a1951f46acc4371";
+    uri = "ey2r7u.natappfree.cc/";
+    url = "http://" + uri + "/";
 }
+
+function getLoginUrl(state) {
+    console.log(state);
+    if (IS_DEVELOP) {
+        //重定向地址
+        return "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + appId + "&redirect_uri=http%3A%2F%2F" + uri + "%2Fpybl%2Flogin&response_type=code&scope=snsapi_userinfo&state=" + state + "#wechat_redirect";
+    } else {
+        return "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + appId + "&redirect_uri=http%3A%2F%2F" + uri + "%2Fpybl%2Flogin&response_type=code&scope=snsapi_userinfo&state=" + state + "#wechat_redirect";
+    }
+}
+
 //朋悦比邻
 var suffix="pybl/";
 var visitUrl=url+suffix+"visit";
 var authUrl=url+suffix+"auth";
 var invitUrl=url+suffix+"invit";
+var firstRecordUrl=url+suffix+"firstrecord";
 var secondRecordUrl=url+suffix+"secondrecord";
 var recordDetailUrl=url+suffix+"recorddetail";
 var bindphoneUrl=url+suffix+"bindphone";
@@ -46,10 +54,10 @@ function getCookie(c_name)
     }
     return ""
 }
-function isLogin() {
+function isLogin(state) {
     console.log(getCookie('openId'));
 if (getCookie('openId')===""){
-    window.location.href=loginUrl;
+    window.location.href = getLoginUrl(state);
     return true;
 }
 return false;

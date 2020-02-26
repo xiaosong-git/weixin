@@ -106,26 +106,17 @@
    </sql>
 
   <select id="record" parameterType="Long" resultMap="visitorMessageResultMap">
-select <include refid="record" />,if(userId=#{userId},u.realName,vu.realName) realName from  tbl_visitor_record vr
-      LEFT JOIN tbl_user u ON vr.visitorId = u.id
-      left join tbl_user vu on vr.userId=vu.id
-      LEFT JOIN tbl_company c ON c.id = vr.companyId
-      LEFT JOIN t_org o ON vr.orgCode = o.org_code
-
-      where u.realName is not null and vu.realName is not null and   vr.id in(
-	select IF(a.startDate>b.startDate,a.id,b.id) id from (
-	select vr.id,vr.userId,vr.visitorId,vr.startDate,recordType
-from tbl_visitor_record vr
-inner join  (select visitorId,Max(startDate) startDate
-from tbl_visitor_record where userId=#{userId}  GROUP BY visitorId)x
-on x.visitorId=vr.visitorId and x.startDate =vr.startDate) a left join
-
-(select vr.id,vr.userId,vr.visitorId,vr.startDate,recordType
-from tbl_visitor_record vr
-inner join  (select userId,Max(startDate) startDate
-from tbl_visitor_record where visitorId=#{userId}  GROUP BY userId)x
-on x.userId=vr.userId and x.startDate =vr.startDate)b on a.userId=b.visitorId and a.visitorId=b.userId)
-
+SELECT vr.id,vr.visitorId, Max( startDate ) startDate,endDate,u.realName,IF
+	( companyName IS NULL, '', companyName ) companyName,
+IF
+	( o.addr IS NULL, '', o.addr ) addr FROM (
+select id,IF(userId=#{userId},visitorId,userId) visitorId,startDate,endDate,companyId,orgCode
+from tbl_visitor_record
+where userId=#{userId} or visitorId=#{userId})vr
+LEFT JOIN tbl_user u ON vr.visitorId = u.id
+LEFT JOIN tbl_company c ON c.id = vr.companyId
+LEFT JOIN t_org o ON vr.orgCode = o.org_code
+GROUP BY visitorId
   </select>
 
   <select id="recordDetail" parameterType="Long" resultType="map">
@@ -134,7 +125,7 @@ on x.userId=vr.userId and x.startDate =vr.startDate)b on a.userId=b.visitorId an
     left join tbl_user vu on vr.userId=vu.id
     left join tbl_company c on c.id=vr.companyId
     left join t_org o on vr.orgCode=o.org_code
-    where  (userId=#{visitorId} and visitorId=#{userId}) or(userId=#{userId} and visitorId=#{visitorId})
+    where  (userId=#{visitorId} and visitorId=#{loginId}) or(userId=#{loginId} and visitorId=#{visitorId})
     ORDER BY startDate>NOW() desc,  IF(startDate > NOW(), FIELD(cstatus,'Cancle','applyFail',  'applySuccess','applyConfirm'), startDate ) desc,startDate desc,endDate asc
   </select>
 </mapper>

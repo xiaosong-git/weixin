@@ -72,15 +72,15 @@ public class VisitRecordController {
     }
     /**
      *
-     * @param userId 用户id
+     * @param loginId 用户id
      * @return
      * @throws Exception
      */
     @PostMapping("/recordDetail")
-    public Result recordDetail(@RequestParam() Long userId,@RequestParam() Long visitorId,@RequestParam() Long loginId,@RequestParam() int pages,@RequestParam() int sizes)
+    public Result recordDetail(@RequestParam() Long visitorId,@RequestParam() Long loginId,@RequestParam() int pages,@RequestParam() int sizes)
             throws Exception {
         try {
-            return visitRecordService.recordDetail( userId,visitorId,loginId,pages,sizes);
+            return visitRecordService.recordDetail(visitorId,loginId,pages,sizes);
         } catch (Exception e) {
             e.printStackTrace();
         }

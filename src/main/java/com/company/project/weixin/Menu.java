@@ -98,7 +98,7 @@ public class Menu {
     }
     public static void main(String[] args) throws WxErrorException {
         creatMenu();
-        checkMenu();
+//        checkMenu();
 
     }
 

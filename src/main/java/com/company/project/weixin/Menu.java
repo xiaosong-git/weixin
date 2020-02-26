@@ -32,9 +32,7 @@ public class Menu {
         btn1.setName("发起访问");
         btn1.setUrl(URL+MenuKey.VISIT);
         btn1.setType(WxConsts.MENU_BUTTON_VIEW);
-        List<WxMenu.WxMenuButton> subList2 = new ArrayList<>();
         List<WxMenu.WxMenuButton> subList3 = new ArrayList<>();
-
         WxMenu.WxMenuButton btn2=new WxMenu.WxMenuButton();
         btn2.setName("发起邀约");
         btn2.setUrl(URL+MenuKey.INVITE);
@@ -47,7 +45,7 @@ public class Menu {
         btn3_1.setUrl(URL+MenuKey.FIRST_RECORD);
         WxMenu.WxMenuButton btn3_3 = new WxMenu.WxMenuButton();
         btn3_3.setType(WxConsts.MENU_BUTTON_VIEW);
-        btn3_3.setUrl(URL+"auth");
+        btn3_3.setUrl(URL+"auth2");
         btn3_3.setName("实名认证");
         WxMenu.WxMenuButton btn3_2 = new WxMenu.WxMenuButton();
         btn3_2.setType(WxConsts.MENU_BUTTON_VIEW);

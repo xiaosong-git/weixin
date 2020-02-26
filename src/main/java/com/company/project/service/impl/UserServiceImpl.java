@@ -319,9 +319,9 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
                  user = userMapper.findByNameIdNo(name, idNoMW);
                  if (user==null){
                 user=new User();
-                user.setWxOpenId(openId);
                  }
             }
+            user.setWxOpenId(openId);
             user.setAuthdate( authDate);
             user.setAuthtime( authTime);
             user.setIdhandleimgurl( idHandleImgUrl);
@@ -337,13 +337,20 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
             if( addr != null){
                 user.setAddr( addr);
             }
-            if(update( user) > 0){
+            int update=0;
+            if (user.getId()==null){
+                update= save(user);
+            }else {
+                update= update(user);
+            }
+            if(update > 0){
                 Integer apiNewAuthCheckRedisDbIndex = Integer.valueOf(paramService.findValueByName("apiNewAuthCheckRedisDbIndex"));//存储在缓存中的位置
                 String key = user.getId() + "_isAuth";
                 //redis修改
                 RedisUtil.setStr(key, "T", apiNewAuthCheckRedisDbIndex, null);
                 Map<String, Object> resultMap = new HashMap<String, Object>();
                 resultMap.put("isAuth", "T");
+                resultMap.put("userId", user.getId());
                 resultMap.put("validityDate",validityDate);
                 return ResultGenerator.genSuccessResult(resultMap);
             }
@@ -389,8 +396,8 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
     public Result uploadPhoto(String openId, String mediaId, String type) throws Exception {
 //        String time = DateUtil.getSystemTimeFourteen();
         //临时图片地址
-//        String url = "D:\\test\\community\\tempotos";
-        String url="/project/weixin/community/tempotos";
+        String url = "D:\\test\\tempotos";
+//        String url="/project/weixin/tempotos";
         File file = new File(url);
         File newFile = null;
         try {
@@ -403,7 +410,8 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
         //获取文件
         byte[] photo = FilesUtils.getPhoto(fileName);
         //压缩
-        String newFileName = openId + System.currentTimeMillis() + "." + suffix;
+        String newFileName = openId+File.separator
+                + System.currentTimeMillis() + "." + suffix;
         File compressImg = FilesUtils.getFileFromBytes(FilesUtils.compressUnderSize(photo, 10240L), url + File.separator, newFileName);
         String name = compressImg.getAbsolutePath();
         logger.info(name);

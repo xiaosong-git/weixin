@@ -100,7 +100,7 @@
     });
 
     $(function () {
-        if (!isLogin("auth")) {
+        if (!isLogin("auth2")) {
             if ("T" == getCookie("isAuth")) {
                 $.toast("您已实名，页面即将关闭");
                 //点击确认后的回调函数
@@ -278,58 +278,9 @@
                         $.hideLoading();
                         setCookie("userId",data.userId);
                         setCookie("isAuth",data.isAuth);
-                        $.toptip("认证成功！", 'success');
                         $.toast("认证成功，即将关闭");
                         //点击确认后的回调函数
                         setTimeout(function(){ quit();},1500);
-                        // $.showLoading();
-                        //发起访问
-                        // $.ajax({
-                        //     type: 'POST',
-                        //     contentType: "application/x-www-form-urlencoded",
-                        //     url: "visit/record/visitRequest",
-                        //     data: {
-                        //         //从跳转页获取用户id
-                        //         userId: getCookie('userId'),
-                        //         visitorId: getCookie('visitorId'),
-                        //         // companyId: $("#company").attr("data-values"),
-                        //         reason: getCookie('reason'),
-                        //         startDate: getCookie('startTime'),
-                        //         endDate: getCookie('endTime'),
-                        //         token: getCookie('token')
-                        //         // orgCode: $("#orgCode").attr("orgCode")
-                        //     },
-                        //     success: function(result) {
-                        //         $.hideLoading();
-                        //         var data = result.data;
-                        //         console.log(result);
-                        //         if (result.code==400){
-                        //             $.toptip(result.message);
-                        //             //登入过期
-                        //             if (data=='overTime'){
-                        //                 window.location.href=loginUrl;
-                        //                 $.showLoading();
-                        //                 //实名认证失败
-                        //             }else if ('verifyFail'==data){
-                        //
-                        //                 window.location.href=authUrl;
-                        //                 $.showLoading();
-                        //             }else if ('tokenFail'==data){
-                        //                 window.location.href=loginUrl;
-                        //                 $.showLoading();
-                        //             }else if ('userFail'==data) {
-                        //                 window.location.href=loginUrl;
-                        //                 $.showLoading();
-                        //             }
-                        //         }else{
-                        //             $.toast("发起访问成功",'success');
-                        //             alert("发起访问成功，对方同意后将在《朋悦比邻》公众号提示，请注意查收！");
-                        //             // wx.closeWindow();
-                        //         }
-                        //     }
-                        // });
-
-
                     }
                 },
                 error: function (e) {

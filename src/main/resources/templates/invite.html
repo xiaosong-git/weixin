@@ -135,10 +135,10 @@
     $(function () {
 
         if (!isLogin("invite")) {
-            if (getCookie("isAuth") !== "T") {
+            if (getCookie("isAuth") != "T") {
                 window.location.href = authUrl;
                 $.showLoading();
-            } else if (getCookie("phone") === "") {
+            } else if (getCookie("phone") == "") {
                 window.location.href = bindphoneUrl;
                 $.showLoading();
             } else {

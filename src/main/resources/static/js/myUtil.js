@@ -7,7 +7,7 @@ if (IS_DEVELOP) {//生产环境
     url = "http://" + uri + "/";
 } else {
     appId = "wx2a1951f46acc4371";
-    uri = "ey2r7u.natappfree.cc/";
+    uri = "vnadba.natappfree.cc";
     url = "http://" + uri + "/";
 }
 
@@ -25,7 +25,8 @@ function getLoginUrl(state) {
 var suffix="pybl/";
 var visitUrl=url+suffix+"visit";
 var authUrl=url+suffix+"auth";
-var invitUrl=url+suffix+"invit";
+var auth2Url=url+suffix+"auth2";
+var invitUrl=url+suffix+"invite";
 var firstRecordUrl=url+suffix+"firstrecord";
 var secondRecordUrl=url+suffix+"secondrecord";
 var recordDetailUrl=url+suffix+"recorddetail";

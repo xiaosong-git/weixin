@@ -1,82 +1,82 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.company.project.dao.VisitRecordMapper">
-  <resultMap id="BaseResultMap" type="com.company.project.model.VisitRecord">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="visitDate" jdbcType="VARCHAR" property="visitDate" />
-    <result column="visitTime" jdbcType="VARCHAR" property="visitTime" />
-    <result column="userId" jdbcType="BIGINT" property="userId" />
-    <result column="visitorId" jdbcType="BIGINT" property="visitorId" />
-    <result column="reason" jdbcType="VARCHAR" property="reason" />
-    <result column="cstatus" jdbcType="VARCHAR" property="cstatus" />
-    <result column="dateType" jdbcType="VARCHAR" property="dateType" />
-    <result column="startDate" jdbcType="VARCHAR" property="startDate" />
-    <result column="endDate" jdbcType="VARCHAR" property="endDate" />
-    <result column="answerContent" jdbcType="VARCHAR" property="answerContent" />
-    <result column="orgCode" jdbcType="VARCHAR" property="orgCode" />
-    <result column="companyId" jdbcType="BIGINT" property="companyId" />
-    <result column="recordType" jdbcType="INTEGER" property="recordType" />
-    <result column="replyDate" jdbcType="VARCHAR" property="replyDate" />
-    <result column="replyTime" jdbcType="VARCHAR" property="replyTime" />
-    <result column="vitype" jdbcType="VARCHAR" property="vitype" />
-    <result column="replyUserId" jdbcType="BIGINT" property="replyUserId" />
-    <result column="isReceive" jdbcType="VARCHAR" property="isReceive" />
-  </resultMap>
-  <resultMap id="visitorMessageResultMap" type="com.company.project.model.VisitRecord">
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="visitDate" jdbcType="VARCHAR" property="visitDate" />
-    <result column="visitTime" jdbcType="VARCHAR" property="visitTime" />
-    <result column="userId" jdbcType="BIGINT" property="userId" />
-    <result column="visitorId" jdbcType="BIGINT" property="visitorId" />
-    <result column="reason" jdbcType="VARCHAR" property="reason" />
-    <result column="cstatus" jdbcType="VARCHAR" property="cstatus" />
-    <result column="dateType" jdbcType="VARCHAR" property="dateType" />
-    <result column="startDate" jdbcType="VARCHAR" property="startDate" />
-    <result column="endDate" jdbcType="VARCHAR" property="endDate" />
-    <result column="answerContent" jdbcType="VARCHAR" property="answerContent" />
-    <result column="orgCode" jdbcType="VARCHAR" property="orgCode" />
-    <result column="companyId" jdbcType="BIGINT" property="companyId" />
-    <result column="recordType" jdbcType="INTEGER" property="recordType" />
-    <result column="replyDate" jdbcType="VARCHAR" property="replyDate" />
-    <result column="replyTime" jdbcType="VARCHAR" property="replyTime" />
-    <result column="vitype" jdbcType="VARCHAR" property="vitype" />
-    <result column="replyUserId" jdbcType="BIGINT" property="replyUserId" />
-    <result column="isReceive" jdbcType="VARCHAR" property="isReceive" />
-    <collection property="user" ofType="com.company.project.model.User">
-      <result column="realName" jdbcType="VARCHAR" property="realname" />
-    </collection>
-    <collection property="company" ofType="com.company.project.model.Company">
-      <result column="companyName" jdbcType="VARCHAR" property="companyname" />
-    </collection>
-    <collection property="org" ofType="com.company.project.model.Org">
-      <result column="addr" jdbcType="VARCHAR" property="addr" />
-    </collection>
-  </resultMap>
-  <resultMap id="visitorDetailResultMap" type="com.company.project.model.VisitRecord">
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="visitDate" jdbcType="VARCHAR" property="visitDate" />
-    <result column="visitTime" jdbcType="VARCHAR" property="visitTime" />
-    <result column="userId" jdbcType="BIGINT" property="userId" />
-    <result column="visitorId" jdbcType="BIGINT" property="visitorId" />
-    <result column="reason" jdbcType="VARCHAR" property="reason" />
-    <result column="cstatus" jdbcType="VARCHAR" property="cstatus" />
-    <result column="dateType" jdbcType="VARCHAR" property="dateType" />
-    <result column="startDate" jdbcType="VARCHAR" property="startDate" />
-    <result column="endDate" jdbcType="VARCHAR" property="endDate" />
-    <result column="answerContent" jdbcType="VARCHAR" property="answerContent" />
-    <result column="orgCode" jdbcType="VARCHAR" property="orgCode" />
-    <result column="companyId" jdbcType="BIGINT" property="companyId" />
-    <result column="recordType" jdbcType="INTEGER" property="recordType" />
-    <result column="replyDate" jdbcType="VARCHAR" property="replyDate" />
-    <result column="replyTime" jdbcType="VARCHAR" property="replyTime" />
-    <result column="vitype" jdbcType="VARCHAR" property="vitype" />
-    <result column="replyUserId" jdbcType="BIGINT" property="replyUserId" />
-    <result column="isReceive" jdbcType="VARCHAR" property="isReceive" />
-    <result column="vstatus" jdbcType="VARCHAR" property="vstatus" />
-  </resultMap>
+    <resultMap id="BaseResultMap" type="com.company.project.model.VisitRecord">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="visitDate" jdbcType="VARCHAR" property="visitDate"/>
+        <result column="visitTime" jdbcType="VARCHAR" property="visitTime"/>
+        <result column="userId" jdbcType="BIGINT" property="userId"/>
+        <result column="visitorId" jdbcType="BIGINT" property="visitorId"/>
+        <result column="reason" jdbcType="VARCHAR" property="reason"/>
+        <result column="cstatus" jdbcType="VARCHAR" property="cstatus"/>
+        <result column="dateType" jdbcType="VARCHAR" property="dateType"/>
+        <result column="startDate" jdbcType="VARCHAR" property="startDate"/>
+        <result column="endDate" jdbcType="VARCHAR" property="endDate"/>
+        <result column="answerContent" jdbcType="VARCHAR" property="answerContent"/>
+        <result column="orgCode" jdbcType="VARCHAR" property="orgCode"/>
+        <result column="companyId" jdbcType="BIGINT" property="companyId"/>
+        <result column="recordType" jdbcType="INTEGER" property="recordType"/>
+        <result column="replyDate" jdbcType="VARCHAR" property="replyDate"/>
+        <result column="replyTime" jdbcType="VARCHAR" property="replyTime"/>
+        <result column="vitype" jdbcType="VARCHAR" property="vitype"/>
+        <result column="replyUserId" jdbcType="BIGINT" property="replyUserId"/>
+        <result column="isReceive" jdbcType="VARCHAR" property="isReceive"/>
+    </resultMap>
+    <resultMap id="visitorMessageResultMap" type="com.company.project.model.VisitRecord">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="visitDate" jdbcType="VARCHAR" property="visitDate"/>
+        <result column="visitTime" jdbcType="VARCHAR" property="visitTime"/>
+        <result column="userId" jdbcType="BIGINT" property="userId"/>
+        <result column="visitorId" jdbcType="BIGINT" property="visitorId"/>
+        <result column="reason" jdbcType="VARCHAR" property="reason"/>
+        <result column="cstatus" jdbcType="VARCHAR" property="cstatus"/>
+        <result column="dateType" jdbcType="VARCHAR" property="dateType"/>
+        <result column="startDate" jdbcType="VARCHAR" property="startDate"/>
+        <result column="endDate" jdbcType="VARCHAR" property="endDate"/>
+        <result column="answerContent" jdbcType="VARCHAR" property="answerContent"/>
+        <result column="orgCode" jdbcType="VARCHAR" property="orgCode"/>
+        <result column="companyId" jdbcType="BIGINT" property="companyId"/>
+        <result column="recordType" jdbcType="INTEGER" property="recordType"/>
+        <result column="replyDate" jdbcType="VARCHAR" property="replyDate"/>
+        <result column="replyTime" jdbcType="VARCHAR" property="replyTime"/>
+        <result column="vitype" jdbcType="VARCHAR" property="vitype"/>
+        <result column="replyUserId" jdbcType="BIGINT" property="replyUserId"/>
+        <result column="isReceive" jdbcType="VARCHAR" property="isReceive"/>
+        <collection property="user" ofType="com.company.project.model.User">
+            <result column="realName" jdbcType="VARCHAR" property="realname"/>
+        </collection>
+        <collection property="company" ofType="com.company.project.model.Company">
+            <result column="companyName" jdbcType="VARCHAR" property="companyname"/>
+        </collection>
+        <collection property="org" ofType="com.company.project.model.Org">
+            <result column="addr" jdbcType="VARCHAR" property="addr"/>
+        </collection>
+    </resultMap>
+    <resultMap id="visitorDetailResultMap" type="com.company.project.model.VisitRecord">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="visitDate" jdbcType="VARCHAR" property="visitDate"/>
+        <result column="visitTime" jdbcType="VARCHAR" property="visitTime"/>
+        <result column="userId" jdbcType="BIGINT" property="userId"/>
+        <result column="visitorId" jdbcType="BIGINT" property="visitorId"/>
+        <result column="reason" jdbcType="VARCHAR" property="reason"/>
+        <result column="cstatus" jdbcType="VARCHAR" property="cstatus"/>
+        <result column="dateType" jdbcType="VARCHAR" property="dateType"/>
+        <result column="startDate" jdbcType="VARCHAR" property="startDate"/>
+        <result column="endDate" jdbcType="VARCHAR" property="endDate"/>
+        <result column="answerContent" jdbcType="VARCHAR" property="answerContent"/>
+        <result column="orgCode" jdbcType="VARCHAR" property="orgCode"/>
+        <result column="companyId" jdbcType="BIGINT" property="companyId"/>
+        <result column="recordType" jdbcType="INTEGER" property="recordType"/>
+        <result column="replyDate" jdbcType="VARCHAR" property="replyDate"/>
+        <result column="replyTime" jdbcType="VARCHAR" property="replyTime"/>
+        <result column="vitype" jdbcType="VARCHAR" property="vitype"/>
+        <result column="replyUserId" jdbcType="BIGINT" property="replyUserId"/>
+        <result column="isReceive" jdbcType="VARCHAR" property="isReceive"/>
+        <result column="vstatus" jdbcType="VARCHAR" property="vstatus"/>
+    </resultMap>
     <sql id="record">
  vr.visitDate,
  vr.visitTime,
@@ -100,16 +100,17 @@
  vr.remarkName,
  IF(companyName is null ,'',companyName) companyName,IF(o.addr is null ,'',o.addr) addr
    </sql>
-  <sql id="visitorDetail">
-      <include refid="record" />,if(userId=#{loginId},u.realName,vu.realName) realName,(case when DATE_FORMAT(endDate,'%Y-%m-%d %H:%i:%s')&lt;NOW() then 'expired' else (case cstatus when 'applyFail' then 'refuse' when 'applySuccess' then 'access' else 'unaudited' end ) end ) vstatus
+    <sql id="visitorDetail">
+        <include refid="record"/>,if(userId=#{loginId},u.realName,vu.realName) realName,(case when
+        DATE_FORMAT(endDate,'%Y-%m-%d %H:%i:%s')&lt;NOW() then 'expired' else (case cstatus when 'applyFail' then
+        'refuse' when 'applySuccess' then 'access' else 'unaudited' end ) end ) vstatus
 
-   </sql>
+    </sql>
 
-  <select id="record" parameterType="Long" resultMap="visitorMessageResultMap">
-SELECT vr.id,vr.visitorId, Max( startDate ) startDate,endDate,u.realName,IF
-	( companyName IS NULL, '', companyName ) companyName,
-IF
-	( o.addr IS NULL, '', o.addr ) addr FROM (
+    <select id="record" parameterType="Long" resultMap="visitorMessageResultMap">
+SELECT vr.id,vr.visitorId, Max( startDate ) startDate,endDate,u.realName,
+IF( companyName IS NULL, '', companyName ) companyName,
+IF( o.addr IS NULL, '', o.addr ) addr FROM (
 select id,IF(userId=#{userId},visitorId,userId) visitorId,startDate,endDate,companyId,orgCode
 from tbl_visitor_record
 where userId=#{userId} or visitorId=#{userId})vr
@@ -119,13 +120,16 @@ LEFT JOIN t_org o ON vr.orgCode = o.org_code
 GROUP BY visitorId
   </select>
 
-  <select id="recordDetail" parameterType="Long" resultType="map">
-    select <include refid="visitorDetail" /> from tbl_visitor_record vr
-    left join tbl_user u on vr.visitorId=u.id
-    left join tbl_user vu on vr.userId=vu.id
-    left join tbl_company c on c.id=vr.companyId
-    left join t_org o on vr.orgCode=o.org_code
-    where  (userId=#{visitorId} and visitorId=#{loginId}) or(userId=#{loginId} and visitorId=#{visitorId})
-    ORDER BY startDate>NOW() desc,  IF(startDate > NOW(), FIELD(cstatus,'Cancle','applyFail',  'applySuccess','applyConfirm'), startDate ) desc,startDate desc,endDate asc
-  </select>
+    <select id="recordDetail" parameterType="Long" resultType="map">
+        select
+        <include refid="visitorDetail"/>
+        from tbl_visitor_record vr
+        left join tbl_user u on vr.visitorId=u.id
+        left join tbl_user vu on vr.userId=vu.id
+        left join tbl_company c on c.id=vr.companyId
+        left join t_org o on vr.orgCode=o.org_code
+        where (userId=#{visitorId} and visitorId=#{loginId}) or(userId=#{loginId} and visitorId=#{visitorId})
+        ORDER BY startDate>NOW() desc, IF(startDate > NOW(), FIELD(cstatus,'Cancle','applyFail',
+        'applySuccess','applyConfirm'), startDate ) desc,startDate desc,endDate asc
+    </select>
 </mapper>

@@ -78,6 +78,7 @@
         <result column="vstatus" jdbcType="VARCHAR" property="vstatus"/>
     </resultMap>
     <sql id="record">
+ vr.id,
  vr.visitDate,
  vr.visitTime,
  vr.userId,

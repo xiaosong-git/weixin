@@ -248,6 +248,7 @@
                 phone: visitorPhone
             },
             success: function (result) {
+                console.log(result)
                 var data = result.data;
                 if (result.code == 400) {
                     $.toptip(result.message);
@@ -356,7 +357,7 @@
                         var startTime = list[i].startDate.substring(11, 16)
                         var endTime = list[i].endDate.substring(11, 16)
                         var addr = list[i].org.addr
-                        console.log(list[i])
+                        console.log(JSON.stringify(list[i]))
 
                         $("#recorddiv").append("<a href=\"javascript:void(0);\" class=\"weui-media-box weui-media-box_appmsg\" onclick=\"toSecond('" + username + "','" + list[i].visitorId + "')\">\n" +
                             "\n" +

@@ -20,6 +20,7 @@ public interface visitRecordService extends Service<VisitRecord> {
 
     Result recordDetail( Long visitorId, Long loginId, int pages, int sizes);
 
-
     Result recordReply(VisitRecord visitRecord, Long loginId);
+
+    Result recordComfire(Long recordId,String cstatus);
 }

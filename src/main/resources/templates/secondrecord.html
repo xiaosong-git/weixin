@@ -91,7 +91,8 @@
             success: function (result) {
                 $.hideLoading();
                 var list = result.data.list;
-
+                console.log("==============")
+                console.log(result)
                 $("#record-count").html(result.data.total);
                 for (var i in list) {
                     var date = list[i].startDate.substring(0, 10);

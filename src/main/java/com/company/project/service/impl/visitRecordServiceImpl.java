@@ -121,6 +121,20 @@ public class visitRecordServiceImpl extends AbstractService<VisitRecord> impleme
             return ResultGenerator.genSuccessResult( apply + "失败！");
         }
     }
+
+    @Override
+    public Result recordComfire(Long recordId, String cstatus) {
+
+        String replyDate =DateUtil.getCurDate();
+        String replyTime =DateUtil.getCurTime();
+
+        int resultCode = visitorRecordMapper.updateCstatus(recordId,cstatus,replyDate,replyTime);
+        if(resultCode!=1){
+            return ResultGenerator.genFailResult("审核失败");
+        }
+        return ResultGenerator.genSuccessResult("成功");
+    }
+
     public Result visitCommon(VisitRecord visitRecord, String hour){
         String cstatus = "applyConfirm";
         Long userId = visitRecord.getUserId();

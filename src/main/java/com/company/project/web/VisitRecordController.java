@@ -106,4 +106,21 @@ public class VisitRecordController {
         }
         return ResultGenerator.genFailResult("系统异常","");
     }
+
+
+    /**
+     *  审核访问
+     * @param recordId  访问记录ID
+     * @param cstatus   状态
+     * @return
+     */
+    @PostMapping("/confireRecord")
+    public Result confireRecord(Long recordId,String cstatus){
+        try {
+            return visitRecordService.recordComfire(recordId,cstatus);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ResultGenerator.genFailResult("系统异常","");
+    }
 }

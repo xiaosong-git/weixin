@@ -287,7 +287,7 @@
                 data: {
                     //从跳转页获取用户id
                     userId: getCookie('userId'),
-                    visitorId: $("#visitorName").attr("invitId"),
+                    visitorId: $("#invitName").attr("invitId"),
                     reason: reason,
                     companyId:companyId,
                     startDate: startDate,
@@ -368,6 +368,9 @@
         $("#invitName").val(name);
         $("#invitPhone").val(phone);
         $("#invitName").attr("invitId", visitorId);
+        console.log(visitorId)
+
+        console.log(  $("#invitName").attr("invitId"))
         $("html,body").animate({scrollTop: 0}, 250);
 
 

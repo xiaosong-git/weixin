@@ -1,6 +1,8 @@
 package com.company.project.weixin;
 
 import com.company.project.annotation.AuthCheckAnnotation;
+import com.company.project.service.UserService;
+import com.company.project.service.visitRecordService;
 import com.company.project.weixin.handler.MyHandler;
 import com.company.project.weixin.handler.ShareRoomHandler;
 import com.company.project.weixin.handler.VisitHandler;
@@ -20,6 +22,7 @@ import com.soecode.wxtools.util.DateUtil;
 import com.soecode.wxtools.util.xml.XStreamTransformer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -41,7 +44,8 @@ import java.util.Map;
     public class WxController {
     Logger logger = LoggerFactory.getLogger(WxController.class);
         private IService iService = new WxService();
-
+    @Autowired
+    private visitRecordService visitRecordService;
         @AuthCheckAnnotation(checkLogin = false,checkVerify = false)
         @GetMapping
         public String check(String signature, String timestamp, String nonce, String echostr) {
@@ -93,42 +97,8 @@ import java.util.Map;
                             @RequestParam(defaultValue = "0")String qrcodeUrl, @RequestParam(defaultValue = "0")String orgName,
                             @RequestParam(defaultValue = "0")String visitorBy, @RequestParam(defaultValue = "0")String accessType,
                             @RequestParam(defaultValue = "0")String visitResult) throws IOException, WxErrorException {
-        TemplateSender sender=new TemplateSender();
-        //公众号模板id
-        //朋客联盟
-//        sender.setTemplate_id("xtGAH74BuXa6qQD6t8GXjwMwYlLun_OSLxf-DhllTA0");
-        //朋悦比邻
-        sender.setTemplate_id("m4b_YU2skhwRsRt0pQcW7x4qdh3cjZNjXDyB9QVW0KY");
-        sender.setTouser(wxOpenId);
-        logger.info("访客微信openId为："+wxOpenId);
-        Map<String, WxTemplateData> dataMap = new HashMap<>();
-        if ("接受访问".equals(visitResult)) {
-            dataMap.put("first", new WxTemplateData("恭喜您访问"+visitorBy+"成功！", "red"));
-            dataMap.put("keyword3", new WxTemplateData(startDate+"至"+endDate,"#173177"));
-            logger.info("进出方式为："+accessType);
-            if("1".equals(accessType)){
-
-                dataMap.put("remark", new WxTemplateData("请到指定地点通过下方二维码进出！\n↓点击详情查看访问二维码","red"));
-                //添加二维码
-                sender.setUrl(qrcodeUrl);
-            }else {
-                dataMap.put("remark", new WxTemplateData("请到访问地点刷脸进出！","red"));
-            }
-        }else{
-            dataMap.put("first", new WxTemplateData("很遗憾您访问"+visitorBy+"失败！", "red"));
-            dataMap.put("keyword3", new WxTemplateData("访问不通过","#173177"));
-        }
-        if ("无".equals(companyFloor)||"0".equals(companyFloor)){
-
-            dataMap.put("keyword1", new WxTemplateData(orgName,"black"));
-        }else {
-            dataMap.put("keyword1", new WxTemplateData(orgName+companyFloor+"层","black"));
-        }
-        dataMap.put("keyword2", new WxTemplateData(companyName,"#173177"));
-        dataMap.put("keyword4", new WxTemplateData(DateUtil.getNowTime(),"#173177"));
-//        dataMap.put("visitResult", new WxTemplateData(visitResult,"#black"));
-        sender.setData(dataMap);
-        TemplateSenderResult result=iService.templateSend(sender);
-        System.out.println(result);
+        visitRecordService.sendTemplate( wxOpenId,  "m4b_YU2skhwRsRt0pQcW7x4qdh3cjZNjXDyB9QVW0KY",  accessType,  visitResult,
+                 visitorBy,  startDate,  endDate,  qrcodeUrl,  companyFloor,
+                 orgName,  companyName);
     }
     }

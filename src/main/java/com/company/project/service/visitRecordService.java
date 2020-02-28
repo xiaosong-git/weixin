@@ -2,6 +2,7 @@ package com.company.project.service;
 import com.company.project.core.Result;
 import com.company.project.model.VisitRecord;
 import com.company.project.core.Service;
+import com.soecode.wxtools.exception.WxErrorException;
 
 
 /**
@@ -23,4 +24,8 @@ public interface visitRecordService extends Service<VisitRecord> {
     Result recordReply(VisitRecord visitRecord, Long loginId);
 
     Result recordComfire(Long recordId,String cstatus,String companyId);
+
+    void sendTemplate(String wxOpenId, String templateId, String accessType, String visitResult,
+                      String visitorBy, String startDate, String endDate, String qrcodeUrl, String companyFloor,
+                      String orgName, String companyName) throws WxErrorException;
 }

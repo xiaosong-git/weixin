@@ -81,6 +81,7 @@ public class visitRecordServiceImpl extends AbstractService<VisitRecord> impleme
 
     @Override
     public Result recordDetail(Long visitorId, Long loginId, int pages, int sizes) {
+
         PageHelper.startPage(pages,sizes);
         List<Map<String, Object>> list = visitorRecordMapper.recordDetail( visitorId,loginId);
         PageInfo<Map<String, Object>> page=new PageInfo<>(list);

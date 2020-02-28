@@ -36,6 +36,7 @@
 
 </div>-->
 
+
 <script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
 <script src="https://cdn.bootcss.com/jquery-weui/1.2.1/js/jquery-weui.min.js"></script>
 <script src="https://cdn.bootcss.com/fastclick/1.0.6/fastclick.js"></script>
@@ -48,29 +49,35 @@
         var detail = window.localStorage.getItem("detailRecord");
         var detailJson = JSON.parse(detail)
         recordId = detailJson.id;
+        console.log("========================")
         console.log(detailJson)
         var userName = "";
         var visitorName = "";
 
-        if (detailJson.recordType === '1') {
+        if (detailJson.recordType == '1') {
             if (getCookie("userId") == detailJson.userId) {
+                console.log(userName + "1," + visitorName);
                 userName = "本人"
                 visitorName = detailJson.realName;
-            }else{
+                console.log(userName + "," + visitorName);
+            } else {
+                console.log(userName + "2," + visitorName);
                 userName = detailJson.realName;
                 visitorName = "本人";
+                console.log(userName + "," + visitorName);
             }
-
-
 
         } else {
             if (getCookie("userId") == detailJson.userId) {
+                console.log(userName + "3," + visitorName);
                 userName = detailJson.realName;
                 visitorName = "本人";
-
-            }else{
+                console.log(userName + "," + visitorName);
+            } else {
+                console.log(userName + "4," + visitorName);
                 userName = "本人"
                 visitorName = detailJson.realName;
+                console.log(userName + "," + visitorName);
             }
 
         }
@@ -103,36 +110,52 @@
             status = "未知状态";
             show = 1;
         }
+        var peopleType = "";
+        if(detailJson.recordType != "1"){
+            peopleType ="受邀人"
+        }else{
+            peopleType ="受访人"
+        }
         if (show == 1) {
             $("#dataDetail").append("<div class=\"weui-media-box weui-media-box_appmsg\">\n" +
                 "    <div class=\"weui-media-box__hd\"></div>\n" +
                 "    <div class=\"weui-media-box__bd\">\n" +
                 "\n" +
-                "        <p class=\"weui-cell__bd\">&nbsp;&nbsp;&nbsp;发起人&nbsp;&nbsp;&nbsp; " + userName + "</p><br>\n" +
-                "        <p class=\"weui-cell__bd\">&nbsp;&nbsp;&nbsp;受访人&nbsp;&nbsp;&nbsp; " + visitorName + "</p><br>\n" +
-                "        <p class=\"weui-cell__bd\">申请时间&nbsp;&nbsp;&nbsp; " + applyDate + "</p><br>\n" +
-                "        <p class=\"weui-cell__bd\">受理时间&nbsp;&nbsp;&nbsp; " + replyDate + "</p><br>\n" +
-                "        <p class=\"weui-cell__bd\">受理状态&nbsp;&nbsp;&nbsp; " + status + "</p><br>\n" +
-                "        <p class=\"weui-cell__bd\">访问时间&nbsp;&nbsp;&nbsp; " + visitDate + "</p><br>\n" +
-                "        <p class=\"weui-cell__bd\">访问地址&nbsp;&nbsp;&nbsp; " + detailJson.companyName + "</p><br>\n" +
+                "        <p class=\"weui-cell__bd\" style=\"margin-left: 5%\">&nbsp;&nbsp;&nbsp;发起人&nbsp;&nbsp;&nbsp; " + userName + "</p><br>\n" +
+                "        <p class=\"weui-cell__bd\" style=\"margin-left: 5%\">&nbsp;&nbsp;&nbsp;"+peopleType+"&nbsp;&nbsp;&nbsp; " + visitorName + "</p><br>\n" +
+                "        <p class=\"weui-cell__bd\" style=\"margin-left: 5%\">申请时间&nbsp;&nbsp;&nbsp; " + applyDate + "</p><br>\n" +
+                "        <p class=\"weui-cell__bd\" style=\"margin-left: 5%\">受理时间&nbsp;&nbsp;&nbsp; " + replyDate + "</p><br>\n" +
+                "        <p class=\"weui-cell__bd\" style=\"margin-left: 5%\">受理状态&nbsp;&nbsp;&nbsp; " + status + "</p><br>\n" +
+                "        <p class=\"weui-cell__bd\" style=\"margin-left: 5%\">访问时间&nbsp;&nbsp;&nbsp; " + visitDate + "</p><br>\n" +
+                "        <p class=\"weui-cell__bd\" style=\"margin-left: 5%\">访问地址&nbsp;&nbsp;&nbsp; " + detailJson.companyName + "</p><br>\n" +
                 "    </div>\n" +
                 "</div>")
         } else if (show == 0) {
-              $("#dataDetail").append("<div class=\"weui-media-box weui-media-box_appmsg\">\n" +
-                  "    <div class=\"weui-media-box__hd\"></div>\n" +
-                  "    <div class=\"weui-media-box__bd\">\n" +
-                  "        <p class=\"weui-cell__bd\" style=\"margin-left: 5%\">&nbsp;&nbsp;&nbsp;发起人&nbsp;&nbsp;&nbsp; " + userName + "</p><br>\n" +
-                  "        <p class=\"weui-cell__bd\" style=\"margin-left: 5%\">&nbsp;&nbsp;&nbsp;受访人&nbsp;&nbsp;&nbsp; " + visitorName + "</p><br>\n" +
-                  "        <p class=\"weui-cell__bd\" style=\"margin-left: 5%\">申请时间&nbsp;&nbsp;&nbsp; " + applyDate + "</p><br>\n" +
-                  "        <p class=\"weui-cell__bd\" style=\"margin-left: 5%\">受理状态&nbsp;&nbsp;&nbsp; " + status + "</p><br>\n" +
-                  "        <p class=\"weui-cell__bd\" style=\"margin-left: 5%\">访问时间&nbsp;&nbsp;&nbsp; " + visitDate + "</p><br>\n" +
-                  "       <div style=\"display: block\" id=\"addrshow\"><p class=\"weui-cell__bd\" style=\"margin-left: 20%\"><label for=\"address\" class=\"weui-label\">请选择会面地址</label></p><br>\n" +
-                  "        <p class=\"weui-cell__bd\"><input class=\"weui-input\" id=\"address\" type=\"text\" value=\"\" style=\"margin-left: 10%\"></p><br></div> \n" +
-                  "    </div>\n" +
-                  "</div>")
-            if(getCookie("userId")!=detailJson.userId){
-                document.getElementById("addrshow").style.display='none';
+            $("#dataDetail").append("<div class=\"weui-media-box weui-media-box_appmsg\">\n" +
+                "    <div class=\"weui-media-box__hd\"></div>\n" +
+                "    <div class=\"weui-media-box__bd\">\n" +
+                "        <p class=\"weui-cell__bd\" style=\"margin-left: 5%\">&nbsp;&nbsp;&nbsp;发起人&nbsp;&nbsp;&nbsp; " + userName + "</p><br>\n" +
+                "        <p class=\"weui-cell__bd\" style=\"margin-left: 5%\">&nbsp;&nbsp;&nbsp;受访人&nbsp;&nbsp;&nbsp; " + visitorName + "</p><br>\n" +
+                "        <p class=\"weui-cell__bd\" style=\"margin-left: 5%\">申请时间&nbsp;&nbsp;&nbsp; " + applyDate + "</p><br>\n" +
+                "        <p class=\"weui-cell__bd\" style=\"margin-left: 5%\">受理状态&nbsp;&nbsp;&nbsp; " + status + "</p><br>\n" +
+                "        <p class=\"weui-cell__bd\" style=\"margin-left: 5%\">访问时间&nbsp;&nbsp;&nbsp; " + visitDate + "</p><br>\n" +
+                "       <div style=\"display: block\" id=\"addrshow\"></div> \n" +
+                "    </div>\n" +
+                "</div>")
+            if (detailJson.recordType == "1") {
+                if (getCookie("userId") == detailJson.userId) {
+                    document.getElementById("addrshow").style.display = 'none';
+                } else {
+                    $("#addrshow").append("<p class=\"weui-cell__bd\" style=\"margin-left: 20%\"><label for=\"address\" class=\"weui-label\">请选择会面地址</label></p><br>\n" +
+                        "                    <p class=\"weui-cell__bd\"><input class=\"weui-input\" id=\"address\" type=\"text\" value=\"\" style=\"margin-left: 10%\"></p><br>")
+                }
+            }else{
+                companyId = detailJson.companyId;
+                $("#addrshow").append("<p class=\"weui-cell__bd\" style=\"margin-left: 5%\">访问地址&nbsp;&nbsp;&nbsp; " + detailJson.companyName + "</p><br>")
             }
+           /* if (getCookie("userId") == detailJson.userId && detailJson.recordType == "1") {
+                document.getElementById("addrshow").style.display = 'none';
+            }*/
         }
         getCompany();
         var identify = detailJson.recordType;
@@ -153,10 +176,10 @@
     })
 
     function verify(status) {
-        if(companyId == -1&&status=="applySuccess"){
+        if (companyId == -1 && status == "applySuccess") {
             $.toptip("请选择会面地址");
             return;
-        }else{
+        } else {
             $.ajax({
                 type: 'POST',
                 contentType: "application/x-www-form-urlencoded",
@@ -164,11 +187,11 @@
                 data: {
                     recordId: recordId,
                     cstatus: status,
-                    companyId:companyId
+                    companyId: companyId
                 },
                 success: function (result) {
                     console.log(result)
-                    $.toptip("审核成功","success");
+                    $.toptip("审核成功", "success");
                     window.location.href = secondRecordUrl;
                 },
                 //请求失败，包含具体的错误信息
@@ -184,41 +207,41 @@
     //公司获取
     function getCompany() {
 
-         $.ajax({
-             type: 'POST',
-             contentType: "application/x-www-form-urlencoded",
-             url: "/pybl/company/findByUserId",
-             data: {userId: getCookie("userId")},
-             success: function (result) {
-                 console.log(result)
-                 var companys = [];
-                 for (var i in result.data) {
-                     companys.push(result.data[i].companyname)
-                 }
-                 $("#address").picker({
-                     title: "请选择地址",
-                     cols: [
-                         {
-                             textAlign: 'center',
-                             values: companys,
-                         }
-                     ],
-                     onChange: function (p, v, dv) {
-                         console.log();
-                     },
-                     onClose: function (p, v, d) {
-                         var companyName=$("#address").val()//店铺名赋值
+        $.ajax({
+            type: 'POST',
+            contentType: "application/x-www-form-urlencoded",
+            url: "/pybl/company/findByUserId",
+            data: {userId: getCookie("userId")},
+            success: function (result) {
+                console.log(result)
+                var companys = [];
+                for (var i in result.data) {
+                    companys.push(result.data[i].companyname)
+                }
+                $("#address").picker({
+                    title: "请选择地址",
+                    cols: [
+                        {
+                            textAlign: 'center',
+                            values: companys,
+                        }
+                    ],
+                    onChange: function (p, v, dv) {
+                        console.log();
+                    },
+                    onClose: function (p, v, d) {
+                        var companyName = $("#address").val()//店铺名赋值
 
-                         for (var i in result.data){
-                             if(result.data[i].companyname==companyName){
-                                 companyId=result.data[i].id;
-                                 console.log(companyId)
-                             }
-                         }
-                     }
-                 });
-             }
-         });
+                        for (var i in result.data) {
+                            if (result.data[i].companyname == companyName) {
+                                companyId = result.data[i].id;
+                                console.log(companyId)
+                            }
+                        }
+                    }
+                });
+            }
+        });
     }
 </script>
 </body>

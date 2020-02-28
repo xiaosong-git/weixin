@@ -22,7 +22,7 @@
     <div class="weui-cell">
         <div class="weui-cell__hd"><label class="weui-label">邀约人姓名</label></div>
         <div class="weui-cell__bd">
-            <input class="weui-input" id="invitName" type="text" placeholder="请输入邀约人姓名" onBlur="postNP()" invitId="">
+            <input class="weui-input" id="invitName" type="text" placeholder="请输入受邀人姓名" onBlur="postNP()" invitId="">
         </div>
     </div>
     <div class="weui-cell">
@@ -30,7 +30,7 @@
             <label class="weui-label">邀约人手机号</label>
         </div>
         <div class="weui-cell__bd">
-            <input class="weui-input" id="invitPhone" type="tel" placeholder="请输入邀约人手机号" onBlur="postNP()">
+            <input class="weui-input" id="invitPhone" type="tel" placeholder="请输入受邀人手机号" onBlur="postNP()">
         </div>
     </div>
     <div class="weui-cell">
@@ -132,6 +132,7 @@
 <script src="js/myUtil.js"></script>
 <script>
 
+    var companyId = -1;
     $(function () {
 
         if (!isLogin("invite")) {
@@ -194,12 +195,14 @@
 
     //公司获取
     function getCompany() {
+
         $.ajax({
             type: 'POST',
             contentType: "application/x-www-form-urlencoded",
-            url: "/pybl/company/findByPhone",
-            data: {phone: getCookie("phone")},
+            url: "/pybl/company/findByUserId",
+            data: {userId: getCookie("userId")},
             success: function (result) {
+                console.log(result)
                 var companys = [];
                 for (var i in result.data) {
                     companys.push(result.data[i].companyname)
@@ -209,14 +212,21 @@
                     cols: [
                         {
                             textAlign: 'center',
-                            values: companys
+                            values: companys,
                         }
                     ],
                     onChange: function (p, v, dv) {
-                        console.log(p, v, dv);
+                        console.log();
                     },
                     onClose: function (p, v, d) {
-                        console.log("close");
+                        var companyName=$("#address").val()//店铺名赋值
+
+                        for (var i in result.data){
+                            if(result.data[i].companyname==companyName){
+                                companyId=result.data[i].id;
+                                console.log(companyId)
+                            }
+                        }
                     }
                 });
             }
@@ -256,11 +266,49 @@
     });
     $('.weui-cell_swiped').swipeout('open')
     $("#showTooltips").click(function () {
-        var tel = $('#tel').val();
-        var code = $('#code').val();
-        if (!tel || !/1[3|4|5|7|8]\d{9}/.test(tel)) $.toptip('请输入手机号');
-        else if (!code || !/\d{6}/.test(code)) $.toptip('请输入六位手机验证码');
-        else $.toptip('提交成功', 'success');
+        $.showLoading();
+        var startDate = $("#start-time").val();
+        var hour = $("#hour").val();
+        var reason = $("#reason").val();
+        if(isEmpty(startDate)){
+            $.toptip("请选择邀约开始时间");
+            return;
+        }else if(isEmpty(hour)){
+            $.toptip("请选择邀约时间");
+            return;
+        }else if(companyId==-1){
+            $.toptip("请选择邀约地址");
+            return;
+        }else{
+            $.ajax({
+                type: 'POST',
+                contentType: "application/x-www-form-urlencoded",
+                url: "visit/record/inviteRequest",
+                data: {
+                    //从跳转页获取用户id
+                    userId: getCookie('userId'),
+                    visitorId: $("#visitorName").attr("invitId"),
+                    reason: reason,
+                    companyId:companyId,
+                    startDate: startDate,
+                    hour: hour,
+                },
+                success: function (result) {
+                    $.hideLoading();
+                    if (result.code == 400) {
+                        $.toptip(result.message);
+                    } else if (result.code == 200) {
+                        $.toast("发起邀约成功", 'success');
+                        alert("发起邀约成功，对方同意后将在《朋悦比邻》公众号提示，请注意查收！");
+                        location.reload();
+                    } else {
+                        $.toptip("系统错误");
+                    }
+                }
+            });
+        }
+
+
     });
 
     //输入完姓名与电话查找受邀人id（访问者）

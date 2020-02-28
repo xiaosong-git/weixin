@@ -70,7 +70,7 @@ public class visitRecordServiceImpl extends AbstractService<VisitRecord> impleme
         Long visitorId = visitRecord.getUserId();
         Long userId = visitRecord.getVisitorId();
         visitRecord.setUserId(userId);
-        visitRecord.setUserId(visitorId);
+        visitRecord.setVisitorId(visitorId);
         return visitCommon(visitRecord,hour);
     }
 

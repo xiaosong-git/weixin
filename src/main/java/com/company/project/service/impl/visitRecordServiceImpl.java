@@ -122,12 +122,12 @@ public class visitRecordServiceImpl extends AbstractService<VisitRecord> impleme
     }
 
     @Override
-    public Result recordComfire(Long recordId, String cstatus) {
+    public Result recordComfire(Long recordId, String cstatus,String companyId) {
 
         String replyDate =DateUtil.getCurDate();
         String replyTime =DateUtil.getCurTime();
 
-        int resultCode = visitorRecordMapper.updateCstatus(recordId,cstatus,replyDate,replyTime);
+        int resultCode = visitorRecordMapper.updateCstatus(recordId,cstatus,replyDate,replyTime,companyId);
         if(resultCode!=1){
             return ResultGenerator.genFailResult("审核失败");
         }

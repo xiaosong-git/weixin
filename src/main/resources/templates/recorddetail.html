@@ -54,7 +54,7 @@
 <script src="js/myUtil.js"></script>
 <script>
     var recordId;
-    var companyId;
+    var companyId = -1;
     $(function () {
 
         var detail = window.localStorage.getItem("detailRecord");
@@ -111,7 +111,7 @@
                 "        <p class=\"weui-cell__bd\">受理时间&nbsp;&nbsp;&nbsp; " + replyDate + "</p><br>\n" +
                 "        <p class=\"weui-cell__bd\">受理状态&nbsp;&nbsp;&nbsp; " + status + "</p><br>\n" +
                 "        <p class=\"weui-cell__bd\">访问时间&nbsp;&nbsp;&nbsp; " + visitDate + "</p><br>\n" +
-                "        <p class=\"weui-cell__bd\">访问地址&nbsp;&nbsp;&nbsp; " + detailJson.addr + "</p><br>\n" +
+                "        <p class=\"weui-cell__bd\">访问地址&nbsp;&nbsp;&nbsp; " + detailJson.companyName + "</p><br>\n" +
                 "    </div>\n" +
                 "</div>")
         } else if (show == 0) {
@@ -147,23 +147,32 @@
     })
 
     function verify(status) {
-        $.ajax({
-            type: 'POST',
-            contentType: "application/x-www-form-urlencoded",
-            url: "visit/record/confireRecord",
-            data: {
-                recordId: recordId,
-                cstatus: status
-            },
-            success: function (result) {
-                console.log(result)
-            },
-            //请求失败，包含具体的错误信息
-            error: function (e) {
-                $.hideLoading();
-                $.toptip(e.message);
-            }
-        });
+        if(companyId == -1&&status=="applySuccess"){
+            $.toptip("请选择会面地址");
+            return;
+        }else{
+            $.ajax({
+                type: 'POST',
+                contentType: "application/x-www-form-urlencoded",
+                url: "visit/record/confireRecord",
+                data: {
+                    recordId: recordId,
+                    cstatus: status,
+                    companyId:companyId
+                },
+                success: function (result) {
+                    console.log(result)
+                    $.toptip("审核成功","success");
+                    window.location.href = secondRecordUrl;
+                },
+                //请求失败，包含具体的错误信息
+                error: function (e) {
+                    $.hideLoading();
+                    $.toptip(e.message);
+                }
+            });
+        }
+
     }
 
     //公司获取
@@ -177,10 +186,8 @@
              success: function (result) {
                  console.log(result)
                  var companys = [];
-                 var companyId = [];
                  for (var i in result.data) {
                      companys.push(result.data[i].companyname)
-                     companyId.push(result.data[i].id)
                  }
                  $("#address").picker({
                      title: "请选择地址",
@@ -188,14 +195,20 @@
                          {
                              textAlign: 'center',
                              values: companys,
-                             displayValues:companyId
                          }
                      ],
                      onChange: function (p, v, dv) {
-                         console.log(p, v, dv);
+                         console.log();
                      },
                      onClose: function (p, v, d) {
-                         console.log("close");
+                         var companyName=$("#address").val()//店铺名赋值
+
+                         for (var i in result.data){
+                             if(result.data[i].companyname==companyName){
+                                 companyId=result.data[i].id;
+                                 console.log(companyId)
+                             }
+                         }
                      }
                  });
              }

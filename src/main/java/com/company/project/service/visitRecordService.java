@@ -22,5 +22,5 @@ public interface visitRecordService extends Service<VisitRecord> {
 
     Result recordReply(VisitRecord visitRecord, Long loginId);
 
-    Result recordComfire(Long recordId,String cstatus);
+    Result recordComfire(Long recordId,String cstatus,String companyId);
 }

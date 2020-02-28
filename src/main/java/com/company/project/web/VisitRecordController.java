@@ -115,9 +115,9 @@ public class VisitRecordController {
      * @return
      */
     @PostMapping("/confireRecord")
-    public Result confireRecord(Long recordId,String cstatus){
+    public Result confireRecord(Long recordId,String cstatus,String companyId){
         try {
-            return visitRecordService.recordComfire(recordId,cstatus);
+            return visitRecordService.recordComfire(recordId,cstatus,companyId);
         } catch (Exception e) {
             e.printStackTrace();
         }

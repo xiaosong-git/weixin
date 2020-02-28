@@ -53,11 +53,26 @@
         var visitorName = "";
 
         if (detailJson.recordType === '1') {
-            userName = "本人"
-            visitorName = detailJson.realName;
+            if (getCookie("userId") == detailJson.userId) {
+                userName = "本人"
+                visitorName = detailJson.realName;
+            }else{
+                userName = detailJson.realName;
+                visitorName = "本人";
+            }
+
+
+
         } else {
-            userName = detailJson.realName
-            visitorName = "本人";
+            if (getCookie("userId") == detailJson.userId) {
+                userName = detailJson.realName;
+                visitorName = "本人";
+
+            }else{
+                userName = "本人"
+                visitorName = detailJson.realName;
+            }
+
         }
         //申请时间
         var applyDate = detailJson.visitDate + " " + detailJson.visitTime;

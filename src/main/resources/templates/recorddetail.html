@@ -35,20 +35,34 @@
     </div>
 
 </div>-->
-
+<!--<div class="weui-media-box weui-media-box_appmsg">
+    <div class="weui-media-box__hd"></div>
+    <div class="weui-media-box__bd">
+           <p class="weui-cell__bd">&nbsp;&nbsp;&nbsp;发起人&nbsp;&nbsp;&nbsp; " + userName + "</p><br>
+           <p class="weui-cell__bd">&nbsp;&nbsp;&nbsp;受访人&nbsp;&nbsp;&nbsp; " + visitorName + "</p><br>
+           <p class="weui-cell__bd">申请时间&nbsp;&nbsp;&nbsp; " + applyDate + "</p><br>
+           <p class="weui-cell__bd" style="display: none" id="applytime">受理时间&nbsp;&nbsp;&nbsp; " + replyDate + "</p><br>
+           <p class="weui-cell__bd">受理状态&nbsp;&nbsp;&nbsp; " + status + "</p><br>
+            <p class="weui-cell__bd">访问时间&nbsp;&nbsp;&nbsp; " + visitDate + "</p><br>
+            <p class="weui-cell__bd">访问地址&nbsp;&nbsp;&nbsp; " + detailJson.addr + "</p><br>
+        </div>
+</div>-->
 
 <script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
 <script src="https://cdn.bootcss.com/jquery-weui/1.2.1/js/jquery-weui.min.js"></script>
 <script src="https://cdn.bootcss.com/fastclick/1.0.6/fastclick.js"></script>
 <script src="js/myUtil.js"></script>
 <script>
+    var recordId;
     $(function () {
 
             var detail = window.localStorage.getItem("detailRecord");
             var detailJson = JSON.parse(detail)
+            recordId = detailJson.id;
             console.log(detailJson)
             var userName = "";
             var visitorName = "";
+
             if (detailJson.recordType === '1') {
                 userName = "本人"
                 visitorName = detailJson.realName;
@@ -67,44 +81,87 @@
             var visitDate = date + " " + startTime + "-" + endTime;
             //记录状态
             var status = "";
+            //show=1 界面为详情数据，show=0 界面为审核界面
+            var show = 1 ;
             if (detailJson.vstatus == "access") {
                 status = "<font color=\"#006400\">通过</font>";
+                show =1;
             } else if (detailJson.vstatus == "refuse") {
                 status = "<font color=\"#8b0000\">拒绝</font>";
+                show =1;
             } else if (detailJson.vstatus == "unaudited") {
                 status = "<font color=\"blue\">待审核</font>";
+                show =0;
             } else if (detailJson.vstatus == "expired") {
                 status = "<font color=\"#696969\">过期</font>";
+                show =1;
             } else {
                 status = "未知状态";
+                show =1;
             }
-            $("#dataDetail").append("<div class=\"weui-media-box weui-media-box_appmsg\">\n" +
-                "    <div class=\"weui-media-box__hd\"></div>\n" +
-                "    <div class=\"weui-media-box__bd\">\n" +
-                "\n" +
-                "        <p class=\"weui-cell__bd\">&nbsp;&nbsp;&nbsp;发起人&nbsp;&nbsp;&nbsp; " + userName + "</p><br>\n" +
-                "        <p class=\"weui-cell__bd\">&nbsp;&nbsp;&nbsp;受访人&nbsp;&nbsp;&nbsp; " + visitorName + "</p><br>\n" +
-                "        <p class=\"weui-cell__bd\">申请时间&nbsp;&nbsp;&nbsp; " + applyDate + "</p><br>\n" +
-                "        <p class=\"weui-cell__bd\">受理时间&nbsp;&nbsp;&nbsp; " + replyDate + "</p><br>\n" +
-                "        <p class=\"weui-cell__bd\">受理状态&nbsp;&nbsp;&nbsp; " + status + "</p><br>\n" +
-                "        <p class=\"weui-cell__bd\">访问时间&nbsp;&nbsp;&nbsp; " + visitDate + "</p><br>\n" +
-                "        <p class=\"weui-cell__bd\">访问地址&nbsp;&nbsp;&nbsp; " + detailJson.addr + "</p><br>\n" +
-                "    </div>\n" +
-                "</div>")
-        if(status == "unaudited"){
-            $("#dataDetail").append("<div>\n" +
-                "    <a href=\"javascript:;\" class=\"weui-btn weui-btn_primary\" onclick=\"verify('T')\">通过</a>\n" +
-                "    <a href=\"javascript:;\" class=\"weui-btn weui-btn_warn\" onclick=\"verify('F')\">拒绝</a>\n" +
-                "</div>")
-        }
+            if(show == 1){
+                $("#dataDetail").append("<div class=\"weui-media-box weui-media-box_appmsg\">\n" +
+                    "    <div class=\"weui-media-box__hd\"></div>\n" +
+                    "    <div class=\"weui-media-box__bd\">\n" +
+                    "\n" +
+                    "        <p class=\"weui-cell__bd\">&nbsp;&nbsp;&nbsp;发起人&nbsp;&nbsp;&nbsp; " + userName + "</p><br>\n" +
+                    "        <p class=\"weui-cell__bd\">&nbsp;&nbsp;&nbsp;受访人&nbsp;&nbsp;&nbsp; " + visitorName + "</p><br>\n" +
+                    "        <p class=\"weui-cell__bd\">申请时间&nbsp;&nbsp;&nbsp; " + applyDate + "</p><br>\n" +
+                    "        <p class=\"weui-cell__bd\">受理时间&nbsp;&nbsp;&nbsp; " + replyDate + "</p><br>\n" +
+                    "        <p class=\"weui-cell__bd\">受理状态&nbsp;&nbsp;&nbsp; " + status + "</p><br>\n" +
+                    "        <p class=\"weui-cell__bd\">访问时间&nbsp;&nbsp;&nbsp; " + visitDate + "</p><br>\n" +
+                    "        <p class=\"weui-cell__bd\">访问地址&nbsp;&nbsp;&nbsp; " + detailJson.addr + "</p><br>\n" +
+                    "    </div>\n" +
+                    "</div>")
+            }else if (show == 0){
+                $("#dataDetail").append("<div class=\"weui-media-box weui-media-box_appmsg\">\n" +
+                    "    <div class=\"weui-media-box__hd\"></div>\n" +
+                    "    <div class=\"weui-media-box__bd\">\n" +
+                    "\n" +
+                    "        <p class=\"weui-cell__bd\">&nbsp;&nbsp;&nbsp;发起人&nbsp;&nbsp;&nbsp; " + userName + "</p><br>\n" +
+                    "        <p class=\"weui-cell__bd\">&nbsp;&nbsp;&nbsp;受访人&nbsp;&nbsp;&nbsp; " + visitorName + "</p><br>\n" +
+                    "        <p class=\"weui-cell__bd\">申请时间&nbsp;&nbsp;&nbsp; " + applyDate + "</p><br>\n" +
+                    "        <p class=\"weui-cell__bd\">受理状态&nbsp;&nbsp;&nbsp; " + status + "</p><br>\n" +
+                    "        <p class=\"weui-cell__bd\">访问时间&nbsp;&nbsp;&nbsp; " + visitDate + "</p><br>\n" +
+                    "    </div>\n" +
+                    "</div>")
+            }
+
+            var identify  = detailJson.recordType;
+            var btnshow = "F";
+            if(identify=="1"&&getCookie("userId")==detailJson.visitorId){
+                btnshow="T";
+            }else if(identify=="2"&&getCookie("userId")==detailJson.userId){
+                btnshow="T";
+            }else{
+                btnshow="F";
+            }
+             if(detailJson.vstatus == "unaudited" && btnshow =="T"){
+                $("#dataDetail").append("<div>\n" +
+                    "    <a href=\"javascript:;\" class=\"weui-btn weui-btn_primary\" onclick=\"verify('applySuccess')\">通过</a>\n" +
+                    "    <a href=\"javascript:;\" class=\"weui-btn weui-btn_warn\" onclick=\"verify('applyFail')\">拒绝</a>\n" +
+                    "</div>")
+            }
         })
 
    function verify(status) {
-       if(status=="T"){
-          alert("审核还在开发.....")
-       }else{
-           alert("审核还在开发.....")
-       }
+       $.ajax({
+           type: 'POST',
+           contentType: "application/x-www-form-urlencoded",
+           url: "visit/record/confireRecord",
+           data: {
+              recordId:recordId,
+              cstatus: status
+           },
+           success: function (result) {
+               console.log(result)
+           },
+           //请求失败，包含具体的错误信息
+           error: function (e) {
+               $.hideLoading();
+               $.toptip(e.message);
+           }
+       });
    }
 </script>
 </body>

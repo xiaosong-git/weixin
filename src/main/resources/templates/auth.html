@@ -197,7 +197,7 @@
                     success: function (res) {
 
                         var serverId = res.serverId; // 返回图片的服务器端ID
-                        $.toptip("检测人脸中！", "success");
+                        $.toptip("照片检测中！", "success");
                         $.ajax({
                             //请求方式
                             type: "POST",
@@ -218,7 +218,7 @@
                                 if (result.code == 400) {
                                     $.toptip(result.message);
                                 } else {
-                                    $.toptip("人脸识别成功", "success");
+                                    $.toptip("照片可用", "success");
                                     //图片服务器中的图片地址
                                     // $("#uploaderFiles").val
                                     $("#photoDiv").val(result.data.img);

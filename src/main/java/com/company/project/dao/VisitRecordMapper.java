@@ -24,4 +24,11 @@ public interface VisitRecordMapper extends Mapper<VisitRecord> {
     List<VisitRecord> record(Long userId);
     //sql放xml中
     List<Map<String,Object>> recordDetail(Long visitorId,Long loginId);
+
+    @Select("select * from "+ TableList.VISITOR_RECORD + " where id = #{recordId}")
+    VisitRecord findByRecordId(Object recordId);
+
+
+    @Update("update " + TableList.VISITOR_RECORD + " set cstatus = #{cstatus} , replyDate = #{replyDate} , replyTime = #{replyTime} where id = #{recordId}")
+    int updateCstatus(Long recordId,String cstatus,String replyDate,String replyTime);
 }

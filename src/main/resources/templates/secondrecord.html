@@ -101,23 +101,32 @@
                     var divShow = "";
 
                     if (list[i].vstatus == "access") {
-                        divShow = "<div class=\\\"weui-cell__bd\\\"><font color=\"#006400\">通过</font></div>";
+                        divShow = "<div class=\"weui-cell__bd\"><font color=\"#006400\">通过</font></div>";
                     } else if (list[i].vstatus == "refuse") {
-                        divShow = "<div class=\\\"weui-cell__bd\\\"><font color=\"#8b0000\">拒绝</font></div>";
+                        divShow = "<div class=\"weui-cell__bd\"><font color=\"#8b0000\">拒绝</font></div>";
                     } else if (list[i].vstatus == "unaudited") {
-                        divShow = "<div class=\\\"weui-cell__bd\\\"><font color=\"blue\">待审核</font></div>";
+                        divShow = "<div class=\"weui-cell__bd\"><font color=\"blue\">待审核</font></div>";
                     } else if (list[i].vstatus == "expired") {
-                        divShow = "<div class=\\\"weui-cell__bd\\\"><font color=\"#696969\">过期</font></div>";
+                        divShow = "<div class=\"weui-cell__bd\"><font color=\"#696969\">过期</font></div>";
                     } else {
-                        divShow = "<div class=\\\"weui-cell__bd\\\">未知状态</div>";
+                        divShow = "<div class=\"weui-cell__bd\">未知状态</div>";
+                    }
+                    var timeStr ="";
+                    var addrStr ="";
+                    if(list[i].recordType == 1){
+                        timeStr = "访问时间";
+                        addrStr = "访问地址";
+                    }else{
+                        timeStr = "邀约时间";
+                        addrStr = "邀约地址";
                     }
                     $("#recordBody").append("<a href=\"javascript:void(0);\" class=\"weui-media-box weui-media-box_appmsg\" onclick=\"toDetail('"+encodeURI(JSON.stringify(list[i]))+"')\">\n" +
                         "\n" +
                         "    <div class=\"weui-media-box__bd\">\n" +
-                        "        <p class=\"weui-cell__bd\">访问时间&nbsp;&nbsp;&nbsp; " + date + " " + startTime + "-" + endTime + "</p><br>\n" +
-                        "        <p class=\"weui-cell__bd\">访问地址&nbsp;&nbsp;&nbsp; " + list[i].addr + "</p>\n" +
+                        "        <p class=\"weui-cell__bd\">"+timeStr+"&nbsp;&nbsp;&nbsp; " + date + " " + startTime + "-" + endTime + "</p><br>\n" +
+                        "        <p class=\"weui-cell__bd\">"+addrStr+"&nbsp;&nbsp;&nbsp; " + list[i].companyName+ "</p>\n" +
                         "    </div>\n" +
-                        "    <div class=\\\"weui-panel__ft\\\">\n" +
+                        "    <div class=\"weui-panel__ft\">\n" +
                         divShow +
                         "    </div>\n" +
                         "</a>");

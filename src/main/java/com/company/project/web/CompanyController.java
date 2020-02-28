@@ -33,6 +33,11 @@ public class CompanyController {
         PageInfo<Company> page=new PageInfo<>(companyList);
         return ResultGenerator.genSuccessResult(page);
     }
+    @PostMapping("/findByUserId")
+    public Result findByUser(@RequestParam Long userId) {
+        List<Company> companyList = companyMapper.findByUserId(userId);
+        return ResultGenerator.genSuccessResult(companyList);
+    }
 //    @PostMapping("/delete")
 //    public Result delete(@RequestParam Integer id) {
 //        companyService.deleteById(id);

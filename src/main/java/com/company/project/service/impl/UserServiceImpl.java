@@ -481,7 +481,11 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
      * @return
      */
     @Override
-    public Result bindWxPhone(Long userId, String phone,String openId) {
+    public Result bindWxPhone(Long userId, String phone,String openId,String code) {
+        if (!codeService.verifyCode(phone, code)){
+            return ResultGenerator.genFailResult("验证码错误！");
+        }
+
         User byPhone = userMapper.findByPhone(phone);
 
         int update=0;

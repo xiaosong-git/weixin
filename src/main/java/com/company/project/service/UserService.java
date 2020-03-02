@@ -37,7 +37,8 @@ public interface UserService extends Service<User> {
 
     User getUser(String openId);
 
-    Result bindWxPhone(Long userId, String phone, String openId);
+
+    Result bindWxPhone(Long userId, String phone, String openId, String code);
 
 //    Result userAuthInfo(String openId);
 }

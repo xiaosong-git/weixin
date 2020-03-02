@@ -276,8 +276,8 @@
                         $.hideLoading();
                     } else {
                         $.hideLoading();
-                        setCookie("userId",data.userId);
-                        setCookie("isAuth",data.isAuth);
+                        setCookie("userId",result.data.userId);
+                        setCookie("isAuth",result.data.isAuth);
                         $.toptip("认证成功！", 'success');
                         $.toast("认证成功，即将关闭");
                         //点击确认后的回调函数

@@ -13,7 +13,9 @@ import com.soecode.wxtools.api.WxService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
 * Created by CodeGenerator on 2019/10/09.
@@ -148,6 +150,18 @@ public class UserController {
             e.printStackTrace();
         }
         return ResultGenerator.genFailResult("系统异常","");
+    }
+    /**
+     * 通过手机号绑定微信账号
+     */
+    @RequestMapping("/verifyTest")
+    @ResponseBody
+    public Result verifyTest(Long userId){
+
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        resultMap.put("isAuth", "T");
+        resultMap.put("userId", userId);
+        return ResultGenerator.genSuccessResult(resultMap);
     }
 
 }

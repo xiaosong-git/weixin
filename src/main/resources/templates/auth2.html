@@ -59,8 +59,9 @@
 
     <div class="weui-btn-area">
         <a class="weui-btn weui-btn_primary" href="javascript:" id="btn" onclick="upload()">确定</a>
+        <a class="weui-btn weui-btn_primary" href="javascript:" id="btnTest" onclick="authTest()">确定</a>
         <a class="weui-btn weui-btn_primary" href="javascript:" id="show-login" onclick="login()">app用户登录</a>
-        <a class="weui-btn weui-btn_warn" href="javascript:" id="quit" onclick="quit()">退出界面</a>
+<!--        <a class="weui-btn weui-btn_warn" href="javascript:" id="quit" onclick="quit()">退出界面</a>-->
     </div>
     <br>
     <br>
@@ -270,14 +271,19 @@
                 },
                 //请求成功
                 success: function (result) {
+                    alert("test");
                     if (result.code == 400) {
+                        alert("test1");
                         $.toptip(result.message);
                         alert(result.message);
                         $.hideLoading();
                     } else {
+                        alert("test2");
                         $.hideLoading();
-                        setCookie("userId",data.userId);
-                        setCookie("isAuth",data.isAuth);
+                        alert(result.data.userId);
+                        alert(result.data.isAuth);
+                        setCookie("userId",result.data.userId);
+                        setCookie("isAuth",result.data.isAuth);
                         $.toast("认证成功，即将关闭");
                         //点击确认后的回调函数
                         setTimeout(function(){ quit();},1500);
@@ -290,6 +296,49 @@
         }
 
     }
+    //测试实人认证
+    function authTest() {
+
+            $.showLoading();
+            $.ajax({
+                //请求方式
+                type: "POST",
+                //请求的媒体类型
+                contentType: "application/x-www-form-urlencoded",
+                //请求地址
+                url: "user/verifyTest",
+                //数据，json字符串
+                data: {
+                    userId: getCookie("userId")
+                },
+                //请求成功
+                success: function (result) {
+                    alert("test");
+                    if (result.code == 400) {
+                        alert("test1");
+                        $.toptip(result.message);
+                        alert(result.message);
+                        $.hideLoading();
+                    } else {
+                        alert("test2");
+                        $.hideLoading();
+                        alert(result.data.userId);
+                        alert(result.data.isAuth);
+                        // setCookie("userId",result.data.userId);
+                        // setCookie("isAuth",result.data.isAuth);
+                        $.toast("认证成功，即将关闭");
+                        //点击确认后的回调函数
+                        setTimeout(function(){ quit();},1500);
+                    }
+                },
+                error: function (e) {
+                    $.toptip("网络错误!");
+                }
+            });
+
+
+    }
+
 
 </script>
 <script src="https://cdn.bootcss.com/webcamjs/1.0.25/webcam.js"></script>

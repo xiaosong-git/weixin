@@ -11,6 +11,10 @@ public class MenuKey {
     public static final String INVITE = "invite";
     //访问
     public static final String VISIT = "visit";
+
+    //访问
+    public static final String BINDPHONE = "bindphone";
+
     //共享会议室
     public static final String MEETING = "btn_meeting";
     //共享茶室
@@ -20,7 +24,7 @@ public class MenuKey {
     //我的共享记录
     public static final String SHARE_RECORD = "btn_share_record";
 
-    public static final String URL = "http://iue7tb.natappfree.cc/pybl/";
+    public static final String URL = "http://6a5499.natappfree.cc/pybl/";
     //朋悦比邻
 //    public static final String URL = "http://f.pyblkj.cn/pybl/";
 

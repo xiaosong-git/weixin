@@ -139,15 +139,15 @@
                 "        <p class=\"weui-cell__bd\" style=\"margin-left: 5%\">申请时间&nbsp;&nbsp;&nbsp; " + applyDate + "</p><br>\n" +
                 "        <p class=\"weui-cell__bd\" style=\"margin-left: 5%\">受理状态&nbsp;&nbsp;&nbsp; " + status + "</p><br>\n" +
                 "        <p class=\"weui-cell__bd\" style=\"margin-left: 5%\">访问时间&nbsp;&nbsp;&nbsp; " + visitDate + "</p><br>\n" +
-                "       <div style=\"display: block\" id=\"addrshow\"></div> \n" +
+                "       <p style=\"display: block\" id=\"addrshow\"></p> \n" +
                 "    </div>\n" +
                 "</div>")
             if (detailJson.recordType == "1") {
                 if (getCookie("userId") == detailJson.userId) {
                     document.getElementById("addrshow").style.display = 'none';
                 } else {
-                    $("#addrshow").append("<p class=\"weui-cell__bd\" style=\"margin-left: 20%\"><label for=\"address\" class=\"weui-label\">请选择会面地址</label></p><br>\n" +
-                        "                    <p class=\"weui-cell__bd\"><input class=\"weui-input\" id=\"address\" type=\"text\" value=\"\" style=\"margin-left: 10%\"></p><br>")
+                    $("#addrshow").append("<label for=\"address\" style='margin-left: 5%'>请选择您的会面地址</label><br><br>\n" +
+                        "                    <p><input class=\"weui-input\" id=\"address\" type=\"text\" style='margin-left: 5%'></p><br>")
                 }
             }else{
                 companyId = detailJson.companyId;

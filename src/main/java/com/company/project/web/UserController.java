@@ -42,9 +42,9 @@ public class UserController {
         }
         Long userId = userList.get(0).getId();
         List<Company> companyUserList = companyService.findByUserId(userId);
-        if (companyUserList==null||companyUserList.isEmpty()){
+        /*if (companyUserList==null||companyUserList.isEmpty()){
             companyUserList= companyService.findNotCompanyUser(userId);
-        }
+        }*/
         if (companyUserList==null||companyUserList.isEmpty()){
             return ResultGenerator.genFailResult("该用户没有绑定公司");
         }

@@ -68,7 +68,7 @@
                 常用联系人
             </a>
             <a class="weui-navbar__item" href="#tab2" onclick="getRecord()">
-                访问记录
+                访问邀约记录
             </a>
         </div>
         <div class="weui-tab__bd">
@@ -266,11 +266,18 @@
     });
     $('.weui-cell_swiped').swipeout('open')
     $("#showTooltips").click(function () {
-        $.showLoading();
         var startDate = $("#start-time").val();
         var hour = $("#hour").val();
         var reason = $("#reason").val();
-        if(isEmpty(startDate)){
+        var invitName = $("#invitName").val();
+        var invitPhone = $("#invitPhone").val();
+        if(isEmpty(invitName)){
+            $.toptip("受邀人姓名不能为空");
+            return;
+        }else if (isEmpty(invitPhone)){
+            $.toptip("受邀人手机号不能为空");
+            return;
+        }else if(isEmpty(startDate)){
             $.toptip("请选择邀约开始时间");
             return;
         }else if(isEmpty(hour)){
@@ -280,6 +287,7 @@
             $.toptip("请选择邀约地址");
             return;
         }else{
+            $.showLoading();
             $.ajax({
                 type: 'POST',
                 contentType: "application/x-www-form-urlencoded",
@@ -316,11 +324,9 @@
         var invitName = $("#invitName").val();
         var invitPhone = $("#invitPhone").val();
         if (invitName == "") {
-            $.toptip("邀约人姓名不能为空");
             return;
         }
         if (invitPhone == "") {
-            $.toptip("邀约人手机号不能为空");
             return;
         }
         $.ajax({

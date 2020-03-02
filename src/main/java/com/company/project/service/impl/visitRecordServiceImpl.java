@@ -152,7 +152,7 @@ public class visitRecordServiceImpl extends AbstractService<VisitRecord> impleme
         Integer recordType = visitRecord.getRecordType();
         VisitRecord check = visitorRecordMapper.check(userId, visitorId, recordType, startDate,endDate);
         if (check!=null){
-            return ResultGenerator.genFailResult("在" + startDate + "——" + endDate + "内已经有邀约信息存在");
+            return ResultGenerator.genFailResult("在" + startDate + "——" + endDate + "内已经有访问信息存在");
         }
         //储存新的来访记录
         Date date = new Date();

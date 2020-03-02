@@ -56,9 +56,18 @@
 <script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
 <script src="https://cdn.bootcss.com/jquery-weui/1.2.1/js/jquery-weui.min.js"></script>
 <script src="https://cdn.bootcss.com/fastclick/1.0.6/fastclick.js"></script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
 <script src="js/myUtil.js"></script>
 <script>
 
+    $(function () {
+       var phone = getCookie("phone");
+       if(isEmpty(phone)){
+           $.toast("您已经绑定过手机号，请勿重复操作");
+           //点击确认后的回调函数
+           setTimeout(function () {quit();}, 1500);
+       }
+    })
     var countdown=60;
     function getCode(ojb) {
         var code = $(ojb);
@@ -106,7 +115,10 @@
 
         setTimeout(function() {getCode(ojb) }, 1000);
     }
-
+    //退出
+    function quit() {
+        wx.closeWindow();
+    }
     //发送手机号及验证码
     function checkCode() {
         var phone = $("#bindp").val();

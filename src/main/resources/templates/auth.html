@@ -281,7 +281,7 @@
                         $.toptip("认证成功！", 'success');
                         $.toast("认证成功，即将关闭");
                         //点击确认后的回调函数
-                        setTimeout(function(){ quit();},1500);
+                        window.history.go(-1);
                         // $.showLoading();
                         //发起访问
                         // $.ajax({

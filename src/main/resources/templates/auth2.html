@@ -59,9 +59,9 @@
 
     <div class="weui-btn-area">
         <a class="weui-btn weui-btn_primary" href="javascript:" id="btn" onclick="upload()">确定</a>
-        <a class="weui-btn weui-btn_primary" href="javascript:" id="btnTest" onclick="authTest()">确定</a>
+<!--        <a class="weui-btn weui-btn_primary" href="javascript:" id="btnTest" onclick="authTest()">确定</a>-->
         <a class="weui-btn weui-btn_primary" href="javascript:" id="show-login" onclick="login()">app用户登录</a>
-<!--        <a class="weui-btn weui-btn_warn" href="javascript:" id="quit" onclick="quit()">退出界面</a>-->
+        <a class="weui-btn weui-btn_warn" href="javascript:" id="quit" onclick="quit()">退出界面</a>
     </div>
     <br>
     <br>
@@ -280,8 +280,8 @@
                     } else {
                         alert("test2");
                         $.hideLoading();
-                        alert(result.data.userId);
-                        alert(result.data.isAuth);
+                        // alert(result.data.userId);
+                        // alert(result.data.isAuth);
                         setCookie("userId",result.data.userId);
                         setCookie("isAuth",result.data.isAuth);
                         $.toast("认证成功，即将关闭");

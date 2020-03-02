@@ -112,6 +112,9 @@
         var phone = $("#bindp").val();
         var code = $("#code").val();
         var openid = getCookie("openId")
+        console.log(phone);
+        console.log(code);
+        console.log(openid);
         if(phone==""){
             $.toptip("手机号不能为空");
             return false;
@@ -121,7 +124,7 @@
             $.ajax({
                 type: 'POST',
                 contentType: "application/x-www-form-urlencoded",
-                url: "pybl/user/bindWxPhone",
+                url: "user/bindWxPhone",
                 data: {phone:phone,
                     userId:getCookie("userId"),
                     code:code,

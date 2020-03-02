@@ -118,7 +118,8 @@ where userId=#{userId} or visitorId=#{userId})vr
 LEFT JOIN tbl_user u ON vr.visitorId = u.id
 LEFT JOIN tbl_company c ON c.id = vr.companyId
 LEFT JOIN t_org o ON vr.orgCode = o.org_code
-GROUP BY visitorId
+where u.realName is not null
+GROUP BY visitorId order by startDate desc
   </select>
 
     <select id="recordDetail" parameterType="Long" resultType="map">

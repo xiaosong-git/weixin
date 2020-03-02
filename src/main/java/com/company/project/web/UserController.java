@@ -140,10 +140,10 @@ public class UserController {
      */
     @RequestMapping("/bindWxPhone")
     @ResponseBody
-    public Result bindWxPhone(Long userId,String phone,String openId){
+    public Result bindWxPhone(Long userId,String phone,String openId,String code){
 
         try {
-            return userService.bindWxPhone(userId,phone,openId);
+            return userService.bindWxPhone(userId,phone,openId,code);
         } catch (Exception e) {
             e.printStackTrace();
         }

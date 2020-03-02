@@ -273,12 +273,12 @@
                 success: function (result) {
                     alert("test");
                     if (result.code == 400) {
-                        alert("test1");
+                        // alert("test1");
                         $.toptip(result.message);
                         alert(result.message);
                         $.hideLoading();
                     } else {
-                        alert("test2");
+                        // alert("test2");
                         $.hideLoading();
                         // alert(result.data.userId);
                         // alert(result.data.isAuth);

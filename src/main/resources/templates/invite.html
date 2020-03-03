@@ -286,6 +286,12 @@
         }else if(companyId==-1){
             $.toptip("请选择邀约地址");
             return;
+        }else if($("#invitName").attr("invitId")==-1) {
+            $.toptip("该用户不存在");
+            return;
+        }else if($("#invitName").attr("invitId")==-2) {
+            $.toptip("系统错误");
+            return;
         }else{
             $.showLoading();
             $.ajax({
@@ -339,15 +345,16 @@
             },
             success: function (result) {
                 console.log(result)
-               /* var data = result.data;
+                var data = result.data;
                 if (result.code == 400) {
                     $.toptip(result.message);
+                    $("#invitName").attr("invitId", -1);
                 } else if (result.code == 200) {
                     $("#invitName").attr("invitId", data[0].id);
-
                 } else {
+                    $("#invitName").attr("invitId", -2);
                     $.toptip("系统错误");
-                }*/
+                }
             }
         });
 

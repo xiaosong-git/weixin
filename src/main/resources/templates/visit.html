@@ -245,11 +245,13 @@
                 var data = result.data;
                 if (result.code == 400) {
                     $.toptip(result.message);
+                    $("#visitorName").attr("flag", -1);
                 } else if (result.code == 200) {
                     $("#visitorName").attr("visitorId", data[0].id);
                     $("#visitorName").attr("flag", 0);
                 } else {
                     $.toptip("系统错误");
+                    $("#visitorName").attr("flag", -2);
                 }
             }
         });
@@ -259,7 +261,6 @@
     function visit() {
         var visitorName = $("#visitorName").val();
         var visitorPhone = $("#visitorPhone").val();
-
         if(isEmpty(visitorName)){
             $.toptip("受访人姓名不能为空");
             return;
@@ -270,9 +271,12 @@
             $.toptip('请检查手机号');
             return;
         }else if( $("#visitorName").attr("flag") == -1){
-            $.toptip("发起访问失败");
+            $.toptip("受访者无公司归属");
             return;
-        }else{
+        }else if($("#visitorName").attr("flag") == -2){
+            $.toptip("访问发起失败");
+            return;
+        } else{
             $.showLoading();
             var startDate = $("#start-time").val();
             var hour = $("#hour").val();
@@ -342,12 +346,13 @@
                 var data = result.data;
                 if (result.code == 400) {
                     $.toptip(result.message);
+                    $("#visitorName").attr("flag", -1);
                 } else if (result.code == 200) {
                     $("#visitorName").attr("visitorId", data[0].id);
                     $("#visitorName").attr("flag", 0);
                 } else {
                     $.toptip("系统错误");
-
+                    $("#visitorName").attr("flag", -2);
                 }
             }
         });

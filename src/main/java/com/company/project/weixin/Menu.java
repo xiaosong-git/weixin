@@ -29,19 +29,19 @@ public class Menu {
 
         //按钮一
         WxMenu.WxMenuButton btn1 = new WxMenu.WxMenuButton();
-        btn1.setName("发起访问");
+        btn1.setName("访问");
         btn1.setUrl(URL+MenuKey.VISIT);
         btn1.setType(WxConsts.MENU_BUTTON_VIEW);
         List<WxMenu.WxMenuButton> subList3 = new ArrayList<>();
         WxMenu.WxMenuButton btn2=new WxMenu.WxMenuButton();
-        btn2.setName("发起邀约");
+        btn2.setName("邀约");
         btn2.setUrl(URL+MenuKey.INVITE);
         btn2.setType(WxConsts.MENU_BUTTON_VIEW);
         WxMenu.WxMenuButton btn3 = new WxMenu.WxMenuButton();
         btn3.setName("我的");
         WxMenu.WxMenuButton btn3_1 = new WxMenu.WxMenuButton();
         btn3_1.setType(WxConsts.MENU_BUTTON_VIEW);
-        btn3_1.setName("访问记录");
+        btn3_1.setName("记录");
         btn3_1.setUrl(URL+MenuKey.FIRST_RECORD);
         WxMenu.WxMenuButton btn3_3 = new WxMenu.WxMenuButton();
         btn3_3.setType(WxConsts.MENU_BUTTON_VIEW);

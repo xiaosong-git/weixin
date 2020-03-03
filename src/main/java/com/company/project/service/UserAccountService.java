@@ -10,6 +10,8 @@ public interface UserAccountService extends Service<UserAccount> {
     //自动生成账号
     void preCreateAcount(Long userid) throws Exception;
 
+    UserAccount findByUserId(long userId);
+
 
     //自动生成账号
 

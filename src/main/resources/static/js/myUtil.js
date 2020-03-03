@@ -1,4 +1,4 @@
-var IS_DEVELOP = true;//是否生产环境
+var IS_DEVELOP = false;//是否生产环境
 var uri;
 var url;
 var appId = "wx1ddcdc86c83bc9a1";
@@ -6,8 +6,8 @@ if (IS_DEVELOP) {//生产环境
     uri = "f.pyblkj.cn";
     url = "http://" + uri + "/";
 } else {
-    appId = "wx73d294462904125c";
-    uri = "vzmfqr.natappfree.cc";
+    appId = "wx2a1951f46acc4371";
+    uri = "dhez68.natappfree.cc";
     url = "http://" + uri + "/";
 }
 

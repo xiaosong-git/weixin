@@ -31,4 +31,9 @@ public class UserAccountServiceImpl extends AbstractService<UserAccount> impleme
         int save = save(userAccount);
     }
 
+    @Override
+    public UserAccount findByUserId(long userId) {
+        return tblUserAccountMapper.findByUserId(userId);
+    }
+
 }

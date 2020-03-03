@@ -222,7 +222,7 @@
                                     //图片服务器中的图片地址
                                     // $("#uploaderFiles").val
                                     $("#photoDiv").val(result.data.img);
-                                    // alert($("#photoDiv").val());
+                                    $("#uploaderFiles").val(result.data.imageFileName);
                                     $("#photoDiv").hide();
 
                                     $("#uploaderFiles").append('<li onclick="removeimg(this)" class="weui-uploader__file" style="background-image:url(' + localIds + ')"><input value=""  type="hidden"  name="file" /></li>');
@@ -262,10 +262,10 @@
                 data: {
                     openId: getCookie("openId"),
                     // token:getCookie(("token")),
-                    idHandleImgUrl: $("#photoDiv").val(),
+                    idHandleImgUrl: $("#uploaderFiles").val(),
                     idNO: $("#idNo").val(),
-                    realName: $("#realName").val()
-
+                    realName: $("#realName").val(),
+                    localImgUrl:$("#photoDiv").val()
                     // imgname:rst.base64
                 },
                 //请求成功

@@ -51,6 +51,17 @@ public class UserController {
         return ResultGenerator.genSuccessResult(userList);
     }
 
+    @AuthCheckAnnotation(checkLogin = false,checkVerify = false)
+    @PostMapping("/namePhone2")
+    public Result findByNamePhone2(@RequestParam(defaultValue = "0") String realName, @RequestParam(defaultValue = "0") String phone) {
+
+        List<User> userList = userService.findByNamePhone( realName, phone);
+        if (userList==null||userList.isEmpty()) {
+            return ResultGenerator.genFailResult("用户不存在，请填写正确姓名与手机号！");
+        }
+        return ResultGenerator.genSuccessResult(userList);
+    }
+
     /**
      * 账号，密码登录
      * @param phone 手机号

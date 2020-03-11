@@ -7,6 +7,6 @@ import org.apache.ibatis.annotations.Select;
 
 public interface UserAccountMapper extends Mapper<UserAccount> {
 
-    @Select("select * from "+ TableList.USER_ACCOUNT+" where  userId=#{userId}")
+    @Select("select * from "+ TableList.USER_ACCOUNT+" where  userId=#{userId} limit 1")
     UserAccount findByUserId(long userId);
 }

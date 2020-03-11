@@ -1,4 +1,4 @@
-var IS_DEVELOP = false;//是否生产环境
+var IS_DEVELOP = true;//是否生产环境
 var uri;
 var url;
 var appId = "wx1ddcdc86c83bc9a1";

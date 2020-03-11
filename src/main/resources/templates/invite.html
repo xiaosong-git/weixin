@@ -147,12 +147,14 @@
                 FastClick.attach(document.body);
                 $("#start-time").val(formatDateTime(0, 0, 0));
                 var searchName = "";
+                $.showLoading();
                 getContacts(searchName);
                 $("#searchInput").bind("input propertychange", function() {
                     searchName =  $("#searchInput").val();
                     console.log(searchName)
                     getContacts(searchName);
                 });
+                $.hideLoading();
             }
         }
     });

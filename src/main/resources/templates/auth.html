@@ -147,17 +147,21 @@
                 console.log(result);
                 if (result.code == 200) {
                     // setCookie('token',result.data.user.token,365);
+                    // alert(result.data.id);
+                    // alert(result.data.isauth);
                     setCookie('phone', username, 365);
                     setCookie('userId', result.data.id, 365);
                     setCookie('isAuth', result.data.isauth, 365);
                     setCookie('myName', result.data.realname, 365);
                     // setCookie('imageServerUrl',result.data.imageServerUrl,365);
                     $.toptip("登入成功", 'success');
-                    if (result.data.isauth !== "T") {
+                    if (result.data.isauth != "T") {
                         $.toptip("对不起，账户未实名，请实名后再使用哦");
                         return;
                     }
-                    window.history.go(-1);
+                    $.toast("认证成功，即将关闭");
+                    //点击确认后的回调函数
+                    setTimeout(function(){ quit();},1500);
                     //判断用户
                     // console.log("该用户不存在")
                 } else if (result.code == 400) {

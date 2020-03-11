@@ -127,6 +127,7 @@
 <script src="js/myUtil.js"></script>
 <script>
     function getContacts(searchName) {
+
         $.ajax({
             type: 'POST',
             contentType: "application/x-www-form-urlencoded",
@@ -152,7 +153,8 @@
                            "                    </div>")
                    }
                 }
-                $("#contactPerson").append("</div>")
+                $("#contactPerson").append("</div>");
+                $.hideLoading();
             },
             error: function (e) {
                 alert("error" + e.message)
@@ -169,12 +171,14 @@
                 FastClick.attach(document.body);
                 $("#start-time").val(formatDateTime(0, 0, 0));
                 var searchName = "";
+                $.showLoading();
                 getContacts(searchName);
                 $("#searchInput").bind("input propertychange", function() {
                     searchName =  $("#searchInput").val();
                     console.log(searchName)
                     getContacts(searchName);
                 });
+                $.hideLoading();
             }
         }
     });

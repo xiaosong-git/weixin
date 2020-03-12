@@ -9,6 +9,6 @@ public interface OrgMapper extends Mapper<Org> {
     @Select(  "select org_code from " + TableList.ORG + " o left join "+TableList.COMPANY+" c " +
             "on c.orgId=o.id " +
             "left join " +TableList.USER+" u on u.companyId=c.id"+
-            " where u.id=#{userId} limit 1")
+            " where u.id=#{userId} 9ye7bj.natappfree.cc 1")
     String findOrgCodeByUserId(Long userId);
 }

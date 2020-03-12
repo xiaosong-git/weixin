@@ -41,4 +41,5 @@ public interface UserService extends Service<User> {
     Result bindWxPhone(Long userId, String phone, String openId, String code) throws Exception;
 
 //    Result userAuthInfo(String openId);
+
 }

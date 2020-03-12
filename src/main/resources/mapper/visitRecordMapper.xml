@@ -134,4 +134,10 @@ GROUP BY visitorId order by startDate desc
         ORDER BY startDate>NOW() desc, IF(startDate > NOW(), FIELD(cstatus,'Cancle','applyFail',
         'applySuccess','applyConfirm'), startDate ) desc,startDate desc,endDate asc
     </select>
+    <select id="findRecordCompany" parameterType="Long" resultType="map">
+        select vr.*,c.companyName
+        from tbl_visitor_record vr
+        left join tbl_company c on c.id=vr.companyId
+        where vr.id = #{recordId} limit 1
+    </select>
 </mapper>

@@ -154,7 +154,7 @@
                     // setCookie('imageServerUrl',result.data.imageServerUrl,365);
                     $.toptip("登入成功", 'success');
                     if (result.data.isauth !== "T") {
-                        $.toptip("对不起，账户未实名，请实名后再使用哦");
+                        $.toptip("请先前往“我的”进行“实名认证”");
                         return;
                     }
                     window.history.go(-1);
@@ -163,7 +163,7 @@
                 } else if (result.code == 400) {
                     $.toptip(result.message);
                 } else {
-                    $.toptip("验证失败，请输入正确密码");
+                    $.toptip("登录失败，请输入正确的账号或密码");
                 }
             },
             //请求失败，包含具体的错误信息
@@ -197,7 +197,7 @@
                     success: function (res) {
 
                         var serverId = res.serverId; // 返回图片的服务器端ID
-                        $.toptip("照片检测中！", "success");
+                        $.toptip("人像识别中", "success");
                         $.ajax({
                             //请求方式
                             type: "POST",
@@ -216,7 +216,7 @@
                             //请求成功
                             success: function (result) {
                                 if (result.code == 400) {
-                                    $.toptip(result.message);
+                                    $.toptip("照片异常，请重新上传");
                                 } else {
                                     $.toptip("照片可用", "success");
                                     //图片服务器中的图片地址
@@ -244,11 +244,11 @@
     //实人认证
     function upload() {
         if (isEmpty($("#realName").val())) {
-            $.toptip("请输入您的真实姓名！");
+            $.toptip("请输入真实姓名");
         } else if (isEmpty($("#idNo").val())) {
-            $.toptip("请输入身份证号！");
+            $.toptip("请输入身份证号");
         } else if (isEmpty($("#photoDiv").val())) {
-            $.toptip("请选择人脸图片！");
+            $.toptip("请上传人像照片");
         } else {
             $.showLoading();
             $.ajax({
@@ -271,15 +271,15 @@
                 //请求成功
                 success: function (result) {
                     if (result.code == 400) {
-                        $.toptip(result.message);
-                        alert(result.message);
+                        $.toptip("认证失败，请确认输入信息是否有误");
+                        alert("认证失败，请确认输入信息是否有误");
                         $.hideLoading();
                     } else {
                         $.hideLoading();
                         setCookie("userId",result.data.userId);
                         setCookie("isAuth",result.data.isAuth);
                         $.toptip("认证成功！", 'success');
-                        $.toast("认证成功，即将关闭");
+                        $.toast("认证成功，页面即将关闭");
                         //点击确认后的回调函数
                         window.history.go(-1);
                         // $.showLoading();
@@ -333,7 +333,7 @@
                     }
                 },
                 error: function (e) {
-                    $.toptip("网络错误!");
+                    $.toptip("当前网络异常");
                 }
             });
         }

@@ -164,20 +164,20 @@
                     $.hideLoading();
                     console.log(result);
                     if (result.code == 200) {
-                        $.toptip("验证成功", 'success');
+                        $.toptip("手机号绑定成功", 'success');
                         setCookie('phone', phone, 365);
                         setCookie('userId', result.data.userId, 365);
                         window.location.href = invitUrl;
                     } else if (result.code == 400) {
                         $.toptip(result.message);
                     } else {
-                        $.toptip("验证失败，请输入正确验证码");
+                        $.toptip("验证码错误");
                     }
                 },
                 //请求失败，包含具体的错误信息
                 error: function (e) {
                     console.log(e.message);
-                    $.toptip(e.message);
+                    $.toptip("当前网络异常");
                     console.log(e.responseText);
                 }
             });

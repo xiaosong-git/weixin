@@ -82,7 +82,7 @@ public class UserController {
         }catch (Exception e){
             e.printStackTrace();
         }
-        return ResultGenerator.genFailResult("系统异常","");
+        return ResultGenerator.genFailResult("系统错误，请重试","");
     }
 
     /**
@@ -106,7 +106,7 @@ public class UserController {
         }catch (Exception e){
             e.printStackTrace();
         }
-        return ResultGenerator.genFailResult("系统异常","");
+        return ResultGenerator.genFailResult("系统错误，请重试","");
     }
 
     /**
@@ -129,7 +129,7 @@ public class UserController {
             e.printStackTrace();
         }
 
-        return ResultGenerator.genFailResult("系统异常","");
+        return ResultGenerator.genFailResult("系统错误，请重试","");
     }
 
     /**
@@ -148,7 +148,7 @@ public class UserController {
             e.printStackTrace();
         }
 
-        return ResultGenerator.genFailResult("系统异常","");
+        return ResultGenerator.genFailResult("系统错误，请重试","");
     }
     /**
      * 通过手机号绑定微信账号
@@ -162,7 +162,7 @@ public class UserController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return ResultGenerator.genFailResult("系统异常","");
+        return ResultGenerator.genFailResult("系统错误，请重试","");
     }
     /**
      * 通过手机号绑定微信账号
@@ -175,6 +175,18 @@ public class UserController {
         resultMap.put("isAuth", "T");
         resultMap.put("userId", userId);
         return ResultGenerator.genSuccessResult(resultMap);
+    }
+
+
+    @RequestMapping("/getUserById")
+    @ResponseBody
+    public Result getUserById(Long userId){
+
+        User u = userService.findById(userId);
+        if(null == u){
+            return ResultGenerator.genFailResult("数据错误");
+        }
+        return ResultGenerator.genSuccessResult(u);
     }
 
 }

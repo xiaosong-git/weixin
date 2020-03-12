@@ -500,7 +500,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
 
         if (!"test2333".equals(code)) {
             if (!codeService.verifyCode(phone, code)) {
-                return ResultGenerator.genFailResult("验证码错误！");
+                return ResultGenerator.genFailResult("验证码错误");
             }
         }
         User byPhone = userMapper.findByPhone(phone);
@@ -531,7 +531,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
             return ResultGenerator.genSuccessResult(map);
         }
         TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();//回滚
-        return ResultGenerator.genFailResult("绑定手机号失败，系统错误！");
+        return ResultGenerator.genFailResult("绑定手机号失败，请重试");
     }
 
 //    @Override

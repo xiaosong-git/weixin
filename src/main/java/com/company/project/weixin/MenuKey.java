@@ -25,8 +25,8 @@ public class MenuKey {
     //我的共享记录
     public static final String SHARE_RECORD = "btn_share_record";
 
-      public static final String URL = "http://9ye7bj.natappfree.cc/pybl/";
+    //  public static final String URL = "http://m3vbxf.natappfree.cc/pybl/";
     //朋悦比邻
-    //  public static final String URL = "http://f.pyblkj.cn/pybl/";
+      public static final String URL = "http://f.pyblkj.cn/pybl/";
 
 }

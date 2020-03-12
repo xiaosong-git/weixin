@@ -204,11 +204,15 @@ public class visitRecordServiceImpl extends AbstractService<VisitRecord> impleme
             Map<String, WxTemplateData> dataMap = new HashMap<>();
             VisitRecord vt = visitorRecordMapper.findRecord(userId,visitorId,visitRecord.getVisitDate(),visitRecord.getVisitTime());
             if(applyTpey == 1){
-                sender.setTemplate_id("cd1-NgrL6biM0D4IcdjA2OETYLJJ6-TDekJR9eaDr68");
+                sender.setTemplate_id("g0b1Xjs958wuzduhw19NLOTzK4sQ2wU1PkP33YFj3kw");
                 User me = userService.findById(vt.getUserId());
                 User otherUser = userService.findById(vt.getVisitorId());
-                dataMap.put("user",new WxTemplateData(me.getRealname(), "#173177"));
-                dataMap.put("visit",new WxTemplateData(vt.getStartDate(), "#173177"));
+                dataMap.put("first",new WxTemplateData("访问申请", "#173177"));
+                dataMap.put("keyword1",new WxTemplateData(me.getRealname(), "#173177"));
+                dataMap.put("keyword2",new WxTemplateData(me.getPhone(), "#173177"));
+                dataMap.put("keyword3",new WxTemplateData(vt.getStartDate(), "#173177"));
+                dataMap.put("keyword4",new WxTemplateData(vt.getReason(), "#173177"));
+                dataMap.put("remark",new WxTemplateData("点击查看详情信息↓", "#173177"));
                 String params = "?recordId="+vt.getId()+"&otherId="+me.getId();
                 sender.setUrl(URL+REPLY+params);
                 sender.setData(dataMap);
@@ -216,12 +220,16 @@ public class visitRecordServiceImpl extends AbstractService<VisitRecord> impleme
                 TemplateSenderResult result = iService.templateSend(sender);
                 System.out.println(result);
             }else{
-                sender.setTemplate_id("cd1-NgrL6biM0D4IcdjA2OETYLJJ6-TDekJR9eaDr68");
+                sender.setTemplate_id("g0b1Xjs958wuzduhw19NLOTzK4sQ2wU1PkP33YFj3kw");
                 User me = userService.findById(vt.getVisitorId());
                 User otherUser = userService.findById(vt.getUserId());
                 sender.setTouser(otherUser.getWxOpenId());
-                dataMap.put("user",new WxTemplateData(me.getRealname(), "#173177"));
-                dataMap.put("visit",new WxTemplateData(vt.getStartDate(), "#173177"));
+                dataMap.put("first",new WxTemplateData("邀约申请", "#173177"));
+                dataMap.put("keyword1",new WxTemplateData(me.getRealname(), "#173177"));
+                dataMap.put("keyword2",new WxTemplateData(me.getPhone(), "#173177"));
+                dataMap.put("keyword3",new WxTemplateData(vt.getStartDate(), "#173177"));
+                dataMap.put("keyword4",new WxTemplateData(vt.getReason(), "#173177"));
+                dataMap.put("remark",new WxTemplateData("点击查看详情信息↓", "#173177"));
                 String params = "?recordId="+vt.getId()+"&otherId="+me.getId();
                 sender.setUrl(URL+REPLY+params);
                 sender.setData(dataMap);

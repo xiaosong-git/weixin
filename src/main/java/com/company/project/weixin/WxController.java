@@ -106,23 +106,24 @@ public class WxController {
     @PostMapping("/sendTempMsg")
     public void sendTempMsg(@RequestParam(defaultValue = "0") String wxOpenId,@RequestParam(defaultValue = "0") Long userId) throws WxErrorException {
         TemplateSender sender = new TemplateSender();
-        sender.setTemplate_id("cd1-NgrL6biM0D4IcdjA2OETYLJJ6-TDekJR9eaDr68");
+        //公众号模板id
+        //朋客联盟
+        // sender.setTemplate_id("xtGAH74BuXa6qQD6t8GXjwMwYlLun_OSLxf-DhllTA0");
+        //朋悦比邻
+        sender.setTemplate_id("R9XFEBlDWMx8feBF98OdOSpDY5Y-VFZjMzqmln4hAnM");
         sender.setTouser(wxOpenId);
         logger.info("访客微信openId为：" + wxOpenId);
         Map<String, WxTemplateData> dataMap = new HashMap<>();
+       /* dataMap.put("test",new WxTemplateData("你好", "#173177"));
 
-        VisitRecord vt = visitorRecordMapper.findRecord(Long.valueOf(949),Long.valueOf(947),"2020-03-11","17:01:23");
-        dataMap.put("user",new WxTemplateData("林", "#173177"));
-        dataMap.put("visit",new WxTemplateData("2020-03-11 17:01-17:05", "#173177"));
-        Long otherId ;
-        if(vt.getUserId() != userId){
-            otherId = vt.getUserId();
-        }else{
-            otherId = vt.getVisitorId();
-        }
-        System.out.println(otherId);
-        String params = "?recordId="+vt.getId()+"&otherId=947";
-        sender.setUrl(URL+REPLY+params);
+        dataMap.put("companyAddr",new WxTemplateData("你好", "#173177"));*/
+        dataMap.put("first",new WxTemplateData("访问申请", "#173177"));
+        dataMap.put("keyword1",new WxTemplateData("林", "#173177"));
+        dataMap.put("keyword2",new WxTemplateData("18065988666", "#173177"));
+        dataMap.put("keyword3",new WxTemplateData("2015-05-30 12:50", "#173177"));
+        dataMap.put("keyword4",new WxTemplateData("其他", "#173177"));
+        dataMap.put("remark",new WxTemplateData("点击查看详情信息↓", "#173177"));
+        sender.setUrl(URL+"replyVisit?recordId=1731&name=%u53D1&phone=123&cstatus=applying&visitDate=2020-03-06");
         sender.setData(dataMap);
         TemplateSenderResult result = iService.templateSend(sender);
         System.out.println(result);

@@ -35,7 +35,7 @@ public class CompanyController {
     }
     @PostMapping("/findByUserId")
     public Result findByUser(@RequestParam Long userId) {
-        System.out.println();
+        System.out.println(userId);
         List<Company> companyList = companyMapper.findByUserId(userId);
         return ResultGenerator.genSuccessResult(companyList);
     }

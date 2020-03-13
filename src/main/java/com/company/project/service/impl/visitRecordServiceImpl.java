@@ -204,7 +204,7 @@ public class visitRecordServiceImpl extends AbstractService<VisitRecord> impleme
             Map<String, WxTemplateData> dataMap = new HashMap<>();
             VisitRecord vt = visitorRecordMapper.findRecord(userId,visitorId,visitRecord.getVisitDate(),visitRecord.getVisitTime());
             if(applyTpey == 1){
-                sender.setTemplate_id("g0b1Xjs958wuzduhw19NLOTzK4sQ2wU1PkP33YFj3kw");
+                sender.setTemplate_id("2UBJNiTiPPQTlwu2PHxtbCKhqao3Ix1I8mjGPBIWnUU");
                 User me = userService.findById(vt.getUserId());
                 User otherUser = userService.findById(vt.getVisitorId());
                 dataMap.put("first",new WxTemplateData("访问申请", "#173177"));
@@ -220,7 +220,7 @@ public class visitRecordServiceImpl extends AbstractService<VisitRecord> impleme
                 TemplateSenderResult result = iService.templateSend(sender);
                 System.out.println(result);
             }else{
-                sender.setTemplate_id("g0b1Xjs958wuzduhw19NLOTzK4sQ2wU1PkP33YFj3kw");
+                sender.setTemplate_id("2UBJNiTiPPQTlwu2PHxtbCKhqao3Ix1I8mjGPBIWnUU");
                 User me = userService.findById(vt.getVisitorId());
                 User otherUser = userService.findById(vt.getUserId());
                 sender.setTouser(otherUser.getWxOpenId());

@@ -14,7 +14,7 @@
         @import url("css/comon.css");
     </style>
     <title>
-        <h3 class="demos-title">访问</h3>
+        <h3 class="demos-title">访问邀约</h3>
     </title>
 
 </head>
@@ -40,13 +40,13 @@
     var companyName;
 
     $(function () {
-        getCompany();
-        recordId = getQueryString("recordId");
-        otherId = getQueryString("otherId");
-        console.log(recordId)
-        getOtherUser();
 
-        getRecord();
+         recordId = getQueryString("recordId");
+         otherId = getQueryString("otherId");
+         console.log(recordId)
+         getOtherUser();
+         getRecord();
+
 
     });
 
@@ -67,7 +67,11 @@
                 success: function (result) {
                     console.log(result)
                     $.toptip("审核成功", "success");
-                    window.location.href = secondRecordUrl;
+                    $.toast("您已实名，页面即将关闭");
+                    //点击确认后的回调函数
+                    setTimeout(function () {
+                        quit();
+                    }, 1500);
                 },
                 //请求失败，包含具体的错误信息
                 error: function (e) {
@@ -85,13 +89,17 @@
             type: 'POST',
             contentType: "application/x-www-form-urlencoded",
             url: "/pybl/company/findByUserId",
-            data: {userId: getCookie("userId")},
+            data: {
+                userId: getCookie("userId")
+            },
             success: function (result) {
                 console.log(result)
                 var companys = [];
                 for (var i in result.data) {
                     companys.push(result.data[i].companyname)
                 }
+                console.log("==========")
+                console.log(companys)
                 $("#address").picker({
                     title: "请选择地址",
                     cols: [
@@ -232,6 +240,7 @@
 
                 $("#addrshow").append("<label for=\"address\" style='margin-left: 5%'>请选择您的会面地址</label><br><br>\n" +
                     "                    <p><input class=\"weui-input\" id=\"address\" type=\"text\" style='margin-left: 5%'></p><br>")
+                getCompany();
             } else {
                 companyId = companyId;
                 $("#addrshow").append("<p class=\"weui-cell__bd\" style=\"margin-left: 5%\">访问地址&nbsp;&nbsp;&nbsp; " + companyName + "</p><br>")

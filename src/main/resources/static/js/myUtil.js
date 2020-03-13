@@ -6,8 +6,8 @@ if (IS_DEVELOP) {//生产环境
     uri = "f.pyblkj.cn";
     url = "http://" + uri + "/";
 } else {
-    appId = "wx2a1951f46acc4371";
-    uri = "dhez68.natappfree.cc";
+    appId = "wx73d294462904125c";
+    uri = "h5yjj8.natappfree.cc";
     url = "http://" + uri + "/";
 }
 
@@ -31,6 +31,8 @@ var firstRecordUrl=url+suffix+"firstrecord";
 var secondRecordUrl=url+suffix+"secondrecord";
 var recordDetailUrl=url+suffix+"recorddetail";
 var bindphoneUrl=url+suffix+"bindphone";
+
+var replyUrl=url+suffix+"reply";
 function setCookie(c_name,value,expiredays)
 {
     var exdate=new Date()

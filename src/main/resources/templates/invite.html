@@ -134,7 +134,6 @@
 
     var companyId = -1;
     $(function () {
-
         if (!isLogin("invite")) {
             if (getCookie("isAuth") != "T") {
                 window.location.href = authUrl;
@@ -292,7 +291,7 @@
             $.toptip("该用户不存在");
             return;
         }else if($("#invitName").attr("invitId")==-2) {
-            $.toptip("系统错误");
+            $.toptip("系统错误，请重试");
             return;
         }else{
             $.showLoading();
@@ -315,10 +314,10 @@
                         $.toptip(result.message);
                     } else if (result.code == 200) {
                         $.toast("发起邀约成功", 'success');
-                        alert("发起邀约成功，对方同意后将在《朋悦比邻》公众号提示，请注意查收！");
+                        alert("邀约申请已发送，等待对方审核");
                         location.reload();
                     } else {
-                        $.toptip("系统错误");
+                        $.toptip("系统错误，请重试");
                     }
                 }
             });

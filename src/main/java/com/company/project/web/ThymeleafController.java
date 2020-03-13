@@ -39,32 +39,34 @@ public class ThymeleafController {
     private IService iService = new WxService();
     @Autowired
     private UserService userService;
-        @RequestMapping(value = "/login",method= RequestMethod.GET)
-        public String login(@RequestParam(name="code",required=false)String code,
-                            @RequestParam(name="state",defaultValue = "0" )String state,Model model) throws WxErrorException {
-            model.addAttribute("state", state);
-            WxOAuth2AccessTokenResult wxOAuth2AccessTokenResult = iService.oauth2ToGetAccessToken(code);
-            //获取微信登入的openid
-            WxUserList.WxUser.WxUserGet wxUser=new WxUserList.WxUser.WxUserGet();
-            wxUser.setOpenid(wxOAuth2AccessTokenResult.getOpenid());
-            wxUser.setLang("zh_CN");
-            WxUserList.WxUser wxUser1 = iService.oauth2ToGetUserInfo(wxOAuth2AccessTokenResult.getAccess_token(), wxUser);
-            model.addAttribute("openId",wxUser1.getOpenid());
-            User user = userService.getUser(wxUser1.getOpenid());
-            if (user!=null) {
-                model.addAttribute("userId", user.getId());
-                model.addAttribute("isAuth", user.getIsauth());
-                model.addAttribute("myName", user.getRealname());
-                model.addAttribute("phone", user.getPhone());
-            }else {
-                model.addAttribute("userId", 0);
-                model.addAttribute("isAuth", "F");
-                model.addAttribute("myName", "");
-                model.addAttribute("phone", "");
-            }
-            return "login";
+
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public String login(@RequestParam(name = "code", required = false) String code,
+                        @RequestParam(name = "state", defaultValue = "0") String state, Model model) throws WxErrorException {
+        model.addAttribute("state", state);
+        WxOAuth2AccessTokenResult wxOAuth2AccessTokenResult = iService.oauth2ToGetAccessToken(code);
+        //获取微信登入的openid
+        WxUserList.WxUser.WxUserGet wxUser = new WxUserList.WxUser.WxUserGet();
+        wxUser.setOpenid(wxOAuth2AccessTokenResult.getOpenid());
+        wxUser.setLang("zh_CN");
+        WxUserList.WxUser wxUser1 = iService.oauth2ToGetUserInfo(wxOAuth2AccessTokenResult.getAccess_token(), wxUser);
+        model.addAttribute("openId", wxUser1.getOpenid());
+        User user = userService.getUser(wxUser1.getOpenid());
+        if (user != null) {
+            model.addAttribute("userId", user.getId());
+            model.addAttribute("isAuth", user.getIsauth());
+            model.addAttribute("myName", user.getRealname());
+            model.addAttribute("phone", user.getPhone());
+        } else {
+            model.addAttribute("userId", 0);
+            model.addAttribute("isAuth", "F");
+            model.addAttribute("myName", "");
+            model.addAttribute("phone", "");
         }
-//
+        return "login";
+    }
+
+    //
 //    @AuthCheckAnnotation(checkLogin = false, checkVerify = false)
 //    @RequestMapping(value = "/visit", method = RequestMethod.GET)
 //    public String visit(@RequestParam(name = "code", required = false) String code,
@@ -100,44 +102,53 @@ public class ThymeleafController {
     @RequestMapping(value = "/visit", method = RequestMethod.GET)
     public String visit() {
         return "visit";
-        }
+    }
+
     @RequestMapping(value = "/clear", method = RequestMethod.GET)
     public String clear() {
         return "clear";
     }
+
     @AuthCheckAnnotation(checkLogin = false, checkVerify = false)
-    @RequestMapping(value = "/invite",method= RequestMethod.GET)
+    @RequestMapping(value = "/invite", method = RequestMethod.GET)
     public String invite() {
         return "invite";
     }
 
-    @AuthCheckAnnotation(checkLogin = false,checkVerify = false)
-    @RequestMapping(value = "/bindphone",method= RequestMethod.GET)
+    @AuthCheckAnnotation(checkLogin = false, checkVerify = false)
+    @RequestMapping(value = "/bindphone", method = RequestMethod.GET)
     public String bindphone() {
         return "bindphone";
     }
 
-    @AuthCheckAnnotation(checkLogin = false,checkVerify = false)
-    @RequestMapping(value = "/firstrecord",method= RequestMethod.GET)
+    @AuthCheckAnnotation(checkLogin = false, checkVerify = false)
+    @RequestMapping(value = "/firstrecord", method = RequestMethod.GET)
     public String firstrecord() {
         return "firstrecord";
     }
-    @AuthCheckAnnotation(checkLogin = false,checkVerify = false)
-    @RequestMapping(value = "/secondrecord",method= RequestMethod.GET)
+
+    @AuthCheckAnnotation(checkLogin = false, checkVerify = false)
+    @RequestMapping(value = "/secondrecord", method = RequestMethod.GET)
     public String secondrecord() {
         return "secondrecord";
     }
-    @AuthCheckAnnotation(checkLogin = false,checkVerify = false)
-    @RequestMapping(value = "/recorddetail",method= RequestMethod.GET)
+
+    @AuthCheckAnnotation(checkLogin = false, checkVerify = false)
+    @RequestMapping(value = "/recorddetail", method = RequestMethod.GET)
     public String recorddetail() {
         return "recorddetail";
     }
-//        @AuthCheckAnnotation(checkLogin = false,checkVerify = false)
+
+    //        @AuthCheckAnnotation(checkLogin = false,checkVerify = false)
 //        @RequestMapping({"static/MP_verify_I4XWI1ZSKeFojwT6.txt"})
 //        private String returnConfigFile(HttpServletResponse response) {
 //           return "I4XWI1ZSKeFojwT6";
 //        }
-
+    @AuthCheckAnnotation(checkLogin = false, checkVerify = false)
+    @RequestMapping(value = "/reply", method = RequestMethod.GET)
+    public String reply() {
+        return "reply";
+    }
 
     @AuthCheckAnnotation(checkLogin = false, checkVerify = false)
     @RequestMapping(value = "/auth", method = RequestMethod.GET)
@@ -170,6 +181,7 @@ public class ThymeleafController {
 
         return "auth";
     }
+
     @AuthCheckAnnotation(checkLogin = false, checkVerify = false)
     @RequestMapping(value = "/auth2", method = RequestMethod.GET)
     public String auth2(Model model) {

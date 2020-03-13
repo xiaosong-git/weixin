@@ -407,8 +407,8 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
     public Result uploadPhoto(String openId, String mediaId, String type) throws Exception {
 //        String time = DateUtil.getSystemTimeFourteen();
         //临时图片地址
-//        String url = "D:\\test\\tempotos";
-        String url="/project/weixin/tempotos";
+        //        String url = "D:\\test\\tempotos";
+       String url="/project/weixin/tempotos";
         File file = new File(url);
         File newFile = null;
         try {
@@ -460,17 +460,17 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
         if (users == null || users.isEmpty()) {
             return ResultGenerator.genFailResult("暂无数据", "");
         }
-//        String imageServerUrl = paramService.findValueByName("imageServerUrl");
-//        for (User user : users) {
-//            try {
-//                if (user.getIdhandleimgurl() == null || "".equals(user.getIdhandleimgurl())) {
-//                    continue;
-//                }
-//                user.setIdhandleimgurl(Base64.encode(FilesUtils.getImageFromNetByUrl(imageServerUrl + user.getIdhandleimgurl())));
-//            } catch (Exception e) {
-//                logger.error("图片地址有误，无法生成图片 用户Id：{}", user.getId());
-//            }
-//        }
+        String imageServerUrl = paramService.findValueByName("imageServerUrl");
+        for (User user : users) {
+            try {
+                if (user.getIdhandleimgurl() == null || "".equals(user.getIdhandleimgurl())) {
+                    continue;
+                }
+                user.setIdhandleimgurl(Base64.encode(FilesUtils.getImageFromNetByUrl(imageServerUrl + user.getIdhandleimgurl())));
+            } catch (Exception e) {
+                logger.error("图片地址有误，无法生成图片 用户Id：{}", user.getId());
+            }
+        }
         return ResultGenerator.genSuccessResult(users);
     }
 
@@ -500,7 +500,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
 
         if (!"test2333".equals(code)) {
             if (!codeService.verifyCode(phone, code)) {
-                return ResultGenerator.genFailResult("验证码错误！");
+                return ResultGenerator.genFailResult("验证码错误");
             }
         }
         User byPhone = userMapper.findByPhone(phone);
@@ -531,7 +531,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
             return ResultGenerator.genSuccessResult(map);
         }
         TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();//回滚
-        return ResultGenerator.genFailResult("绑定手机号失败，系统错误！");
+        return ResultGenerator.genFailResult("绑定手机号失败，请重试");
     }
 
 //    @Override

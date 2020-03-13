@@ -32,6 +32,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.company.project.weixin.MenuKey.REPLY;
+import static com.company.project.weixin.MenuKey.URL;
+
 
 /**
  * Created by CodeGenerator on 2019/09/22.
@@ -58,7 +61,7 @@ public class visitRecordServiceImpl extends AbstractService<VisitRecord> impleme
     @Override
     public Result visitRequest(VisitRecord visitRecord, String hour) throws Exception {
         visitRecord.setRecordType(1);
-        return  visitCommon( visitRecord,  hour);
+        return  visitCommon( visitRecord,  hour ,1);
     }
 
     @Override
@@ -71,7 +74,12 @@ public class visitRecordServiceImpl extends AbstractService<VisitRecord> impleme
         Long userId = visitRecord.getVisitorId();
         visitRecord.setUserId(userId);
         visitRecord.setVisitorId(visitorId);
-        return visitCommon(visitRecord,hour);
+        try {
+            return visitCommon(visitRecord,hour,2);
+        } catch (WxErrorException e) {
+            e.printStackTrace();
+        }
+        return ResultGenerator.genFailResult("系统错误！");
     }
 
     @Override
@@ -139,7 +147,7 @@ public class visitRecordServiceImpl extends AbstractService<VisitRecord> impleme
         return ResultGenerator.genSuccessResult("成功");
     }
 
-    public Result visitCommon(VisitRecord visitRecord, String hour){
+    public Result visitCommon(VisitRecord visitRecord, String hour,int applyTpey) throws WxErrorException {
         String cstatus = "applyConfirm";
         Long userId = visitRecord.getUserId();
         Long visitorId = visitRecord.getVisitorId();
@@ -190,6 +198,47 @@ public class visitRecordServiceImpl extends AbstractService<VisitRecord> impleme
                 }
 
             }
+
+            //公众号消息推送
+            TemplateSender sender = new TemplateSender();
+            Map<String, WxTemplateData> dataMap = new HashMap<>();
+            VisitRecord vt = visitorRecordMapper.findRecord(userId,visitorId,visitRecord.getVisitDate(),visitRecord.getVisitTime());
+            if(applyTpey == 1){
+                sender.setTemplate_id("2UBJNiTiPPQTlwu2PHxtbCKhqao3Ix1I8mjGPBIWnUU");
+                User me = userService.findById(vt.getUserId());
+                User otherUser = userService.findById(vt.getVisitorId());
+                dataMap.put("first",new WxTemplateData("访问申请", "#173177"));
+                dataMap.put("keyword1",new WxTemplateData(me.getRealname(), "#173177"));
+                dataMap.put("keyword2",new WxTemplateData(me.getPhone(), "#173177"));
+                dataMap.put("keyword3",new WxTemplateData(vt.getStartDate(), "#173177"));
+                dataMap.put("keyword4",new WxTemplateData(vt.getReason(), "#173177"));
+                dataMap.put("remark",new WxTemplateData("点击查看详情信息↓", "#173177"));
+                String params = "?recordId="+vt.getId()+"&otherId="+me.getId();
+                sender.setUrl(URL+REPLY+params);
+                sender.setData(dataMap);
+                sender.setTouser(otherUser.getWxOpenId());
+                TemplateSenderResult result = iService.templateSend(sender);
+                System.out.println(result);
+            }else{
+                sender.setTemplate_id("2UBJNiTiPPQTlwu2PHxtbCKhqao3Ix1I8mjGPBIWnUU");
+                User me = userService.findById(vt.getVisitorId());
+                User otherUser = userService.findById(vt.getUserId());
+                sender.setTouser(otherUser.getWxOpenId());
+                dataMap.put("first",new WxTemplateData("邀约申请", "#173177"));
+                dataMap.put("keyword1",new WxTemplateData(me.getRealname(), "#173177"));
+                dataMap.put("keyword2",new WxTemplateData(me.getPhone(), "#173177"));
+                dataMap.put("keyword3",new WxTemplateData(vt.getStartDate(), "#173177"));
+                dataMap.put("keyword4",new WxTemplateData(vt.getReason(), "#173177"));
+                dataMap.put("remark",new WxTemplateData("点击查看详情信息↓", "#173177"));
+                String params = "?recordId="+vt.getId()+"&otherId="+me.getId();
+                sender.setUrl(URL+REPLY+params);
+                sender.setData(dataMap);
+                sender.setTouser(otherUser.getWxOpenId());
+                TemplateSenderResult result = iService.templateSend(sender);
+                System.out.println(result);
+            }
+
+
             return ResultGenerator.genSuccessResult(visitRecord);
         }else {
             return ResultGenerator.genFailResult("发送访问失败");
@@ -252,5 +301,10 @@ public class visitRecordServiceImpl extends AbstractService<VisitRecord> impleme
         sender.setData(dataMap);
         TemplateSenderResult result=iService.templateSend(sender);
         System.out.println(result);
+    }
+
+    @Override
+    public Map<String, Object> findRecordCompany(Long recordId) {
+        return visitorRecordMapper.findRecordCompany(recordId);
     }
 }

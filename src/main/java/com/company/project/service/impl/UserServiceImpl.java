@@ -460,17 +460,17 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
         if (users == null || users.isEmpty()) {
             return ResultGenerator.genFailResult("暂无数据", "");
         }
-        String imageServerUrl = paramService.findValueByName("imageServerUrl");
-        for (User user : users) {
-            try {
-                if (user.getIdhandleimgurl() == null || "".equals(user.getIdhandleimgurl())) {
-                    continue;
-                }
-                user.setIdhandleimgurl(Base64.encode(FilesUtils.getImageFromNetByUrl(imageServerUrl + user.getIdhandleimgurl())));
-            } catch (Exception e) {
-                logger.error("图片地址有误，无法生成图片 用户Id：{}", user.getId());
-            }
-        }
+//        String imageServerUrl = paramService.findValueByName("imageServerUrl");
+//        for (User user : users) {
+//            try {
+//                if (user.getIdhandleimgurl() == null || "".equals(user.getIdhandleimgurl())) {
+//                    continue;
+//                }
+//                user.setIdhandleimgurl(Base64.encode(FilesUtils.getImageFromNetByUrl(imageServerUrl + user.getIdhandleimgurl())));
+//            } catch (Exception e) {
+//                logger.error("图片地址有误，无法生成图片 用户Id：{}", user.getId());
+//            }
+//        }
         return ResultGenerator.genSuccessResult(users);
     }
 

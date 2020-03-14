@@ -141,7 +141,7 @@ public class VisitRecordController {
         String isValue;
         System.out.println(endDate.compareTo(now));
         System.out.println(startDate.compareTo(now));
-        if(endDate.compareTo(now) > 0 && startDate.compareTo(now) < 0){
+        if(endDate.compareTo(now) > 0){
             isValue ="T";
         }else{
             isValue ="F";

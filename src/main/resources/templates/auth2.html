@@ -56,18 +56,37 @@
             </div>
         </div>
     </div>
-
-    <div class="weui-btn-area">
-        <a class="weui-btn weui-btn_primary" href="javascript:" id="btn" onclick="upload()">确定</a>
-<!--        <a class="weui-btn weui-btn_primary" href="javascript:" id="btnTest" onclick="authTest()">确定</a>-->
-        <a class="weui-btn weui-btn_primary" href="javascript:" id="show-login" onclick="login()">app用户登录</a>
-        <a class="weui-btn weui-btn_warn" href="javascript:" id="quit" onclick="quit()">退出界面</a>
-    </div>
-    <br>
-    <br>
-
 </div>
+<div class="weui-cells weui-cells_form">
+    <div class="weui-cells__title">绑定手机，可以更快更有效的使用访问邀约功能</div>
+    <div class="weui-cell">
+        <div class="weui-cell__hd">
+            <label class="weui-label">手机号</label>
+        </div>
+        <div class="weui-cell__bd">
+            <input class="weui-input" placeholder="请输入绑定的手机号" type="text" id="bindp" value="">
+        </div>
 
+    </div>
+    <div class="weui-cell">
+        <div class="weui-cell__hd">
+            <label class="weui-label">验证码</label>
+        </div>
+        <div class="weui-cell__bd">
+            <input class="weui-input" placeholder="请输入验证码" type="text" id="code" value="">
+        </div>
+        <div class="weui-cell__ft">
+            <button class="weui-vcode-btn" onclick="getCode(this)">获取验证码</button>
+        </div>
+    </div>
+</div>
+<div class="weui-btn-area">
+    <a class="weui-btn weui-btn_primary" href="javascript:" id="btn" onclick="upload()">确定</a>
+    <a class="weui-btn weui-btn_primary" href="javascript:" id="show-login" onclick="login()">app用户登录</a>
+    <a class="weui-btn weui-btn_warn" href="javascript:" id="quit" onclick="quit()">退出界面</a>
+</div>
+<br>
+<br>
 </body>
 
 <script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
@@ -148,20 +167,16 @@
                 console.log(result);
                 if (result.code == 200) {
                     // setCookie('token',result.data.user.token,365);
-                    // alert(result.data.id);
-                    // alert(result.data.isauth);
                     setCookie('phone', username, 365);
                     setCookie('userId', result.data.id, 365);
                     setCookie('isAuth', result.data.isauth, 365);
                     setCookie('myName', result.data.realname, 365);
                     // setCookie('imageServerUrl',result.data.imageServerUrl,365);
                     $.toptip("登入成功", 'success');
-                    if (result.data.isauth != "T") {
+                    if (result.data.isauth !== "T") {
                         $.toptip("请先前往“我的”进行“实名认证”");
                         return;
                     }
-                    $.toast("认证成功，即将关闭");
-                    //点击确认后的回调函数
                     setTimeout(function(){ quit();},1500);
                     //判断用户
                     // console.log("该用户不存在")
@@ -254,8 +269,12 @@
             $.toptip("请输入身份证号");
         } else if (isEmpty($("#photoDiv").val())) {
             $.toptip("请上传人像照片");
+        }else if (isEmpty($("#bindp").val())) {
+            $.toptip("请输入手机号码");
+        }else if (isEmpty($("#code").val())) {
+            $.toptip("请输入验证码");
         } else {
-            $.showLoading();
+            $.showLoading();//15280023431
             $.ajax({
                 //请求方式
                 type: "POST",
@@ -270,28 +289,26 @@
                     idHandleImgUrl: $("#uploaderFiles").val(),
                     idNO: $("#idNo").val(),
                     realName: $("#realName").val(),
-                    localImgUrl:$("#photoDiv").val()
-
+                    localImgUrl:$("#photoDiv").val(),
+                    phone:$("#bindp").val(),
+                    code:$("#code").val(),
                     // imgname:rst.base64
                 },
                 //请求成功
                 success: function (result) {
-                    // alert("test");改了这里
                     if (result.code == 400) {
-                        // alert("test1");
                         $.toptip("认证失败，请确认输入信息是否有误");
                         alert("认证失败，请确认输入信息是否有误");
                         $.hideLoading();
                     } else {
-                        // alert("test2");
                         $.hideLoading();
-                        // alert(result.data.userId);
-                        // alert(result.data.isAuth);
                         setCookie("userId",result.data.userId);
                         setCookie("isAuth",result.data.isAuth);
+                        $.toptip("认证成功！", 'success');
                         $.toast("认证成功，页面即将关闭");
                         //点击确认后的回调函数
                         setTimeout(function(){ quit();},1500);
+
                     }
                 },
                 error: function (e) {
@@ -301,50 +318,55 @@
         }
 
     }
-    //测试实人认证
-    // function authTest() {
-    //
-    //         $.showLoading();
-    //         $.ajax({
-    //             //请求方式
-    //             type: "POST",
-    //             //请求的媒体类型
-    //             contentType: "application/x-www-form-urlencoded",
-    //             //请求地址
-    //             url: "user/verifyTest",
-    //             //数据，json字符串
-    //             data: {
-    //                 userId: getCookie("userId")
-    //             },
-    //             //请求成功
-    //             success: function (result) {
-    //                 alert("test");
-    //                 if (result.code == 400) {
-    //                     alert("test1");
-    //                     $.toptip(result.message);
-    //                     alert(result.message);
-    //                     $.hideLoading();
-    //                 } else {
-    //                     alert("test2");
-    //                     $.hideLoading();
-    //                     alert(result.data.userId);
-    //                     alert(result.data.isAuth);
-    //                     // setCookie("userId",result.data.userId);
-    //                     // setCookie("isAuth",result.data.isAuth);
-    //                     $.toast("认证成功，即将关闭");
-    //                     //点击确认后的回调函数
-    //                     setTimeout(function(){ quit();},1500);
-    //                 }
-    //             },
-    //             error: function (e) {
-    //                 $.toptip("网络错误!");
-    //             }
-    //         });
-    //
-    //
-    // }
+    var countdown = 60;
+    //获取手机验证码
+    function getCode(ojb) {
+        var code = $(ojb);
+        if ($("#bindp").val() == "") {
+            $.toptip("手机号不能为空");
+            return;
+        }
+        if (countdown == 60) {
+            $.ajax({
+                type: 'POST',
+                contentType: "application/x-www-form-urlencoded",
+                url: "code/sendCode/" + $("#bindp").val() + "/1",
+                success: function (result) {
+                    // $.hideLoading();
+                    console.log(result);
+                    var data = result.data;
+                    if (result.code == 200) {
+                        $.toptip("发送成功", "success");
+                        // console.log("该用户不存在")
+                    } else if (result.code == 400) {
+                        if (result.message == "请求参数格式错误") {
+                            $.toptip("发送短信失败，手机号码错误");
+                        } else {
+                            $.toptip(result.message);
+                        }
+                        countdown = 0;
+                    }
+                }
+            });
+            code.text("重新发送(" + countdown + ")");
+            code.attr('disabled', true);
+            countdown--;
+        } else if (countdown == 0) {
+            code.removeAttr('disabled');
+            code.text("获取验证码");
+            countdown = 60;
 
+            return;
+        } else {
+            code.text("重新发送(" + countdown + ")");
+            code.attr('disabled', true);
+            countdown--;
+        }
 
+        setTimeout(function () {
+            getCode(ojb)
+        }, 1000);
+    }
 </script>
 <script src="https://cdn.bootcss.com/webcamjs/1.0.25/webcam.js"></script>
 <script src="js/myUtil.js"></script>

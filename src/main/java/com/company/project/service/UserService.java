@@ -25,7 +25,7 @@ public interface UserService extends Service<User> {
 
     Result loginByVerifyCode(String phone, String code, String openId) throws Exception;
 
-    Result verify(String  openId, String idNO, String name, String idHandleImgUrl, String addr,String localImgUrl);
+    Result verify(String  openId, String idNO, String name, String idHandleImgUrl, String addr,String localImgUrl,String phone,String code);
 
     boolean isVerify(long userId);
 

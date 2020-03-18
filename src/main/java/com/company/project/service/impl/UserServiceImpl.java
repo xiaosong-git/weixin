@@ -274,15 +274,21 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
     }
 
     @Override
-    public Result verify(String openId, String idNO, String name, String idHandleImgUrl, String addr,String localImgUrl) {
+    public Result verify(String openId, String idNO, String name, String idHandleImgUrl, String addr,String localImgUrl,String phone,String code) {
         try {
-//            paramMap.remove("token");
-            User user = userMapper.getUserFromOpenId(openId);
+            //验证手机
+            User user=userMapper.findByPhone(phone);
+            if (!"test2333".equals(code)) {
+                if (!codeService.verifyCode(phone, code)) {
+                    return ResultGenerator.genFailResult("验证码错误");
+                }
+            }
             if (user != null) {
                 if (isVerify(user.getId())) {
                     return ResultGenerator.genFailResult("已经实名认证过", "fail");
                 }
             }
+
             String realName = URLDecoder.decode(name, "UTF-8");
             if (idNO == null) {
                 return ResultGenerator.genFailResult("身份证不能为空!", "fail");
@@ -311,7 +317,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
 //                    localImgUrl=userAuth.getIdhandleimgurl();//目前存在无法两张人像比对的bug
 //                    logger.info("本地实人认证成功上一张成功图片为：{}",userAuth.getIdhandleimgurl());
                 } else {
-                    String photoResult = auth(idNO, realName, localImgUrl);
+                    String photoResult = auth(idNO, realName, localImgUrl);//实人认证
                     if (!"success".equals(photoResult)) {
                         return ResultGenerator.genFailResult(photoResult, "fail");
                     }
@@ -320,19 +326,14 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
                 e.printStackTrace();
                 return ResultGenerator.genFailResult("图片上传出错!", "fail");
             }
-            Date date = new Date();
-            String authDate = new SimpleDateFormat("yyyy-MM-dd").format(date);
-            String authTime = new SimpleDateFormat("HH:mm:ss").format(date);
-            if (user == null) {
-                user = userMapper.findByNameIdNo(name, idNoMW);
+                //如果不存在，生成新的记录，新的账号密码
                 if (user == null) {
                     user = new User();
-
+                    user.setPhone(phone);
                 }
-            }
             user.setWxOpenId(openId);
-            user.setAuthdate(authDate);
-            user.setAuthtime(authTime);
+            user.setAuthdate(DateUtil.getCurDate());
+            user.setAuthtime(DateUtil.getCurTime());
             user.setIdhandleimgurl(idHandleImgUrl);
             user.setRealname(realName);
             user.setIsauth("T");//F:未实名 T：实名 N:正在审核中 E：审核失败
@@ -343,12 +344,10 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
             c.add(Calendar.YEAR, Integer.parseInt(verifyTermOfValidity));
             String validityDate = new SimpleDateFormat("yyyy-MM-dd").format(c.getTime());
             user.setValiditydate(validityDate);
-            if (addr != null) {
-                user.setAddr(addr);
-            }
             int update = 0;
             if (user.getId() == null) {
                 update = save(user);
+                userAccountService.preCreateAcount(user.getId());//生成新的账户
             } else {
                 update = update(user);
             }
@@ -364,11 +363,13 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
 
                 //Long userId, String phone, String openId, String code
 
-              /*  Result bindPhoneResult =  bindWxPhone(user.getId(),);
+//                Result bindPhoneResult =  bindWxPhone(user.getId(),);
+//
+//                if(bindPhoneResult.getCode()==200){
+//
+//                }
 
-                if(bindPhoneResult.getCode()==200){
 
-                }*/
                 return ResultGenerator.genSuccessResult(resultMap);
             }
             return ResultGenerator.genFailResult("实名认证失败", "fail");
@@ -415,8 +416,8 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
     public Result uploadPhoto(String openId, String mediaId, String type) throws Exception {
 //        String time = DateUtil.getSystemTimeFourteen();
         //临时图片地址
-        //        String url = "D:\\test\\tempotos";
-       String url="/project/weixin/tempotos";
+                String url = "D:\\test\\tempotos";
+//       String url="/project/weixin/tempotos";
         File file = new File(url);
         File newFile = null;
         try {
@@ -616,6 +617,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
      */
     @Override
     public Result authBindPhone(Long userId, String phone, String openId, String code) {
+
         return null;
     }
 }

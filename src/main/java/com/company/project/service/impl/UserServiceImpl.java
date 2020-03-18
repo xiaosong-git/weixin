@@ -361,6 +361,14 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
                 resultMap.put("isAuth", "T");
                 resultMap.put("userId", user.getId());
                 resultMap.put("validityDate", validityDate);
+
+                //Long userId, String phone, String openId, String code
+
+              /*  Result bindPhoneResult =  bindWxPhone(user.getId(),);
+
+                if(bindPhoneResult.getCode()==200){
+
+                }*/
                 return ResultGenerator.genSuccessResult(resultMap);
             }
             return ResultGenerator.genFailResult("实名认证失败", "fail");
@@ -534,6 +542,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
         return ResultGenerator.genFailResult("绑定手机号失败，请重试");
     }
 
+
 //    @Override
 //    public Result userAuthInfo(String openId) {
 //        return null;
@@ -594,5 +603,19 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
         Map result = JSON.parseObject(resultMap.get("data").toString());
 
         System.out.println(result.get("imageFileName"));
+    }
+
+    /**
+     *  实人认证绑定手机号
+     *
+     * @param userId
+     * @param phone
+     * @param openId
+     * @param code
+     * @return
+     */
+    @Override
+    public Result authBindPhone(Long userId, String phone, String openId, String code) {
+        return null;
     }
 }

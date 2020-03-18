@@ -110,7 +110,7 @@ public class WxController {
         //朋客联盟
         // sender.setTemplate_id("xtGAH74BuXa6qQD6t8GXjwMwYlLun_OSLxf-DhllTA0");
         //朋悦比邻
-        sender.setTemplate_id("2UBJNiTiPPQTlwu2PHxtbCKhqao3Ix1I8mjGPBIWnUU");
+        sender.setTemplate_id("R9XFEBlDWMx8feBF98OdOSpDY5Y-VFZjMzqmln4hAnM");
         sender.setTouser(wxOpenId);
         logger.info("访客微信openId为：" + wxOpenId);
         Map<String, WxTemplateData> dataMap = new HashMap<>();

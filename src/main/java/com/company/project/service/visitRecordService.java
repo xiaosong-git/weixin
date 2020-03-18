@@ -26,7 +26,7 @@ public interface visitRecordService extends Service<VisitRecord> {
 
     Result recordReply(VisitRecord visitRecord, Long loginId);
 
-    Result recordComfire(Long recordId,String cstatus,String companyId);
+    Result recordComfire(Long recordId,String cstatus,String companyId) throws WxErrorException;
 
     void sendTemplate(String wxOpenId, String templateId, String accessType, String visitResult,
                       String visitorBy, String startDate, String endDate, String qrcodeUrl, String companyFloor,

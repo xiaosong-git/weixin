@@ -56,17 +56,37 @@
             </div>
         </div>
     </div>
-
-    <div class="weui-btn-area">
-        <a class="weui-btn weui-btn_primary" href="javascript:" id="btn" onclick="upload()">确定</a>
-        <a class="weui-btn weui-btn_primary" href="javascript:" id="show-login" onclick="login()">app用户登录</a>
-        <a class="weui-btn weui-btn_warn" href="javascript:" id="quit" onclick="quit()">退出界面</a>
-    </div>
-    <br>
-    <br>
-
 </div>
+<div class="weui-cells weui-cells_form">
+    <div class="weui-cells__title">绑定手机，可以更快更有效的使用访问邀约功能</div>
+    <div class="weui-cell">
+        <div class="weui-cell__hd">
+            <label class="weui-label">手机号</label>
+        </div>
+        <div class="weui-cell__bd">
+            <input class="weui-input" placeholder="请输入绑定的手机号" type="text" id="bindp" value="">
+        </div>
 
+    </div>
+    <div class="weui-cell">
+        <div class="weui-cell__hd">
+            <label class="weui-label">验证码</label>
+        </div>
+        <div class="weui-cell__bd">
+            <input class="weui-input" placeholder="请输入验证码" type="text" id="code" value="">
+        </div>
+        <div class="weui-cell__ft">
+            <button class="weui-vcode-btn" onclick="getCode(this)">获取验证码</button>
+        </div>
+    </div>
+</div>
+<div class="weui-btn-area">
+    <a class="weui-btn weui-btn_primary" href="javascript:" id="btn" onclick="upload()">确定</a>
+    <a class="weui-btn weui-btn_primary" href="javascript:" id="show-login" onclick="login()">app用户登录</a>
+    <a class="weui-btn weui-btn_warn" href="javascript:" id="quit" onclick="quit()">退出界面</a>
+</div>
+<br>
+<br>
 </body>
 
 <script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
@@ -282,53 +302,6 @@
                         $.toast("认证成功，页面即将关闭");
                         //点击确认后的回调函数
                         window.history.go(-1);
-                        // $.showLoading();
-                        //发起访问
-                        // $.ajax({
-                        //     type: 'POST',
-                        //     contentType: "application/x-www-form-urlencoded",
-                        //     url: "visit/record/visitRequest",
-                        //     data: {
-                        //         //从跳转页获取用户id
-                        //         userId: getCookie('userId'),
-                        //         visitorId: getCookie('visitorId'),
-                        //         // companyId: $("#company").attr("data-values"),
-                        //         reason: getCookie('reason'),
-                        //         startDate: getCookie('startTime'),
-                        //         endDate: getCookie('endTime'),
-                        //         token: getCookie('token')
-                        //         // orgCode: $("#orgCode").attr("orgCode")
-                        //     },
-                        //     success: function(result) {
-                        //         $.hideLoading();
-                        //         var data = result.data;
-                        //         console.log(result);
-                        //         if (result.code==400){
-                        //             $.toptip(result.message);
-                        //             //登入过期
-                        //             if (data=='overTime'){
-                        //                 window.location.href=loginUrl;
-                        //                 $.showLoading();
-                        //                 //实名认证失败
-                        //             }else if ('verifyFail'==data){
-                        //
-                        //                 window.location.href=authUrl;
-                        //                 $.showLoading();
-                        //             }else if ('tokenFail'==data){
-                        //                 window.location.href=loginUrl;
-                        //                 $.showLoading();
-                        //             }else if ('userFail'==data) {
-                        //                 window.location.href=loginUrl;
-                        //                 $.showLoading();
-                        //             }
-                        //         }else{
-                        //             $.toast("发起访问成功",'success');
-                        //             alert("发起访问成功，对方同意后将在《朋悦比邻》公众号提示，请注意查收！");
-                        //             // wx.closeWindow();
-                        //         }
-                        //     }
-                        // });
-
 
                     }
                 },
@@ -339,7 +312,55 @@
         }
 
     }
+    var countdown = 60;
+    //获取手机验证码
+    function getCode(ojb) {
+        var code = $(ojb);
+        if ($("#bindp").val() == "") {
+            $.toptip("手机号不能为空");
+            return;
+        }
+        if (countdown == 60) {
+            $.ajax({
+                type: 'POST',
+                contentType: "application/x-www-form-urlencoded",
+                url: "code/sendCode/" + $("#bindp").val() + "/1",
+                success: function (result) {
+                    // $.hideLoading();
+                    console.log(result);
+                    var data = result.data;
+                    if (result.code == 200) {
+                        $.toptip("发送成功", "success");
+                        // console.log("该用户不存在")
+                    } else if (result.code == 400) {
+                        if (result.message == "请求参数格式错误") {
+                            $.toptip("发送短信失败，手机号码错误");
+                        } else {
+                            $.toptip(result.message);
+                        }
+                        countdown = 0;
+                    }
+                }
+            });
+            code.text("重新发送(" + countdown + ")");
+            code.attr('disabled', true);
+            countdown--;
+        } else if (countdown == 0) {
+            code.removeAttr('disabled');
+            code.text("获取验证码");
+            countdown = 60;
 
+            return;
+        } else {
+            code.text("重新发送(" + countdown + ")");
+            code.attr('disabled', true);
+            countdown--;
+        }
+
+        setTimeout(function () {
+            getCode(ojb)
+        }, 1000);
+    }
 </script>
 <script src="https://cdn.bootcss.com/webcamjs/1.0.25/webcam.js"></script>
 <script src="js/myUtil.js"></script>

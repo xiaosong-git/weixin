@@ -6,8 +6,8 @@ if (IS_DEVELOP) {//生产环境
     uri = "f.pyblkj.cn";
     url = "http://" + uri + "/";
 } else {
-    appId = "wx73d294462904125c";
-    uri = "76g46x.natappfree.cc";
+    appId = "wx2a1951f46acc4371";
+    uri = "xxajud.natappfree.cc";
     url = "http://" + uri + "/";
 }
 

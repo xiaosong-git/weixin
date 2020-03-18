@@ -100,9 +100,11 @@ public class UserController {
     public Result verify(@RequestParam String openId,@RequestParam String idNO,
                          @RequestParam String realName,@RequestParam String idHandleImgUrl,
                          @RequestParam(defaultValue = "无") String addr,
+                         @RequestParam String phone,
+                         @RequestParam String code,
     @RequestParam String localImgUrl){
         try {
-                return userService.verify(openId, idNO, realName, idHandleImgUrl, addr,localImgUrl);
+                return userService.verify(openId, idNO, realName, idHandleImgUrl, addr,localImgUrl, phone, code);
         }catch (Exception e){
             e.printStackTrace();
         }

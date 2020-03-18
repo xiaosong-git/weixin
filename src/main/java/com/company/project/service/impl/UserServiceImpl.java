@@ -285,6 +285,16 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
             }
             if (user != null) {
                 if (isVerify(user.getId())) {
+                    if (user.getWxOpenId()==null||"".equals(user.getWxOpenId())) {
+                        user.setWxOpenId(openId);
+                        int update = update(user);
+                        if (update > 0) {
+                            Map<String, Object> resultMap = new HashMap<String, Object>();
+                            resultMap.put("isAuth", "T");
+                            resultMap.put("userId", user.getId());
+                            return ResultGenerator.genSuccessResult("已经实名认证过");
+                        }
+                    }
                     return ResultGenerator.genFailResult("已经实名认证过", "fail");
                 }
             }
@@ -359,7 +369,6 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
                 Map<String, Object> resultMap = new HashMap<String, Object>();
                 resultMap.put("isAuth", "T");
                 resultMap.put("userId", user.getId());
-                resultMap.put("validityDate", validityDate);
 
                 //Long userId, String phone, String openId, String code
 

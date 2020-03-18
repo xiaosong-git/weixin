@@ -269,8 +269,12 @@
             $.toptip("请输入身份证号");
         } else if (isEmpty($("#photoDiv").val())) {
             $.toptip("请上传人像照片");
+        }else if (isEmpty($("#bindp").val())) {
+            $.toptip("请输入手机号码");
+        }else if (isEmpty($("#code").val())) {
+            $.toptip("请输入验证码");
         } else {
-            $.showLoading();
+            $.showLoading();//15280023431
             $.ajax({
                 //请求方式
                 type: "POST",
@@ -285,7 +289,9 @@
                     idHandleImgUrl: $("#uploaderFiles").val(),
                     idNO: $("#idNo").val(),
                     realName: $("#realName").val(),
-                    localImgUrl:$("#photoDiv").val()
+                    localImgUrl:$("#photoDiv").val(),
+                    phone:$("#bindp").val(),
+                    code:$("#code").val(),
                     // imgname:rst.base64
                 },
                 //请求成功

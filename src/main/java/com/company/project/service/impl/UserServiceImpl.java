@@ -425,8 +425,8 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
     public Result uploadPhoto(String openId, String mediaId, String type) throws Exception {
 //        String time = DateUtil.getSystemTimeFourteen();
         //临时图片地址
-                String url = "D:\\test\\tempotos";
-//       String url="/project/weixin/tempotos";
+        //               String url = "D:\\test\\tempotos";
+      String url="/project/weixin/tempotos";
         File file = new File(url);
         File newFile = null;
         try {

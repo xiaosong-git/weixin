@@ -12,8 +12,8 @@ import java.util.Set;
 
 public final class RedisUtil {
     //我的测试版
-    //  private static String    ADDR           = "47.106.82.190";
-    //  private static int       PORT           = 6379;
+    // private static String    ADDR           = "47.106.82.190";
+    // private static int       PORT           = 6379;
     //  private static String    AUTH           = "wgm";
 
     //生产

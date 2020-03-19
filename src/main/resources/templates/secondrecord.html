@@ -120,11 +120,16 @@
                         timeStr = "邀约时间";
                         addrStr = "邀约地址";
                     }
+
+                    var addr = list[i].addr;
+                    if(isEmpty(addr)){
+                        addr = "未选";
+                    }
                     $("#recordBody").append("<a href=\"javascript:void(0);\" class=\"weui-media-box weui-media-box_appmsg\" onclick=\"toDetail('"+encodeURI(JSON.stringify(list[i]))+"')\">\n" +
                         "\n" +
                         "    <div class=\"weui-media-box__bd\">\n" +
                         "        <p class=\"weui-cell__bd\">"+timeStr+"&nbsp;&nbsp;&nbsp; " + date + " " + startTime + "-" + endTime + "</p><br>\n" +
-                        "        <p class=\"weui-cell__bd\">"+addrStr+"&nbsp;&nbsp;&nbsp; " + list[i].companyName+ "</p>\n" +
+                        "        <p class=\"weui-cell__bd\">"+addrStr+"&nbsp;&nbsp;&nbsp; " + addr+ "</p>\n" +
                         "    </div>\n" +
                         "    <div class=\"weui-panel__ft\">\n" +
                         divShow +

@@ -23,6 +23,7 @@
   <resultMap id="ResultCompanyMap" type="com.company.project.model.Company">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="companyName" jdbcType="VARCHAR" property="companyname" />
+    <result column="addr" jdbcType="VARCHAR" property="addr" />
     <collection property="org" ofType="com.company.project.model.Org">
       <result column="org_code" jdbcType="VARCHAR" property="orgCode" />
     </collection>
@@ -33,7 +34,7 @@
     </collection>
   </resultMap>
   <sql id="companyUserOrg">
-   c.id ,c.companyName,o.org_code,u.companyId ,u.id uid
+   c.id ,c.addr,c.companyName,o.org_code,u.companyId ,u.id uid
   </sql>
   <select id="findByUserId" parameterType="Long" resultMap="ResultCompanyMap">
     select

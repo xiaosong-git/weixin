@@ -41,14 +41,11 @@
     var companyName;
 
     $(function () {
-
          recordId = getQueryString("recordId");
          otherId = getQueryString("otherId");
          console.log(recordId)
          getOtherUser();
-         getRecord();
-
-
+         setTimeout(function () { getRecord();}, 1000);
     });
 
     function verify(status) {
@@ -97,7 +94,7 @@
                 console.log(result)
                 var companys = [];
                 for (var i in result.data) {
-                    companys.push(result.data[i].companyname)
+                    companys.push(result.data[i].companyname +"("+result.data[i].addr+")")
                 }
                 console.log("==========")
                 console.log(companys)

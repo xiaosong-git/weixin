@@ -39,7 +39,7 @@ public class VisitRecordController {
     public Result visitRequest(VisitRecord visitRecord, @RequestParam() String hour)
              throws Exception {
          try {
-             return visitRecordService.visitRequest( visitRecord, hour);
+             return visitRecordService.visitRequest(visitRecord, hour);
          } catch (Exception e) {
              e.printStackTrace();
          }

@@ -118,22 +118,19 @@
         }
         if (show == 1) {
             $("#dataDetail").append("<div class=\"weui-media-box weui-media-box_appmsg\">\n" +
-                "    <div class=\"weui-media-box__hd\"></div>\n" +
-                "    <div class=\"weui-media-box__bd\">\n" +
-                "\n" +
+                "    <div class=\"weui-media-box__bd\" style='margin-left: 3%'>\n" +
                 "        <p class=\"weui-cell__bd\" style=\"margin-left: 5%\">&nbsp;&nbsp;&nbsp;发起人&nbsp;&nbsp;&nbsp; " + userName + "</p><br>\n" +
                 "        <p class=\"weui-cell__bd\" style=\"margin-left: 5%\">&nbsp;&nbsp;&nbsp;"+peopleType+"&nbsp;&nbsp;&nbsp; " + visitorName + "</p><br>\n" +
-                "        <p class=\"weui-cell__bd\" style=\"margin-left: 5%\">申请时间&nbsp;&nbsp;&nbsp; " + applyDate + "</p><br>\n" +
-                "        <p class=\"weui-cell__bd\" style=\"margin-left: 5%\">受理时间&nbsp;&nbsp;&nbsp; " + replyDate + "</p><br>\n" +
-                "        <p class=\"weui-cell__bd\" style=\"margin-left: 5%\">受理状态&nbsp;&nbsp;&nbsp; " + status + "</p><br>\n" +
-                "        <p class=\"weui-cell__bd\" style=\"margin-left: 5%\">访问时间&nbsp;&nbsp;&nbsp; " + visitDate + "</p><br>\n" +
-                "        <p class=\"weui-cell__bd\" style=\"margin-left: 5%\">访问地址&nbsp;&nbsp;&nbsp; " + detailJson.companyName + "</p><br>\n" +
+                "        <p class=\"weui-cell__bd\" style=\"margin-left: 5%\">申请时间&nbsp;&nbsp; " + applyDate + "</p><br>\n" +
+                "        <p class=\"weui-cell__bd\" style=\"margin-left: 5%\">受理时间&nbsp;&nbsp; " + replyDate + "</p><br>\n" +
+                "        <p class=\"weui-cell__bd\" style=\"margin-left: 5%\">受理状态&nbsp;&nbsp; " + status + "</p><br>\n" +
+                "        <p class=\"weui-cell__bd\" style=\"margin-left: 5%\">访问时间&nbsp;&nbsp; " + visitDate + "</p><br>\n" +
+                "        <p class=\"weui-cell__bd\" style=\"margin-left: 5%\">访问地址&nbsp;&nbsp;" + detailJson.addr + "</p><br>\n" +
                 "    </div>\n" +
                 "</div>")
         } else if (show == 0) {
             $("#dataDetail").append("<div class=\"weui-media-box weui-media-box_appmsg\">\n" +
-                "    <div class=\"weui-media-box__hd\"></div>\n" +
-                "    <div class=\"weui-media-box__bd\">\n" +
+                "    <div class=\"weui-media-box__bd\" style='margin-left: 3%'>\n" +
                 "        <p class=\"weui-cell__bd\" style=\"margin-left: 5%\">&nbsp;&nbsp;&nbsp;发起人&nbsp;&nbsp;&nbsp; " + userName + "</p><br>\n" +
                 "        <p class=\"weui-cell__bd\" style=\"margin-left: 5%\">&nbsp;&nbsp;&nbsp;"+peopleType+"&nbsp;&nbsp;&nbsp; " + visitorName + "</p><br>\n" +
                 "        <p class=\"weui-cell__bd\" style=\"margin-left: 5%\">申请时间&nbsp;&nbsp;&nbsp; " + applyDate + "</p><br>\n" +
@@ -141,7 +138,7 @@
                 "        <p class=\"weui-cell__bd\" style=\"margin-left: 5%\">访问时间&nbsp;&nbsp;&nbsp; " + visitDate + "</p><br>\n" +
                 "       <p style=\"display: block\" id=\"addrshow\"></p> \n" +
                 "    </div>\n" +
-                "</div>")
+                "</div>");
             if (detailJson.recordType == "1") {
                 if (getCookie("userId") == detailJson.userId) {
                     document.getElementById("addrshow").style.display = 'none';
@@ -213,10 +210,11 @@
             url: "/pybl/company/findByUserId",
             data: {userId: getCookie("userId")},
             success: function (result) {
+                console.log("===================")
                 console.log(result)
                 var companys = [];
                 for (var i in result.data) {
-                    companys.push(result.data[i].companyname)
+                    companys.push(result.data[i].companyname +"("+result.data[i].addr+")")
                 }
                 $("#address").picker({
                     title: "请选择地址",

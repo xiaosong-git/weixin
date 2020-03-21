@@ -104,7 +104,7 @@ public class WxController {
     @AuthCheckAnnotation(checkLogin = false, checkVerify = false)
     @PostMapping("/sendTempMsg")
     public void sendTempMsg(@RequestParam(defaultValue = "0") String wxOpenId,@RequestParam(defaultValue = "0") Long userId) throws WxErrorException {
-        TemplateSender sender = new TemplateSender();
+        /*TemplateSender sender = new TemplateSender();
         //公众号模板id
         //朋客联盟
         // sender.setTemplate_id("xtGAH74BuXa6qQD6t8GXjwMwYlLun_OSLxf-DhllTA0");
@@ -113,8 +113,8 @@ public class WxController {
         sender.setTouser(wxOpenId);
         logger.info("访客微信openId为：" + wxOpenId);
         Map<String, WxTemplateData> dataMap = new HashMap<>();
-       /* dataMap.put("test",new WxTemplateData("你好", "#173177"));
-        dataMap.put("companyAddr",new WxTemplateData("你好", "#173177"));*/
+       *//* dataMap.put("test",new WxTemplateData("你好", "#173177"));
+        dataMap.put("companyAddr",new WxTemplateData("你好", "#173177"));*//*
         dataMap.put("first",new WxTemplateData("访问申请", "#173177"));
         dataMap.put("keyword1",new WxTemplateData("林", "#173177"));
         dataMap.put("keyword2",new WxTemplateData("18065988666", "#173177"));
@@ -124,6 +124,6 @@ public class WxController {
         sender.setUrl(URL+"replyVisit?recordId=1731&name=%u53D1&phone=123&cstatus=applying&visitDate=2020-03-06");
         sender.setData(dataMap);
         TemplateSenderResult result = iService.templateSend(sender);
-        System.out.println(result);
+        System.out.println(result);*/
     }
 }

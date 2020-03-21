@@ -257,7 +257,7 @@ public class visitRecordServiceImpl extends AbstractService<VisitRecord> impleme
                 dataMap.put("keyword3",new WxTemplateData(vt.getStartDate(), "#173177"));
                 dataMap.put("keyword4",new WxTemplateData(vt.getReason(), "#173177"));
                 dataMap.put("remark",new WxTemplateData("点击查看详情信息↓", "#173177"));
-                String params = "?recordId="+vt.getId()+"&otherId="+me.getId();
+                String params = "?recordId="+vt.getId()+"&otherId="+me.getId()+"&myId="+otherUser.getId();
                 sender.setUrl(URL+REPLY+params);
                 sender.setData(dataMap);
                 TemplateSenderResult result = iService.templateSend(sender);
@@ -277,7 +277,7 @@ public class visitRecordServiceImpl extends AbstractService<VisitRecord> impleme
                 dataMap.put("keyword3",new WxTemplateData(vt.getStartDate(), "#173177"));
                 dataMap.put("keyword4",new WxTemplateData(vt.getReason(), "#173177"));
                 dataMap.put("remark",new WxTemplateData("点击查看详情信息↓", "#173177"));
-                String params = "?recordId="+vt.getId()+"&otherId="+me.getId();
+                String params = "?recordId="+vt.getId()+"&otherId="+me.getId()+"&myId="+otherUser.getId();
                 sender.setUrl(URL+REPLY+params);
                 sender.setData(dataMap);
                 TemplateSenderResult result = iService.templateSend(sender);

@@ -109,7 +109,7 @@
     </sql>
 
     <select id="record" parameterType="Long" resultMap="visitorMessageResultMap">
-SELECT vr.id,vr.visitorId, Max( startDate ) startDate,endDate,u.realName,
+SELECT vr.id,vr.visitorId, Max( startDate ) startDate, Max( endDate ) endDate,u.realName,
 IF( companyName IS NULL, '', companyName ) companyName,
 IF( c.addr IS NULL, '', c.addr ) addr FROM (
 select id,IF(userId=#{userId},visitorId,userId) visitorId,startDate,endDate,companyId,orgCode
@@ -133,7 +133,7 @@ GROUP BY visitorId order by startDate desc
         'applySuccess','applyConfirm'), startDate ) desc,startDate desc,endDate asc
     </select>
     <select id="findRecordCompany" parameterType="Long" resultType="map">
-        select vr.*,c.companyName
+        select vr.*,c.companyName,c.addr
         from tbl_visitor_record vr
         left join tbl_company c on c.id=vr.companyId
         where vr.id = #{recordId} limit 1

@@ -38,12 +38,12 @@
     var applyDate;
     var cstatus;
     var isValue;
-    var companyName;
-
+    var addr;
+    var myId;
     $(function () {
          recordId = getQueryString("recordId");
          otherId = getQueryString("otherId");
-         console.log(recordId)
+         myId = getQueryString("myId");
          getOtherUser();
          setTimeout(function () { getRecord();}, 1000);
     });
@@ -88,7 +88,7 @@
             contentType: "application/x-www-form-urlencoded",
             url: "/pybl/company/findByUserId",
             data: {
-                userId: getCookie("userId")
+                userId: myId
             },
             success: function (result) {
                 console.log(result)
@@ -113,9 +113,8 @@
                         var companyName = $("#address").val()//店铺名赋值
 
                         for (var i in result.data) {
-                            if (result.data[i].companyname == companyName) {
+                            if ((result.data[i].companyname+"("+result.data[i].addr+")") == companyName) {
                                 companyId = result.data[i].id;
-                                console.log(companyId)
                             }
                         }
                     }
@@ -141,8 +140,9 @@
             },
             success: function (result) {
                 if (result.code == 200) {
-                    var data = result.data
-                    if (data.userId != getCookie("userId")) {
+                    var data = result.data;
+                    console.log(data)
+                    if (data.userId != myId) {
                         otherId = data.userId;
                     } else {
                         otherId = data.visitorId;
@@ -156,7 +156,7 @@
                     visitDate = date + " " + startTime + "-" + endTime;
                     isValue = data.isValue;
                     companyId = data.companyId;
-                    companyName = data.companyName;
+                    addr = data.addr;
                     content();
                 }
             }
@@ -218,7 +218,6 @@
         }
         if (show == 1) {
             $("#dataDetail").append("<div class=\"weui-media-box weui-media-box_appmsg\">\n" +
-                "    <div class=\"weui-media-box__hd\"></div>\n" +
                 "    <div class=\"weui-media-box__bd\">\n" +
                 "\n" +
                 "        <p class=\"weui-cell__bd\" style=\"margin-left: 5%\">&nbsp;&nbsp;&nbsp;发起人&nbsp;&nbsp;&nbsp; " + userName + "</p><br>\n" +
@@ -226,12 +225,11 @@
                 "        <p class=\"weui-cell__bd\" style=\"margin-left: 5%\">申请时间&nbsp;&nbsp;&nbsp; " + applyDate + "</p><br>\n" +
                 "        <p class=\"weui-cell__bd\" style=\"margin-left: 5%\">受理状态&nbsp;&nbsp;&nbsp; " + status + "</p><br>\n" +
                 "        <p class=\"weui-cell__bd\" style=\"margin-left: 5%\">访问时间&nbsp;&nbsp;&nbsp; " + visitDate + "</p><br>\n" +
-                "        <p class=\"weui-cell__bd\" style=\"margin-left: 5%\">访问地址&nbsp;&nbsp;&nbsp; " + companyName + "</p><br>\n" +
+                "        <p class=\"weui-cell__bd\" style=\"margin-left: 5%\">访问地址&nbsp;&nbsp;&nbsp; " + addr + "</p><br>\n" +
                 "    </div>\n" +
                 "</div>")
         } else if (show == 0) {
             $("#dataDetail").append("<div class=\"weui-media-box weui-media-box_appmsg\">\n" +
-                "    <div class=\"weui-media-box__hd\"></div>\n" +
                 "    <div class=\"weui-media-box__bd\">\n" +
                 "        <p class=\"weui-cell__bd\" style=\"margin-left: 5%\">&nbsp;&nbsp;&nbsp;发起人&nbsp;&nbsp;&nbsp; " + userName + "</p><br>\n" +
                 "        <p class=\"weui-cell__bd\" style=\"margin-left: 5%\">&nbsp;&nbsp;&nbsp;" + peopleType + "&nbsp;&nbsp;&nbsp; " + visitorName + "</p><br>\n" +
@@ -247,7 +245,7 @@
                 getCompany();
             } else {
                 companyId = companyId;
-                $("#addrshow").append("<p class=\"weui-cell__bd\" style=\"margin-left: 5%\">访问地址&nbsp;&nbsp;&nbsp; " + companyName + "</p><br>")
+                $("#addrshow").append("<p class=\"weui-cell__bd\" style=\"margin-left: 5%\">访问地址&nbsp;&nbsp;&nbsp; " + addr + "</p><br>")
             }
             if (cstatus == "applyConfirm" ) {
                 $("#dataDetail").append("<div>\n" +

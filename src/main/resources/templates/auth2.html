@@ -244,8 +244,18 @@
                                     $("#photoDiv").val(result.data.img);
                                     $("#uploaderFiles").val(result.data.imageFileName);
                                     $("#photoDiv").hide();
-
-                                    $("#uploaderFiles").append('<li onclick="removeimg(this)" class="weui-uploader__file" style="background-image:url(' + localIds + ')"><input value=""  type="hidden"  name="file" /></li>');
+                                    if (window.__wxjs_is_wkwebview) {
+                                        wx.getLocalImgData({
+                                            localId: localIds[0],
+                                            success: function (res) {
+                                                var localData = res.localData; // localData是图片的base64数据，可以用img标签显示
+                                                var replace = localData.replace('jgp', 'jpeg');//iOS 系统里面得到的数据，类型为 image/jgp,因此需要替换一下
+                                                $("#uploaderFiles").append('<li onclick="removeimg(this)" class="weui-uploader__file" style="background-image:url(' + replace + ')"><input value=""  type="hidden"  name="file" /></li>');
+                                            }
+                                        })
+                                    } else {
+                                        $("#uploaderFiles").append('<li onclick="removeimg(this)" class="weui-uploader__file" style="background-image:url(' + localIds + ')"><input value=""  type="hidden"  name="file" /></li>');
+                                    }
                                 }
                             }
                         });

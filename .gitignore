@@ -22,5 +22,6 @@ dist/
 nbdist/
 .nb-gradle/
 
-*.properties/
+*.properties
 MenuKey.java
+myUtil.js

@@ -202,6 +202,7 @@
         });
 
     }
+
     //调用图片
     function jssdkimg(obj) {
         wx.chooseImage({
@@ -244,8 +245,20 @@
                                     $("#photoDiv").val(result.data.img);
                                     $("#uploaderFiles").val(result.data.imageFileName);
                                     $("#photoDiv").hide();
-
-                                    $("#uploaderFiles").append('<li onclick="removeimg(this)" class="weui-uploader__file" style="background-image:url(' + localIds + ')"><input value=""  type="hidden"  name="file" /></li>');
+                                    if (window.__wxjs_is_wkwebview) {
+                                        alert("1");
+                                        wx.getLocalImgData({
+                                            localId: localIds[0],
+                                            success: function (res) {
+                                                alert("2");
+                                                var localData = res.localData; // localData是图片的base64数据，可以用img标签显示
+                                                 var replace = localData.replace('jgp', 'jpeg');//iOS 系统里面得到的数据，类型为 image/jgp,因此需要替换一下
+                                                $("#uploaderFiles").append('<li onclick="removeimg(this)" class="weui-uploader__file" style="background-image:url(' + replace + ')"><input value=""  type="hidden"  name="file" /></li>');
+                                            }
+                                        })
+                                    } else {
+                                        $("#uploaderFiles").append('<li onclick="removeimg(this)" class="weui-uploader__file" style="background-image:url(' + localIds + ')"><input value=""  type="hidden"  name="file" /></li>');
+                                    }
                                 }
                             }
                         });
@@ -269,9 +282,9 @@
             $.toptip("请输入身份证号");
         } else if (isEmpty($("#photoDiv").val())) {
             $.toptip("请上传人像照片");
-        }else if (isEmpty($("#bindp").val())) {
+        } else if (isEmpty($("#bindp").val())) {
             $.toptip("请输入手机号码");
-        }else if (isEmpty($("#code").val())) {
+        } else if (isEmpty($("#code").val())) {
             $.toptip("请输入验证码");
         } else {
             $.showLoading();//15280023431
@@ -289,9 +302,9 @@
                     idHandleImgUrl: $("#uploaderFiles").val(),
                     idNO: $("#idNo").val(),
                     realName: $("#realName").val(),
-                    localImgUrl:$("#photoDiv").val(),
-                    phone:$("#bindp").val(),
-                    code:$("#code").val(),
+                    localImgUrl: $("#photoDiv").val(),
+                    phone: $("#bindp").val(),
+                    code: $("#code").val(),
                     // imgname:rst.base64
                 },
                 //请求成功
@@ -302,8 +315,8 @@
                         $.hideLoading();
                     } else {
                         $.hideLoading();
-                        setCookie("userId",result.data.userId);
-                        setCookie("isAuth",result.data.isAuth);
+                        setCookie("userId", result.data.userId);
+                        setCookie("isAuth", result.data.isAuth);
                         $.toptip("认证成功！", 'success');
                         $.toast("认证成功，页面即将关闭");
                         //点击确认后的回调函数
@@ -318,7 +331,9 @@
         }
 
     }
+
     var countdown = 60;
+
     //获取手机验证码
     function getCode(ojb) {
         var code = $(ojb);

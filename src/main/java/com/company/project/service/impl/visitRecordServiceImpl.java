@@ -148,10 +148,24 @@ public class visitRecordServiceImpl extends AbstractService<VisitRecord> impleme
         TemplateSender sender = new TemplateSender();
         Map<String, WxTemplateData> dataMap = new HashMap<>();
 
+        //个推标题、内容
+        String notification_title= "回应信息提醒";
+        String msg_content = "您好，您有一条回应信息，请登入app查收!";
+        boolean single = false;
         if(visitRecord.getRecordType() == 1){
+
+            //公众号推送
             sender.setTemplate_id("2UBJNiTiPPQTlwu2PHxtbCKhqao3Ix1I8mjGPBIWnUU");
+            //访问发起人
             User me = userService.findById(visitRecord.getUserId());
+            //访问被访人
             User otherUser = userService.findById(visitRecord.getVisitorId());
+            String devicetoken = me.getDevicetoken();
+            String phone = me.getPhone();
+            System.out.println("访问审核后，推送给："+devicetoken);
+            if (devicetoken !=null&&!"".equals(devicetoken)&& phone !=null&&!"".equals(phone)){
+                single = GTNotification.Single(devicetoken, phone, notification_title, msg_content, msg_content);
+            }
             if("".equals(me.getWxOpenId()) || me.getWxOpenId().isEmpty()){
                 return ResultGenerator.genSuccessResult("成功");
             }
@@ -167,8 +181,18 @@ public class visitRecordServiceImpl extends AbstractService<VisitRecord> impleme
             System.out.println(result);
         }else{
             sender.setTemplate_id("2UBJNiTiPPQTlwu2PHxtbCKhqao3Ix1I8mjGPBIWnUU");
+
+            //邀约发起人
             User me = userService.findById(visitRecord.getVisitorId());
+            //邀约被邀人
             User otherUser = userService.findById(visitRecord.getUserId());
+
+            String devicetoken = me.getDevicetoken();
+            String phone = me.getPhone();
+            System.out.println("邀约审核后，推送给："+devicetoken);
+            if (devicetoken !=null&&!"".equals(devicetoken)&& phone !=null&&!"".equals(phone)) {
+                single = GTNotification.Single(devicetoken, phone, notification_title, msg_content, msg_content);
+            }
             if("".equals(me.getWxOpenId()) || me.getWxOpenId().isEmpty()){
                 return ResultGenerator.genSuccessResult("成功");
             }
@@ -214,21 +238,36 @@ public class visitRecordServiceImpl extends AbstractService<VisitRecord> impleme
             //消息推送
             User user = userService.findById(userId);
             User visitor = userService.findById(visitorId);
-            String notification_title = recordType==1?"访客-审核通知":"邀约-审核通知";
+            String notification_title = "";
             String realName = user.getRealname();
-            String msg_content = "【朋悦比邻】您好，您有一条预约访客需审核，访问者:" + realName + "，被访者:" + visitor.getRealname() + ",访问时间:"
-                    + startDate;
+           /* String msg_content = "【朋悦比邻】您好，您有一条预约访客需审核，访问者:" + realName + "，被访者:" + visitor.getRealname() + ",访问时间:"
+                    + startDate;*/
+           String msg_content = "";
+            if(applyTpey == 1){
+                notification_title = "访问-审核通知";
+                msg_content = "【朋悦比邻】您好，您有一条预约访客需审核，访问人:" + realName + "，被访人:" + visitor.getRealname() + ",访问时间:" + startDate;
+            }else{
+                notification_title = "邀约-审核通知";
+                msg_content = "【朋悦比邻】您好，您有一条预约访客需审核，邀约人:" + visitor.getRealname() + "，被邀人:" + realName + ",邀约时间:" + startDate;
+            }
             if ("T".equals(visitor.getIsonlineapp())) {
                 //发送个推
-                boolean single = GTNotification.Single(visitor.getDevicetoken(), visitor.getPhone(), notification_title, msg_content, msg_content);
-                if (!single) {
+                boolean single = false;
+               if(recordType == 1){
+                   System.out.println("发起访问推送给："+visitor.getDevicetoken());
+                   single = GTNotification.Single(visitor.getDevicetoken(), visitor.getPhone(), notification_title, msg_content, msg_content);
+               }else{
+                   System.out.println("发起邀约推送给："+user.getDevicetoken());
+                   single = GTNotification.Single(user.getDevicetoken(), visitor.getPhone(), notification_title, msg_content, msg_content);
+               }
+               if (!single) {
                     if (recordType == 2) {
                         codeService.sendMsg(user.getPhone(), 4, null, visitor.getRealname(), startDate, realName);
                     } else {
                         codeService.sendMsg(visitor.getPhone(), 5, null, null, startDate, realName);
                     }
-                }
-            }else {
+               }
+            }/*else if("F".equals(visitor.getIsonlineapp())){
                 //发送短信
                 //邀约模板没有
                 if (recordType == 2) {
@@ -236,9 +275,7 @@ public class visitRecordServiceImpl extends AbstractService<VisitRecord> impleme
                 } else {
                     codeService.sendMsg(visitor.getPhone(), 5, null, null, startDate, realName);
                 }
-
-            }
-
+            }*/
             //公众号消息推送
             TemplateSender sender = new TemplateSender();
             Map<String, WxTemplateData> dataMap = new HashMap<>();
@@ -283,8 +320,6 @@ public class visitRecordServiceImpl extends AbstractService<VisitRecord> impleme
                 TemplateSenderResult result = iService.templateSend(sender);
                 System.out.println(result);
             }
-
-
             return ResultGenerator.genSuccessResult(visitRecord);
         }else {
             return ResultGenerator.genFailResult("发送访问失败");

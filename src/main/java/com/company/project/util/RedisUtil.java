@@ -19,7 +19,7 @@ public final class RedisUtil {
     //生产
        private static String    ADDR           = "r-bp126e543bb7e944.redis.rds.aliyuncs.com";
        private static int       PORT           = 6379;
-       private static String    AUTH           = "xiaosBAnxin2019";
+      private static String    AUTH           = "xiaosBAnxin2019";
 
     //可用连接实例的最大数目，默认值为8；
     //如果赋值为-1，则表示不限制；如果pool已经分配了maxActive个jedis实例，则此时pool的状态为exhausted(耗尽)。

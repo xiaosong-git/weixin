@@ -32,11 +32,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.HashMap;
-import java.util.Map;
-
-import static com.company.project.weixin.MenuKey.REPLY;
-import static com.company.project.weixin.MenuKey.URL;
 
 /**
  * @program: spring-boot-api-project-seed

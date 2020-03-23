@@ -31,9 +31,10 @@ public class GTNotification {
 
     public static void main(String[] args) throws Exception {
 //        Single("64a00060bb7cdbf4976c37fb742ddfd2","18150797748","文坤","坤","透传");
-        Single("efd7bd73abc48df3c9ce62ed60837475","18150797748","访问申请","发起一条访问申请","发");
-//        Single("9fde86d15925a4eb3bb14f0feade83fb","18150797748","塑封","塑封","塑封");
-        Single("31c0e5eed6e3113a9ecfda5c6548b203","18150797748","春雨","春雨","塑封");
+        boolean single = Single("efd7bd73abc48df3c9ce62ed60837475", "18150797748", "访问申请", "发起一条访问申请", "发");
+        System.out.println(single);
+        //        Single("9fde86d15925a4eb3bb14f0feade83fb","18150797748","塑封","塑封","塑封");
+       // Single("31c0e5eed6e3113a9ecfda5c6548b203","18150797748","春雨","春雨","塑封");
 //        Single("683a18644fd5f8bcdf5555f1a9a083fd","18150797748","宋伟","宋伟","宋伟");
     }
     public static boolean Single(String CID,String Alias,String title,String text,String transmissionContent){
@@ -63,8 +64,8 @@ public class GTNotification {
         if (ret != null) {
             String str = ret.getResponse().toString();
             System.out.println(str);
-             str = str.substring(8, 10);
-            if("ok".equals(str)){
+            str = str.substring(str.indexOf("status=")+7,str.length()-1);
+            if("successed_online".equals(str)){
                 return true;
             }else {
                 return false;

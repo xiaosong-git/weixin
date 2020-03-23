@@ -254,10 +254,10 @@ public class visitRecordServiceImpl extends AbstractService<VisitRecord> impleme
                 //发送个推
                 boolean single = false;
                if(recordType == 1){
-                   System.out.println("发起访问推送给："+visitor.getDevicetoken());
+                //   System.out.println("发起访问推送给："+visitor.getDevicetoken());
                    single = GTNotification.Single(visitor.getDevicetoken(), visitor.getPhone(), notification_title, msg_content, msg_content);
                }else{
-                   System.out.println("发起邀约推送给："+user.getDevicetoken());
+                 //  System.out.println("发起邀约推送给："+user.getDevicetoken());
                    single = GTNotification.Single(user.getDevicetoken(), visitor.getPhone(), notification_title, msg_content, msg_content);
                }
                if (!single) {

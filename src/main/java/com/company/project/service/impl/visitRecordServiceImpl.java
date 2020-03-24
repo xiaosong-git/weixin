@@ -155,7 +155,7 @@ public class visitRecordServiceImpl extends AbstractService<VisitRecord> impleme
         if(visitRecord.getRecordType() == 1){
 
             //公众号推送
-            sender.setTemplate_id("2UBJNiTiPPQTlwu2PHxtbCKhqao3Ix1I8mjGPBIWnUU");
+            sender.setTemplate_id("R9XFEBlDWMx8feBF98OdOSpDY5Y-VFZjMzqmln4hAnM");
             //访问发起人
             User me = userService.findById(visitRecord.getUserId());
             //访问被访人
@@ -166,7 +166,7 @@ public class visitRecordServiceImpl extends AbstractService<VisitRecord> impleme
             if (devicetoken !=null&&!"".equals(devicetoken)&& phone !=null&&!"".equals(phone)){
                 single = GTNotification.Single(devicetoken, phone, notification_title, msg_content, msg_content);
             }
-            if("".equals(me.getWxOpenId()) || me.getWxOpenId().isEmpty()){
+            if("".equals(me.getWxOpenId())|| null == me.getWxOpenId()){
                 return ResultGenerator.genSuccessResult("成功");
             }
             sender.setTouser(me.getWxOpenId());
@@ -180,7 +180,7 @@ public class visitRecordServiceImpl extends AbstractService<VisitRecord> impleme
             TemplateSenderResult result = iService.templateSend(sender);
             System.out.println(result);
         }else{
-            sender.setTemplate_id("2UBJNiTiPPQTlwu2PHxtbCKhqao3Ix1I8mjGPBIWnUU");
+            sender.setTemplate_id("R9XFEBlDWMx8feBF98OdOSpDY5Y-VFZjMzqmln4hAnM");
 
             //邀约发起人
             User me = userService.findById(visitRecord.getVisitorId());
@@ -193,7 +193,7 @@ public class visitRecordServiceImpl extends AbstractService<VisitRecord> impleme
             if (devicetoken !=null&&!"".equals(devicetoken)&& phone !=null&&!"".equals(phone)) {
                 single = GTNotification.Single(devicetoken, phone, notification_title, msg_content, msg_content);
             }
-            if("".equals(me.getWxOpenId()) || me.getWxOpenId().isEmpty()){
+            if("".equals(me.getWxOpenId()) || null == me.getWxOpenId()){
                 return ResultGenerator.genSuccessResult("成功");
             }
             sender.setTouser(me.getWxOpenId());
@@ -220,6 +220,20 @@ public class visitRecordServiceImpl extends AbstractService<VisitRecord> impleme
         }
         long v = (long)(Float.parseFloat(hour)*60);
         String startDate = visitRecord.getStartDate();
+        String nowDate = DateUtil.getCurDate();
+        String nowTime = DateUtil.getCurTime();
+        String now = nowDate +" " +nowTime;
+        System.out.println("now"+now);
+        if(applyTpey ==1){
+            if(startDate.compareTo(now)<0){
+                return ResultGenerator.genFailResult("访问开始时间选择错误");
+            }
+        }else{
+            if(startDate.compareTo(now)<0){
+                return ResultGenerator.genFailResult("邀约开始时间选择错误");
+            }
+        }
+
         String endDate= DateUtil.addMinute(startDate,v);
         Integer recordType = visitRecord.getRecordType();
         VisitRecord check = visitorRecordMapper.check(userId, visitorId, recordType, startDate,endDate);
@@ -245,19 +259,19 @@ public class visitRecordServiceImpl extends AbstractService<VisitRecord> impleme
            String msg_content = "";
             if(applyTpey == 1){
                 notification_title = "访问-审核通知";
-                msg_content = "【朋悦比邻】您好，您有一条预约访客需审核，访问人:" + realName + "，被访人:" + visitor.getRealname() + ",访问时间:" + startDate;
+                msg_content = "【朋悦比邻】您好，您有一条访问申请需审核，访问人:" + realName + "，被访人:" + visitor.getRealname() + ",访问时间:" + startDate;
             }else{
                 notification_title = "邀约-审核通知";
-                msg_content = "【朋悦比邻】您好，您有一条预约访客需审核，邀约人:" + visitor.getRealname() + "，被邀人:" + realName + ",邀约时间:" + startDate;
+                msg_content = "【朋悦比邻】您好，您有一条邀约申请需审核，邀约人:" + visitor.getRealname() + "，被邀人:" + realName + ",邀约时间:" + startDate;
             }
             if ("T".equals(visitor.getIsonlineapp())) {
                 //发送个推
                 boolean single = false;
                if(recordType == 1){
-                //   System.out.println("发起访问推送给："+visitor.getDevicetoken());
+                   System.out.println("发起访问推送给："+visitor.getDevicetoken());
                    single = GTNotification.Single(visitor.getDevicetoken(), visitor.getPhone(), notification_title, msg_content, msg_content);
                }else{
-                 //  System.out.println("发起邀约推送给："+user.getDevicetoken());
+                   System.out.println("发起邀约推送给："+user.getDevicetoken());
                    single = GTNotification.Single(user.getDevicetoken(), visitor.getPhone(), notification_title, msg_content, msg_content);
                }
                if (!single) {
@@ -281,10 +295,10 @@ public class visitRecordServiceImpl extends AbstractService<VisitRecord> impleme
             Map<String, WxTemplateData> dataMap = new HashMap<>();
             VisitRecord vt = visitorRecordMapper.findRecord(userId,visitorId,visitRecord.getVisitDate(),visitRecord.getVisitTime());
             if(applyTpey == 1){
-                sender.setTemplate_id("2UBJNiTiPPQTlwu2PHxtbCKhqao3Ix1I8mjGPBIWnUU");
+                sender.setTemplate_id("R9XFEBlDWMx8feBF98OdOSpDY5Y-VFZjMzqmln4hAnM");
                 User me = userService.findById(vt.getUserId());
                 User otherUser = userService.findById(vt.getVisitorId());
-                if("".equals(otherUser.getWxOpenId()) || otherUser.getWxOpenId().isEmpty()){
+                if("".equals(otherUser.getWxOpenId()) || null ==otherUser.getWxOpenId()){
                     return ResultGenerator.genSuccessResult(visitRecord);
                 }
                 sender.setTouser(otherUser.getWxOpenId());
@@ -300,10 +314,10 @@ public class visitRecordServiceImpl extends AbstractService<VisitRecord> impleme
                 TemplateSenderResult result = iService.templateSend(sender);
                 System.out.println(result);
             }else{
-                sender.setTemplate_id("2UBJNiTiPPQTlwu2PHxtbCKhqao3Ix1I8mjGPBIWnUU");
+                sender.setTemplate_id("R9XFEBlDWMx8feBF98OdOSpDY5Y-VFZjMzqmln4hAnM");
                 User me = userService.findById(vt.getVisitorId());
                 User otherUser = userService.findById(vt.getUserId());
-                if("".equals(otherUser.getWxOpenId()) || otherUser.getWxOpenId().isEmpty()){
+                if("".equals(otherUser.getWxOpenId()) || null ==otherUser.getWxOpenId()){
                     return ResultGenerator.genSuccessResult(visitRecord);
                 }
                 sender.setTouser(otherUser.getWxOpenId());

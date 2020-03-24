@@ -206,7 +206,7 @@
                 console.log(result)
                 var companys = [];
                 for (var i in result.data) {
-                    companys.push(result.data[i].companyname)
+                    companys.push(result.data[i].companyname +"("+result.data[i].addr+")")
                 }
                 $("#address").picker({
                     title: "请选择地址",
@@ -223,7 +223,7 @@
                         var companyName=$("#address").val()//店铺名赋值
 
                         for (var i in result.data){
-                            if(result.data[i].companyname==companyName){
+                            if(result.data[i].companyname==companyName +"("+result.data[i].addr+")"){
                                 companyId=result.data[i].id;
                                 console.log(companyId)
                             }

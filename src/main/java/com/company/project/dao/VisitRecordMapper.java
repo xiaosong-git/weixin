@@ -29,8 +29,8 @@ public interface VisitRecordMapper extends Mapper<VisitRecord> {
     VisitRecord findByRecordId(Object recordId);
 
 
-    @Update("update " + TableList.VISITOR_RECORD + " set cstatus = #{cstatus} , replyDate = #{replyDate} , replyTime = #{replyTime},companyId =#{companyId} where id = #{recordId}")
-    int updateCstatus(Long recordId,String cstatus,String replyDate,String replyTime,String companyId);
+    @Update("update " + TableList.VISITOR_RECORD + " set cstatus = #{cstatus} , replyDate = #{replyDate} , replyTime = #{replyTime},companyId =#{companyId},orgCode=#{orgCode} where id = #{recordId}")
+    int updateCstatus(Long recordId,String cstatus,String replyDate,String replyTime,String companyId,String orgCode);
 
     @Select("select * from "+ TableList.VISITOR_RECORD + " where userId = #{userId} and visitorId =#{visitorId} and visitDate =#{visitDate} and visitTime =#{visitTime}")
     VisitRecord findRecord(Long userId,Long visitorId,String visitDate,String visitTime);

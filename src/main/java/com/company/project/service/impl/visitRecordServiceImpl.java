@@ -3,6 +3,7 @@ package com.company.project.service.impl;
 import com.company.project.core.AbstractService;
 import com.company.project.core.Result;
 import com.company.project.core.ResultGenerator;
+import com.company.project.dao.OrgMapper;
 import com.company.project.dao.VisitRecordMapper;
 import com.company.project.model.User;
 import com.company.project.model.VisitRecord;
@@ -48,6 +49,8 @@ public class visitRecordServiceImpl extends AbstractService<VisitRecord> impleme
     private CodeService codeService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private OrgMapper orgMapper;
     private IService iService = new WxService();
     Logger logger = LoggerFactory.getLogger(visitRecordServiceImpl.class);
     /**
@@ -74,6 +77,8 @@ public class visitRecordServiceImpl extends AbstractService<VisitRecord> impleme
         Long userId = visitRecord.getVisitorId();
         visitRecord.setUserId(userId);
         visitRecord.setVisitorId(visitorId);
+        String orgCode = orgMapper.findOrgCodeByCompanyId(visitRecord.getCompanyId().toString());
+        visitRecord.setOrgCode(orgCode);
         try {
             return visitCommon(visitRecord,hour,2);
         } catch (WxErrorException e) {
@@ -139,8 +144,8 @@ public class visitRecordServiceImpl extends AbstractService<VisitRecord> impleme
 
         String replyDate =DateUtil.getCurDate();
         String replyTime =DateUtil.getCurTime();
-
-        int resultCode = visitorRecordMapper.updateCstatus(recordId,cstatus,replyDate,replyTime,companyId);
+        String orgCode = orgMapper.findOrgCodeByCompanyId(companyId);
+        int resultCode = visitorRecordMapper.updateCstatus(recordId,cstatus,replyDate,replyTime,companyId,orgCode);
         if(resultCode!=1){
             return ResultGenerator.genFailResult("审核失败");
         }

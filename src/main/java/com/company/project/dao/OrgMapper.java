@@ -11,4 +11,9 @@ public interface OrgMapper extends Mapper<Org> {
             "left join " +TableList.USER+" u on u.companyId=c.id"+
             " where u.id=#{userId} limit 1")
     String findOrgCodeByUserId(Long userId);
+
+    @Select(  "select org_code from " + TableList.ORG + " o left join "+TableList.COMPANY+" c " +
+            "on c.orgId=o.id " +
+            " where c.id=#{companyId} limit 1")
+    String findOrgCodeByCompanyId(String companyId);
 }

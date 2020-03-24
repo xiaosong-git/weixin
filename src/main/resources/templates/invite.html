@@ -223,7 +223,7 @@
                         var companyName=$("#address").val()//店铺名赋值
 
                         for (var i in result.data){
-                            if(result.data[i].companyname==companyName +"("+result.data[i].addr+")"){
+                            if(result.data[i].companyname +"("+result.data[i].addr+")"==companyName){
                                 companyId=result.data[i].id;
                                 console.log(companyId)
                             }

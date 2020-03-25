@@ -40,9 +40,13 @@
     var isValue;
     var addr;
     var myId;
+    var index;
     $(function () {
+         index = getQueryString("index");
          recordId = getQueryString("recordId");
+         //发起人ID
          otherId = getQueryString("otherId");
+         //被访问（邀约）人ID
          myId = getQueryString("myId");
          getOtherUser();
          setTimeout(function () { getRecord();}, 1000);
@@ -164,12 +168,18 @@
     }
 
     function getOtherUser() {
+        var userId;
+        if(index =="reply"){
+            userId = otherId;
+        }else{
+            userId = myId;
+        }
         $.ajax({
             type: 'POST',
             contentType: "application/x-www-form-urlencoded",
             url: "user/getUserById",
             data: {
-                userId: otherId
+                userId: userId
             },
             success: function (result) {
                 if (result.code == 200) {
@@ -182,13 +192,15 @@
         var userName = "";
         var visitorName = "";
 
-        if (recordType == '1') {
+        if(index == "reply"){
             userName = realName;
             visitorName = "本人";
-        } else {
-            userName = realName;
-            visitorName = "本人";
+        }else{
+            userName = "本人";
+            visitorName = realName;
+
         }
+
 
         //记录状态
         var status = "";

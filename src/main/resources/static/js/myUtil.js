@@ -7,7 +7,7 @@ if (IS_DEVELOP) {//生产环境
     url = "http://" + uri + "/";
 } else {
     appId = "wx73d294462904125c";
-    uri = "dr8dxg.natappfree.cc";
+    uri = "p49t8i.natappfree.cc";
     url = "http://" + uri + "/";
 }
 
@@ -95,4 +95,13 @@ function isEmpty(v) {
             return true;
     }
     return false;
+}
+//获取上个页面传过来的参数
+function getQueryString(name) {
+    var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+    var r = window.location.search.substr(1).match(reg);
+    if (r != null) {
+        return unescape(r[2]);
+    }
+    return null;
 }

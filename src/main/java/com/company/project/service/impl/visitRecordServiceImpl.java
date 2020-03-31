@@ -234,8 +234,8 @@ public class visitRecordServiceImpl extends AbstractService<VisitRecord> impleme
         String nowTime = DateUtil.getCurTime();
         String now = nowDate +" " +nowTime;
         //判断加十分钟
-        String now10=DateUtil.addMinute(now,10);
-        System.out.println("now"+now);
+        String now10=DateUtil.addMinute(now,-10);
+        System.out.println("now10"+now10);
         //todo 需要改为提前十分钟
         if(applyTpey ==1){
             if(startDate.compareTo(now10)<0){

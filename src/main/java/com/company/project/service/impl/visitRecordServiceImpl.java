@@ -233,13 +233,16 @@ public class visitRecordServiceImpl extends AbstractService<VisitRecord> impleme
         String nowDate = DateUtil.getCurDate();
         String nowTime = DateUtil.getCurTime();
         String now = nowDate +" " +nowTime;
+        //判断加十分钟
+        String now10=DateUtil.addMinute(now,10);
         System.out.println("now"+now);
+        //todo 需要改为提前十分钟
         if(applyTpey ==1){
-            if(startDate.compareTo(now)<0){
+            if(startDate.compareTo(now10)<0){
                 return ResultGenerator.genFailResult("访问开始时间选择错误");
             }
         }else{
-            if(startDate.compareTo(now)<0){
+            if(startDate.compareTo(now10)<0){
                 return ResultGenerator.genFailResult("邀约开始时间选择错误");
             }
         }

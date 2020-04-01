@@ -2,29 +2,27 @@ package com.company.project.weixin;
 
 import com.company.project.annotation.AuthCheckAnnotation;
 import com.company.project.dao.VisitRecordMapper;
-import com.company.project.model.VisitRecord;
-import com.company.project.service.UserService;
 import com.company.project.service.visitRecordService;
+import com.company.project.util.RedisUtil;
 import com.company.project.weixin.handler.MyHandler;
 import com.company.project.weixin.handler.ShareRoomHandler;
 import com.company.project.weixin.handler.VisitHandler;
 import com.company.project.weixin.handler.WhoAmIHandler;
 import com.company.project.weixin.matcher.WhoAmIMatcher;
-import com.company.project.weixin.model.WxTemplateData;
 import com.soecode.wxtools.api.IService;
 import com.soecode.wxtools.api.WxConsts;
 import com.soecode.wxtools.api.WxMessageRouter;
 import com.soecode.wxtools.api.WxService;
-import com.soecode.wxtools.bean.TemplateSender;
 import com.soecode.wxtools.bean.WxXmlMessage;
 import com.soecode.wxtools.bean.WxXmlOutMessage;
-import com.soecode.wxtools.bean.result.TemplateSenderResult;
 import com.soecode.wxtools.exception.WxErrorException;
-import com.soecode.wxtools.util.DateUtil;
 import com.soecode.wxtools.util.xml.XStreamTransformer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -32,6 +30,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalDateTime;
 
 /**
  * @program: spring-boot-api-project-seed
@@ -61,7 +60,18 @@ public class WxController {
         }
         return null;
     }
-
+    @Configuration      //1.主要用于标记配置类，兼备Component的效果。
+    @EnableScheduling   // 2.开启定时任务
+    public class SaticScheduleTask {
+        //3.添加定时任务 30分钟
+//        @Scheduled(cron = "0 0/30 * * * ? ")
+        //或直接指定时间间隔，例如：5秒
+        @Scheduled(fixedRate=1800*1000)
+        private void configureTasks() throws WxErrorException {
+            RedisUtil.setStr("accessToken",iService.getAccessToken(),1,7000);
+//            logger.info("存储acessToken时间: {},acessToken：{}" , LocalDateTime.now(),iService.getAccessToken());
+        }
+    }
     @AuthCheckAnnotation(checkLogin = false, checkVerify = false)
     @PostMapping
     public void handle(HttpServletRequest request, HttpServletResponse response) throws IOException {

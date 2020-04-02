@@ -2,7 +2,6 @@ package com.company.project.weixin;
 
 import com.soecode.wxtools.api.IService;
 import com.soecode.wxtools.api.WxConsts;
-import com.soecode.wxtools.api.WxService;
 import com.soecode.wxtools.bean.WxMenu;
 import com.soecode.wxtools.bean.result.WxUserTagResult;
 import com.soecode.wxtools.exception.WxErrorException;
@@ -23,7 +22,7 @@ public class Menu {
 
 
     public static void creatMenu(){
-        IService iService = new WxService();
+        IService iService = new MyWxService();
         WxMenu menu = new WxMenu();
 
 
@@ -90,7 +89,7 @@ public class Menu {
         }
     }
     public static void checkMenu() throws WxErrorException {
-        IService iService = new WxService();
+        IService iService = new MyWxService();
         try {
             WxUserTagResult wxUserTagResult = iService.queryAllUserTag();
             List<WxUserTagResult.WxUserTag> tags = wxUserTagResult.getTags();

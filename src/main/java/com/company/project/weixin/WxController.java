@@ -12,7 +12,6 @@ import com.company.project.weixin.matcher.WhoAmIMatcher;
 import com.soecode.wxtools.api.IService;
 import com.soecode.wxtools.api.WxConsts;
 import com.soecode.wxtools.api.WxMessageRouter;
-import com.soecode.wxtools.api.WxService;
 import com.soecode.wxtools.bean.WxXmlMessage;
 import com.soecode.wxtools.bean.WxXmlOutMessage;
 import com.soecode.wxtools.exception.WxErrorException;
@@ -30,7 +29,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.time.LocalDateTime;
 
 /**
  * @program: spring-boot-api-project-seed
@@ -43,7 +41,7 @@ import java.time.LocalDateTime;
 @RequestMapping("/wx")
 public class WxController {
     Logger logger = LoggerFactory.getLogger(WxController.class);
-    private IService iService = new WxService();
+    private IService iService = new MyWxService();
     @Autowired
     private visitRecordService visitRecordService;
 
@@ -66,9 +64,9 @@ public class WxController {
         //3.添加定时任务 30分钟
 //        @Scheduled(cron = "0 0/30 * * * ? ")
         //或直接指定时间间隔，例如：5秒
-        @Scheduled(fixedRate=1800*1000)
+        @Scheduled(fixedRate=3600*1000)
         private void configureTasks() throws WxErrorException {
-            RedisUtil.setStr("accessToken",iService.getAccessToken(),1,7000);
+            RedisUtil.setStr("accessToken",iService.getAccessToken(),2,7000);
 //            logger.info("存储acessToken时间: {},acessToken：{}" , LocalDateTime.now(),iService.getAccessToken());
         }
     }

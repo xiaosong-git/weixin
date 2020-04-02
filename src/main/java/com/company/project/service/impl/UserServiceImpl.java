@@ -8,18 +8,17 @@ import com.company.project.core.AbstractService;
 import com.company.project.core.Result;
 import com.company.project.core.ResultGenerator;
 import com.company.project.dao.CompanyMapper;
-import com.company.project.dao.UserMapper;
 import com.company.project.dao.UserAuthMapper;
+import com.company.project.dao.UserMapper;
 import com.company.project.dao.VisitRecordMapper;
 import com.company.project.model.Company;
 import com.company.project.model.User;
 import com.company.project.model.UserAccount;
 import com.company.project.model.UserAuth;
 import com.company.project.service.*;
-import com.company.project.util.Base64;
 import com.company.project.util.*;
+import com.company.project.weixin.MyWxService;
 import com.soecode.wxtools.api.IService;
-import com.soecode.wxtools.api.WxService;
 import com.soecode.wxtools.exception.WxErrorException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpResponse;
@@ -73,7 +72,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
     private CompanyMapper companyMapper;
     @Resource
     private VisitRecordMapper visitRecordMapper;
-    private IService iService = new WxService();
+    private IService iService = new MyWxService();
 
     /**
      * 检测用户是否存在

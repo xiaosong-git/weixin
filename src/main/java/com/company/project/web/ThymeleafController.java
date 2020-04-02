@@ -5,10 +5,10 @@ import com.company.project.annotation.AuthCheckAnnotation;
 import com.company.project.model.User;
 import com.company.project.service.UserService;
 import com.company.project.weixin.MenuKey;
+import com.company.project.weixin.MyWxService;
 import com.company.project.weixin.WxController;
 import com.soecode.wxtools.api.IService;
 import com.soecode.wxtools.api.WxConfig;
-import com.soecode.wxtools.api.WxService;
 import com.soecode.wxtools.bean.WxJsapiConfig;
 import com.soecode.wxtools.bean.WxUserList;
 import com.soecode.wxtools.bean.result.WxOAuth2AccessTokenResult;
@@ -36,7 +36,7 @@ import java.util.List;
 @RequestMapping("/")
 public class ThymeleafController {
     Logger logger = LoggerFactory.getLogger(WxController.class);
-    private IService iService = new WxService();
+    private IService iService = new MyWxService();
     @Autowired
     private UserService userService;
 

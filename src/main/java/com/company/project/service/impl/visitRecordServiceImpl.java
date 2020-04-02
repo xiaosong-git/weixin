@@ -12,11 +12,11 @@ import com.company.project.service.UserService;
 import com.company.project.service.visitRecordService;
 import com.company.project.util.DateUtil;
 import com.company.project.util.GTNotification;
+import com.company.project.weixin.MyWxService;
 import com.company.project.weixin.model.WxTemplateData;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.soecode.wxtools.api.IService;
-import com.soecode.wxtools.api.WxService;
 import com.soecode.wxtools.bean.TemplateSender;
 import com.soecode.wxtools.bean.result.TemplateSenderResult;
 import com.soecode.wxtools.exception.WxErrorException;
@@ -52,7 +52,7 @@ public class visitRecordServiceImpl extends AbstractService<VisitRecord> impleme
     @Autowired
     private OrgMapper orgMapper;
 
-    private IService iService = new WxService();
+    private IService iService = new MyWxService();
     Logger logger = LoggerFactory.getLogger(visitRecordServiceImpl.class);
     /**
 

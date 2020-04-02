@@ -8,8 +8,8 @@ import com.company.project.model.User;
 import com.company.project.service.CompanyService;
 import com.company.project.service.CompanyUserService;
 import com.company.project.service.UserService;
+import com.company.project.weixin.MyWxService;
 import com.soecode.wxtools.api.IService;
-import com.soecode.wxtools.api.WxService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -30,7 +30,7 @@ public class UserController {
     @Resource
     private CompanyService companyService;
 
-    private IService iService = new WxService();
+    private IService iService = new MyWxService();
 
     @AuthCheckAnnotation(checkLogin = false,checkVerify = false)
     @PostMapping("/namePhone")

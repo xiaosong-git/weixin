@@ -50,7 +50,7 @@
     </div>
 
     <div class="weui-cell">
-        <div class="weui-cell__hd"><label for="reason" class="weui-label">原因</label></div>
+        <div class="weui-cell__hd"><label for="reason" class="weui-label">事由</label></div>
         <div class="weui-cell__bd">
             <input class="weui-input" id="reason" type="text" value="">
         </div>
@@ -199,7 +199,7 @@
         }
     });
     $("#reason").picker({
-        title: "请选择拜访原因",
+        title: "请选择拜访事由",
         cols: [
             {
                 textAlign: 'center',
@@ -219,7 +219,7 @@
     $("#showTooltips").click(function () {
         var isAuth = getCookie("isAuth")
         if (isAuth != "T") {
-            $.toptip('请先进行实名认证');
+            $.toptip('请先进行实人认证');
             window.location.href = authUrl;
         } else {
             visit();

@@ -45,7 +45,7 @@ public class Menu {
         WxMenu.WxMenuButton btn3_3 = new WxMenu.WxMenuButton();
         btn3_3.setType(WxConsts.MENU_BUTTON_VIEW);
         btn3_3.setUrl(URL+"auth2");
-        btn3_3.setName("实名认证");
+        btn3_3.setName("实人认证");
 /*
         WxMenu.WxMenuButton btn3_4 = new WxMenu.WxMenuButton();
         btn3_4.setType(WxConsts.MENU_BUTTON_VIEW);

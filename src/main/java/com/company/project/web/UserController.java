@@ -86,7 +86,7 @@ public class UserController {
     }
 
     /**
-     * 实名认证
+     * 实人认证
      * @param openId 微信对应公众号openId
      * @param idNO 验证码
      * @param realName 真实姓名

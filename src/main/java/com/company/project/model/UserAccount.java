@@ -38,7 +38,7 @@ public class UserAccount {
     private String gesturepwd;
 
     /**
-     * 原因
+     * 事由
      */
     @Column(name = "handleCause")
     private String handlecause;
@@ -160,18 +160,18 @@ public class UserAccount {
     }
 
     /**
-     * 获取原因
+     * 获取事由
      *
-     * @return handleCause - 原因
+     * @return handleCause - 事由
      */
     public String getHandlecause() {
         return handlecause;
     }
 
     /**
-     * 设置原因
+     * 设置事由
      *
-     * @param handlecause 原因
+     * @param handlecause 事由
      */
     public void setHandlecause(String handlecause) {
         this.handlecause = handlecause;

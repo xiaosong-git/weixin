@@ -169,7 +169,7 @@ public class User {
     private String workkey;
 
     /**
-     * 审核失败原因
+     * 审核失败事由
      */
     @Column(name = "failReason")
     private String failreason;
@@ -738,18 +738,18 @@ public class User {
     }
 
     /**
-     * 获取审核失败原因
+     * 获取审核失败事由
      *
-     * @return failReason - 审核失败原因
+     * @return failReason - 审核失败事由
      */
     public String getFailreason() {
         return failreason;
     }
 
     /**
-     * 设置审核失败原因
+     * 设置审核失败事由
      *
-     * @param failreason 审核失败原因
+     * @param failreason 审核失败事由
      */
     public void setFailreason(String failreason) {
         this.failreason = failreason;

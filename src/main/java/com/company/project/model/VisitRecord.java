@@ -34,7 +34,7 @@ public class VisitRecord {
     private Long visitorId;
 
     /**
-     * 访问原因
+     * 访问事由
      */
     private String reason;
 

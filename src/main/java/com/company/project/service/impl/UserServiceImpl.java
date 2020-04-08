@@ -138,7 +138,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
                 }
                 return ResultGenerator.genSuccessResult(user);
             } else {
-                //返回登录失败原因
+                //返回登录失败事由
                 String handleCause = userAccount.getHandlecause();
                 return ResultGenerator.genFailResult(handleCause);
             }
@@ -291,10 +291,10 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
                             Map<String, Object> resultMap = new HashMap<String, Object>();
                             resultMap.put("isAuth", "T");
                             resultMap.put("userId", user.getId());
-                            return ResultGenerator.genSuccessResult("已经实名认证过");
+                            return ResultGenerator.genSuccessResult("已经实人认证过");
                         }
                     }
-                    return ResultGenerator.genFailResult("已经实名认证过", "fail");
+                    return ResultGenerator.genFailResult("已经实人认证过", "fail");
                 }
             }
 
@@ -380,7 +380,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
 
                 return ResultGenerator.genSuccessResult(resultMap);
             }
-            return ResultGenerator.genFailResult("实名认证失败", "fail");
+            return ResultGenerator.genFailResult("实人认证失败", "fail");
         } catch (Exception e) {
             e.printStackTrace();
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();//回滚
@@ -417,7 +417,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
         List<User> user = findByCondition(condition);
         System.out.println(user);
         System.out.println(!user.isEmpty());
-        return user != null && !user.isEmpty();
+        return  !user.isEmpty();
     }
 
     @Override

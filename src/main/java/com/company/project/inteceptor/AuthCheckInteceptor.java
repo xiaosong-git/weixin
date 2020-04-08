@@ -65,7 +65,7 @@ public class AuthCheckInteceptor extends HandlerInterceptorAdapter {
                 //token相同
 //                if(token.equals(userToken)){
                     /**
-                     * 实名验证
+                     * 实人验证
                      */
                     if(auth.checkVerify()){
                         String verifyKey = userIdStr+"_isAuth";
@@ -76,7 +76,7 @@ public class AuthCheckInteceptor extends HandlerInterceptorAdapter {
                             isAuth = user.getIsauth()==null?"F":user.getIsauth();
                         }
                         if( !"T".equalsIgnoreCase(isAuth)){
-                            ResponseUtil.response(response,JSONObject.toJSONString(ResultGenerator.genFailResult("您还未进行实名验证","verifyFail")));
+                            ResponseUtil.response(response,JSONObject.toJSONString(ResultGenerator.genFailResult("您还未进行实人验证","verifyFail")));
                             return false;
                         }
                     }

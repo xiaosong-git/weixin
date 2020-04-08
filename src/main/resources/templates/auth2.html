@@ -122,7 +122,7 @@
     $(function () {
         if (!isLogin("auth2")) {
             if ("T" == getCookie("isAuth")) {
-                $.toast("您已实名，页面即将关闭");
+                $.toast("您已实人，页面即将关闭");
                 //点击确认后的回调函数
                 setTimeout(function () {
                     quit();

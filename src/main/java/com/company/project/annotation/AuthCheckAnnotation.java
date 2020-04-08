@@ -12,7 +12,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface AuthCheckAnnotation {
     boolean checkLogin()  default false;    //是否验证登录
-    boolean checkVerify() default false;    //是否验证实名
+    boolean checkVerify() default false;    //是否验证实人
 //    boolean checkRequestLegal() default false; //检查请求合法性
 //    boolean checkOtherLegal() default false; //检查请求合法性
 }

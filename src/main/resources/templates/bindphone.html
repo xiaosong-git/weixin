@@ -64,7 +64,7 @@
         var phone = getCookie("phone");
         if (!isLogin("bindphone")) {
             if ("T" != getCookie("isAuth")) {
-                $.toast("您还未实名，即将跳转实名界面！");
+                $.toast("您还未实人，即将跳转实人界面！");
                 //点击确认后的回调函数
                 setTimeout(function () {
                     window.location.href = authUrl;

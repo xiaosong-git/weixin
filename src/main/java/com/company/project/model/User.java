@@ -93,19 +93,19 @@ public class User {
     private String addr;
 
     /**
-     * 是否实名 F:未实名 T：实名;N:审核中
+     * 是否实人 F:未实人 T：实人;N:审核中
      */
     @Column(name = "isAuth")
     private String isauth;
 
     /**
-     * 实名日期 yyyy-MM-dd
+     * 实人日期 yyyy-MM-dd
      */
     @Column(name = "authDate")
     private String authdate;
 
     /**
-     * 实名时间 HH:mm:ss
+     * 实人时间 HH:mm:ss
      */
     @Column(name = "authTime")
     private String authtime;
@@ -494,54 +494,54 @@ public class User {
     }
 
     /**
-     * 获取是否实名 F:未实名 T：实名;N:审核中
+     * 获取是否实人 F:未实人 T：实人;N:审核中
      *
-     * @return isAuth - 是否实名 F:未实名 T：实名;N:审核中
+     * @return isAuth - 是否实人 F:未实人 T：实人;N:审核中
      */
     public String getIsauth() {
         return isauth;
     }
 
     /**
-     * 设置是否实名 F:未实名 T：实名;N:审核中
+     * 设置是否实人 F:未实人 T：实人;N:审核中
      *
-     * @param isauth 是否实名 F:未实名 T：实名;N:审核中
+     * @param isauth 是否实人 F:未实人 T：实人;N:审核中
      */
     public void setIsauth(String isauth) {
         this.isauth = isauth;
     }
 
     /**
-     * 获取实名日期 yyyy-MM-dd
+     * 获取实人日期 yyyy-MM-dd
      *
-     * @return authDate - 实名日期 yyyy-MM-dd
+     * @return authDate - 实人日期 yyyy-MM-dd
      */
     public String getAuthdate() {
         return authdate;
     }
 
     /**
-     * 设置实名日期 yyyy-MM-dd
+     * 设置实人日期 yyyy-MM-dd
      *
-     * @param authdate 实名日期 yyyy-MM-dd
+     * @param authdate 实人日期 yyyy-MM-dd
      */
     public void setAuthdate(String authdate) {
         this.authdate = authdate;
     }
 
     /**
-     * 获取实名时间 HH:mm:ss
+     * 获取实人时间 HH:mm:ss
      *
-     * @return authTime - 实名时间 HH:mm:ss
+     * @return authTime - 实人时间 HH:mm:ss
      */
     public String getAuthtime() {
         return authtime;
     }
 
     /**
-     * 设置实名时间 HH:mm:ss
+     * 设置实人时间 HH:mm:ss
      *
-     * @param authtime 实名时间 HH:mm:ss
+     * @param authtime 实人时间 HH:mm:ss
      */
     public void setAuthtime(String authtime) {
         this.authtime = authtime;

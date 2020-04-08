@@ -127,7 +127,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
                 userUpdate.setWxOpenId(openId);
                 this.update(userUpdate);
                 user = this.findById(userId);
-                //更新缓存中的Token,实名
+                //更新缓存中的Token,实人
                 String token = user.getToken();
                 String isAuth = user.getIsauth();
                 updateRedisTokenAndAuth(String.valueOf(user.getId()), token, isAuth);
@@ -161,7 +161,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
         RedisUtil.setStr(userId + "_isAuth", isAuth, apiNewAuthCheckRedisDbIndex, expire * 60);
     }
 
-    //更新实名
+    //更新实人
     @Override
     public void updateRedisAuth(String userId, String isAuth) throws Exception {
         if (StringUtils.isBlank(userId) || StringUtils.isBlank(isAuth)) {
@@ -248,7 +248,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
                     logger.error("更新用户微信号失败", e);
                 }
             }
-            //更新缓存中的Token,实名
+            //更新缓存中的Token,实人
 //            String token = BaseUtil.objToStr(user.get("token"), null);
             UserAccount us = userAccountService.findBy("userid", user.getId());
             if (us == null) {
@@ -345,7 +345,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
             user.setAuthtime(DateUtil.getCurTime());
             user.setIdhandleimgurl(idHandleImgUrl);
             user.setRealname(realName);
-            user.setIsauth("T");//F:未实名 T：实名 N:正在审核中 E：审核失败
+            user.setIsauth("T");//F:未实人 T：实人 N:正在审核中 E：审核失败
             user.setIdtype("01");
             user.setIdno(idNoMW);
             String verifyTermOfValidity = paramService.findValueByName("verifyTermOfValidity");

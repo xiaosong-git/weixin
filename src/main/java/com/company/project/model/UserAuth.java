@@ -33,7 +33,7 @@ public class UserAuth {
     private String idhandleimgurl;
 
     /**
-     * 实名日期时间 yyyy-MM-dd hhmmss
+     * 实人日期时间 yyyy-MM-dd hhmmss
      */
     @Column(name = "authDate")
     private String authdate;
@@ -125,18 +125,18 @@ public class UserAuth {
     }
 
     /**
-     * 获取实名日期时间 yyyy-MM-dd hhmmss
+     * 获取实人日期时间 yyyy-MM-dd hhmmss
      *
-     * @return authDate - 实名日期时间 yyyy-MM-dd hhmmss
+     * @return authDate - 实人日期时间 yyyy-MM-dd hhmmss
      */
     public String getAuthdate() {
         return authdate;
     }
 
     /**
-     * 设置实名日期时间 yyyy-MM-dd hhmmss
+     * 设置实人日期时间 yyyy-MM-dd hhmmss
      *
-     * @param authdate 实名日期时间 yyyy-MM-dd hhmmss
+     * @param authdate 实人日期时间 yyyy-MM-dd hhmmss
      */
     public void setAuthdate(String authdate) {
         this.authdate = authdate;

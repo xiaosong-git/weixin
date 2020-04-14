@@ -34,7 +34,7 @@
     </collection>
   </resultMap>
   <sql id="companyUserOrg">
-   c.id ,c.addr,c.companyName,o.org_code,u.companyId ,u.id uid
+   c.id ,c.addr,c.companyName,o.org_code,c.id companyId ,u.id uid
   </sql>
   <select id="findByUserId" parameterType="Long" resultMap="ResultCompanyMap">
     select

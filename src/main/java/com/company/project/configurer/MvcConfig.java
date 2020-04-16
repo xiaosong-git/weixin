@@ -141,7 +141,9 @@ public class MvcConfig implements WebMvcConfigurer {
         registry.addInterceptor(getAuthCheckInteceptor()).addPathPatterns("/**")
                 .excludePathPatterns("/", "/login.html","/*.txt",
                                     "/**/*.css", "/**/*.js", "/**/*.png", "/**/*.jpg",
-                                    "/**/*.jpeg", "/**/*.gif", "/**/fonts/*", "/**/*.svg");
+                                    "/**/*.jpeg", "/**/*.gif", "/**/fonts/*", "/**/*.svg")
+                .excludePathPatterns("/swagger-resources/**", "/webjars/**", "/v2/**", "/docs.html")
+        ;
     }
     private void responseResult(HttpServletResponse response, Result result) {
         response.setCharacterEncoding("UTF-8");
@@ -159,7 +161,7 @@ public class MvcConfig implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/**")
                 .addResourceLocations("classpath:/static/");
-        registry.addResourceHandler("swagger-ui.html")
+        registry.addResourceHandler("docs.html")
                 .addResourceLocations("classpath:/META-INF/resources/");
         registry.addResourceHandler("/webjars/**")
                 .addResourceLocations("classpath:/META-INF/resources/webjars/");

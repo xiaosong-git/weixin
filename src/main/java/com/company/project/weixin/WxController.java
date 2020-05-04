@@ -2,6 +2,9 @@ package com.company.project.weixin;
 
 import com.company.project.annotation.AuthCheckAnnotation;
 import com.company.project.dao.VisitRecordMapper;
+import com.company.project.model.otherWx;
+import com.company.project.service.OtherWxService;
+import com.company.project.service.ThirdPartyService;
 import com.company.project.service.visitRecordService;
 import com.company.project.util.RedisUtil;
 import com.company.project.weixin.handler.MyHandler;
@@ -9,13 +12,13 @@ import com.company.project.weixin.handler.ShareRoomHandler;
 import com.company.project.weixin.handler.VisitHandler;
 import com.company.project.weixin.handler.WhoAmIHandler;
 import com.company.project.weixin.matcher.WhoAmIMatcher;
-import com.soecode.wxtools.api.IService;
 import com.soecode.wxtools.api.WxConsts;
 import com.soecode.wxtools.api.WxMessageRouter;
 import com.soecode.wxtools.bean.WxXmlMessage;
 import com.soecode.wxtools.bean.WxXmlOutMessage;
 import com.soecode.wxtools.exception.WxErrorException;
 import com.soecode.wxtools.util.xml.XStreamTransformer;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +30,10 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 /**
  * @program: spring-boot-api-project-seed
@@ -41,13 +46,15 @@ import java.io.PrintWriter;
 @RequestMapping("/wx")
 public class WxController {
     Logger logger = LoggerFactory.getLogger(WxController.class);
-    private IService iService = new MyWxService();
+    private MyService iService = new MyWxServiceImpl();
     @Autowired
     private visitRecordService visitRecordService;
-
+    @Autowired
+    private ThirdPartyService thirdPartyService;
     @Resource
     private VisitRecordMapper visitorRecordMapper;
-
+    @Resource
+    private OtherWxService otherWxService;
     @AuthCheckAnnotation(checkLogin = false, checkVerify = false)
     @GetMapping
     public String check(String signature, String timestamp, String nonce, String echostr) {
@@ -65,11 +72,49 @@ public class WxController {
 //        @Scheduled(cron = "0 0/30 * * * ? ")
         //或直接指定时间间隔，例如：5秒
         @Scheduled(fixedRate=3600*1000)
-        private void configureTasks() throws WxErrorException {
+        private void configureTasks() throws WxErrorException, IOException {
             RedisUtil.setStr("accessToken",iService.getAccessToken(),2,7000);
+            thirdPartyService.setComponentAccessToken();
+            List<otherWx> wxList = otherWxService.findAll();
+            for (com.company.project.model.otherWx otherWx : wxList) {
+                try{
+                RedisUtil.setStr(otherWx.getWxValue(),iService.getOtherAccessToken(otherWx.getAppid(),otherWx.getSecret()),2,7000);
+            }catch (Exception e){
+                    logger.error("获取第三方accessToken报错",e);
+                }}
 //            logger.info("存储acessToken时间: {},acessToken：{}" , LocalDateTime.now(),iService.getAccessToken());
         }
     }
+    @ApiOperation(value = "接收component_verify_ticket 或 authorized事件", notes = "接收component_verify_ticket 或 authorized事件", response = String.class)
+    @PostMapping(value = "verifyTicket")
+    public String verifyTicket(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        logger.info("verifyTicket 或者 authorized");
+        String nonce = request.getParameter("nonce");
+        String timestamp = request.getParameter("timestamp");
+        String msgSignature = request.getParameter("msg_signature");
+
+        StringBuilder sb = new StringBuilder();
+        BufferedReader in = request.getReader();
+        String line;
+        while((line = in.readLine()) != null) {
+            sb.append(line);
+        }
+        String postData = sb.toString();
+        logger.info("nonce: " + nonce);
+        logger.info("timestamp: " + timestamp);
+        logger.info("msgSignature: " + msgSignature);
+        logger.info("postData: " + postData);
+        thirdPartyService.getComponentVerifyTicket(timestamp, nonce, msgSignature, postData);
+//        response.setCharacterEncoding("utf-8");
+//        response.setContentType("application/json; charset=utf-8");
+//        PrintWriter writer = response.getWriter();
+//        JSONObject o = new JSONObject();
+//        o.put("status", "success");
+//        writer.write(o.toString());
+//        responseUtil(response, "success");
+        return "success";
+    }
+
     @AuthCheckAnnotation(checkLogin = false, checkVerify = false)
     @PostMapping
     public void handle(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -92,9 +137,11 @@ public class WxController {
                     rule().event(WxConsts.EVT_CLICK).eventKey(MenuKey.SHARE_RECORD).handler(new MyHandler()).end();
             // 把消息传递给路由器进行处理
             WxXmlOutMessage xmlOutMsg = router.route(wx);
-            if (xmlOutMsg != null)
+            if (xmlOutMsg != null){
                 // 因为是明文，所以不用加密，直接返回给用户
                 out.print(xmlOutMsg.toXml());
+            }
+
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -126,7 +173,7 @@ public class WxController {
         dataMap.put("remark",new WxTemplateData("点击查看详情信息↓", "#173177"));
         sender.setUrl(URL+"replyVisit?recordId=1731&name=%u53D1&phone=123&cstatus=applying&visitDate=2020-03-06");
         sender.setData(dataMap);
-        TemplateSenderResult result = iService.templateSend(sender);
+        TemplateSenderResult result = iService.otherTemplateSend(sender);
         System.out.println(result);*/
     }
 }

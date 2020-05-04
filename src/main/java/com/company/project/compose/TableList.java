@@ -109,6 +109,12 @@ public class TableList {
     public static final String APP_USER_ROLE_R= "tbl_app_user_role_relation";
     //本地实人认证表
     public static final String USER_AUTH = "tbl_user_auth";
+    //第三方微信表
+    public static final String OTHER_WX = "tbl_other_wx";
+    /**
+     * 第三方微信openId表
+     */
+    public static final String OTHER_OPENID = "tbl_other_openid";
 
 
 }

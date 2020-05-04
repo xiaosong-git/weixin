@@ -120,12 +120,12 @@
     });
 
     $(function () {
-        if (!isLogin("auth2")) {
+        if (!isLogin("auth3")) {
             if ("T" == getCookie("isAuth")) {
-                $.toast("您已实人，页面即将关闭");
+                $.toast("您已实人，即将返回首页");
                 //点击确认后的回调函数
                 setTimeout(function () {
-                    quit();
+                    window.location.href=indexUrl;
                 }, 1500);
             }
 

@@ -1,5 +1,6 @@
 package com.company.project.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.company.project.compose.Status;
@@ -7,17 +8,11 @@ import com.company.project.compose.TableList;
 import com.company.project.core.AbstractService;
 import com.company.project.core.Result;
 import com.company.project.core.ResultGenerator;
-import com.company.project.dao.CompanyMapper;
-import com.company.project.dao.UserAuthMapper;
-import com.company.project.dao.UserMapper;
-import com.company.project.dao.VisitRecordMapper;
-import com.company.project.model.Company;
-import com.company.project.model.User;
-import com.company.project.model.UserAccount;
-import com.company.project.model.UserAuth;
+import com.company.project.dao.*;
+import com.company.project.model.*;
 import com.company.project.service.*;
 import com.company.project.util.*;
-import com.company.project.weixin.MyWxService;
+import com.company.project.weixin.MyWxServiceImpl;
 import com.soecode.wxtools.api.IService;
 import com.soecode.wxtools.exception.WxErrorException;
 import org.apache.commons.lang3.StringUtils;
@@ -72,7 +67,14 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
     private CompanyMapper companyMapper;
     @Resource
     private VisitRecordMapper visitRecordMapper;
-    private IService iService = new MyWxService();
+    @Resource
+    private OtherOpenidMapper otherOpenidMapper;
+    @Resource
+    private OtherWxMapper otherWxMapper;
+    @Resource
+    private OtherOpenidService otherOpenidService;
+
+    private IService iService = new MyWxServiceImpl();
 
     /**
      * 检测用户是否存在
@@ -273,7 +275,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
     }
 
     @Override
-    public Result verify(String openId, String idNO, String name, String idHandleImgUrl, String addr,String localImgUrl,String phone,String code) {
+    public Result verify(String openId, String idNO, String name, String idHandleImgUrl, String addr, String localImgUrl, String phone, String code, String wxId, String otherOpenId) {
         try {
             //验证手机
             User user=userMapper.findByPhone(phone);
@@ -282,16 +284,25 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
                     return ResultGenerator.genFailResult("验证码错误");
                 }
             }
+            String workKey = keyService.findKeyByStatus("normal");
             if (user != null) {
                 if (isVerify(user.getId())) {
                     if (user.getWxOpenId()==null||"".equals(user.getWxOpenId())) {
                         user.setWxOpenId(openId);
+                        user.setIsauth("T");
+                        user.setRealname(name);
+                        user.setIdhandleimgurl(idHandleImgUrl);
+                        user.setAuthdate(DateUtil.getCurDate());
+                        user.setAuthtime(DateUtil.getCurTime());
+                        String idNoMW = DESUtil.encode(workKey, idNO);
+                        user.setIdno(idNoMW);
                         int update = update(user);
                         if (update > 0) {
-                            Map<String, Object> resultMap = new HashMap<String, Object>();
+                            Map<String, Object> resultMap = new HashMap<String, Object>(16);
                             resultMap.put("isAuth", "T");
                             resultMap.put("userId", user.getId());
-                            return ResultGenerator.genSuccessResult("已经实人认证过");
+                                //实人认证返回userId的值，不能改为返回字符串
+                            return ResultGenerator.genSuccessResult(resultMap);
                         }
                     }
                     return ResultGenerator.genFailResult("已经实人认证过", "fail");
@@ -302,7 +313,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
             if (idNO == null) {
                 return ResultGenerator.genFailResult("身份证不能为空!", "fail");
             }
-            String workKey = keyService.findKeyByStatus("normal");
+
             // update by cwf  2019/10/15 10:36 Reason:暂时修改为后端加密
             String idNoMW = DESUtil.encode(workKey, idNO);
 //            String idNoMW = DESUtil.decode(workKey, idNO);
@@ -354,6 +365,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
             String validityDate = new SimpleDateFormat("yyyy-MM-dd").format(c.getTime());
             user.setValiditydate(validityDate);
             int update = 0;
+
             if (user.getId() == null) {
                 update = save(user);
                 userAccountService.preCreateAcount(user.getId());//生成新的账户
@@ -361,6 +373,8 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
                 update = update(user);
             }
             if (update > 0) {
+                //todo 接入其他公众号openId
+
                 Integer apiNewAuthCheckRedisDbIndex = Integer.valueOf(paramService.findValueByName("apiNewAuthCheckRedisDbIndex"));//存储在缓存中的位置
                 String key = user.getId() + "_isAuth";
                 //redis修改
@@ -368,7 +382,11 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
                 Map<String, Object> resultMap = new HashMap<String, Object>();
                 resultMap.put("isAuth", "T");
                 resultMap.put("userId", user.getId());
-
+                boolean b = otherWxVerify(wxId, user.getId(), otherOpenId);
+                if (!b){
+                    TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();//回滚
+                    return ResultGenerator.genFailResult("异常，请稍后再试", "fail");
+                }
                 //Long userId, String phone, String openId, String code
 
 //                Result bindPhoneResult =  bindWxPhone(user.getId(),);
@@ -387,7 +405,25 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
             return ResultGenerator.genFailResult("异常，请稍后再试", "fail");
         }
     }
-
+    @Override
+    public boolean otherWxVerify(String wxId, Long userId, String otherOpenId){
+        if(StrUtil.isBlank(wxId)||StrUtil.isBlank(otherOpenId)){
+            return false;
+        } else {
+            OtherOpenid other = otherOpenidMapper.findbyRlat(wxId, userId, otherOpenId);
+            if (other==null||otherOpenId.isEmpty()){
+                other=new OtherOpenid();
+                otherWx wx = otherWxMapper.findByWx(wxId);
+                other.setOpenId(otherOpenId);
+                other.setUserId(userId);
+                other.setWxId(wx.getId());
+                int save = otherOpenidService.save(other);
+                return save > 0;
+            }else{
+                return true;
+            }
+        }
+    }
     @Override
     public boolean isVerify(long userId) {
         Integer apiNewAuthCheckRedisDbIndex = Integer.valueOf(paramService.findValueByName("apiNewAuthCheckRedisDbIndex"));//存储在缓存中的位置
@@ -401,7 +437,9 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
                 return false;
             }
             Object verifyObj = user.getIsauth();
-            if (verifyObj == null) return false;
+            if (verifyObj == null) {
+                return false;
+            }
             isAuth = verifyObj + "";
             //redis修改
             RedisUtil.setStr(key, isAuth, apiNewAuthCheckRedisDbIndex, null);
@@ -443,13 +481,12 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
         File compressImg = FilesUtils.getFileFromBytes(FilesUtils.compressUnderSize(photo, 10240L), url + File.separator, newFileName);
         String name = compressImg.getAbsolutePath();
         logger.info(name);
-        OkHttpUtil okHttpUtil = new OkHttpUtil();
         Map<String, Object> map = new HashMap<>();
         map.put("userId", openId);
         map.put("type", type);
         map.put("file", compressImg);
         String imageServerApiUrl = paramService.findValueByName("imageServerApiUrl");
-        String s = okHttpUtil.postFile(imageServerApiUrl, map, "multipart/form-data");//上传图片
+        String s = OkHttpUtil.postFile(imageServerApiUrl, map, "multipart/form-data");//上传图片
         JSONObject jsonObject = JSONObject.parseObject(s);
         Map resultMap = JSON.parseObject(jsonObject.toString());
         if (resultMap.isEmpty()) {

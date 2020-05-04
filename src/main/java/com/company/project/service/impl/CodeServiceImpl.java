@@ -23,7 +23,7 @@ import java.util.Date;
 public class CodeServiceImpl implements CodeService {
     @Autowired
     private ParamService paramService;
-
+    @Override
     public Boolean verifyCode(String phone, String code) {
        //判断参数完整性
         if ((!StringUtils.isEmpty(phone)) && (!StringUtils.isEmpty(code))) {
@@ -33,11 +33,9 @@ public class CodeServiceImpl implements CodeService {
                 return false;
             }
             String redisCode = (String)obj;
+            //                RedisUtil.delObject(phone.getBytes(), 31);
             //比对
-            if ((redisCode != null) && (code.equals(redisCode))) {
-                RedisUtil.delObject(phone.getBytes(), 31);
-                return true;
-            }
+            return (code.equals(redisCode));
         }
         return false;
     }

@@ -22,7 +22,7 @@ public class Menu {
 
 
     public static void creatMenu(){
-        IService iService = new MyWxService();
+        IService iService = new MyWxServiceImpl();
         WxMenu menu = new WxMenu();
 
 
@@ -89,7 +89,7 @@ public class Menu {
         }
     }
     public static void checkMenu() throws WxErrorException {
-        IService iService = new MyWxService();
+        IService iService = new MyWxServiceImpl();
         try {
             WxUserTagResult wxUserTagResult = iService.queryAllUserTag();
             List<WxUserTagResult.WxUserTag> tags = wxUserTagResult.getTags();

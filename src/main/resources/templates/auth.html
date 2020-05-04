@@ -298,7 +298,8 @@
                 //数据，json字符串
                 data: {
                     openId: getCookie("openId"),
-                    // token:getCookie(("token")),
+                    wxId:getCookie(("wxId")),
+                    otherOpenId:getCookie(("otherOpenId")),
                     idHandleImgUrl: $("#uploaderFiles").val(),
                     idNO: $("#idNo").val(),
                     realName: $("#realName").val(),
@@ -311,12 +312,13 @@
                 success: function (result) {
                     if (result.code == 400) {
                         $.toptip("认证失败，请确认输入信息是否有误");
-                        alert("认证失败，请确认输入信息是否有误");
+                        $.toptip(result.message);
+                        alert(result.message);
                         $.hideLoading();
                     } else {
                         $.hideLoading();
                         setCookie("userId", result.data.userId);
-                        setCookie("isAuth", result.data.isAuth);
+                        setCookie("isAuth", "T");
                         $.toptip("认证成功！", 'success');
                         $.toast("认证成功，页面即将关闭");
                         //点击确认后的回调函数

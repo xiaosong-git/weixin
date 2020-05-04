@@ -25,7 +25,17 @@ public interface UserService extends Service<User> {
 
     Result loginByVerifyCode(String phone, String code, String openId) throws Exception;
 
-    Result verify(String  openId, String idNO, String name, String idHandleImgUrl, String addr,String localImgUrl,String phone,String code);
+
+    Result verify(String openId, String idNO, String name, String idHandleImgUrl, String addr, String localImgUrl, String phone, String code, String wxId, String otherOpenId);
+
+    /**
+     * 有则不变 无则插入第三方平台的id
+     * @param wxId 微信平台id
+     * @param userId 用户id
+     * @param otherOpenId openid
+     * @return
+     */
+    boolean otherWxVerify(String wxId, Long userId, String otherOpenId);
 
     boolean isVerify(long userId);
 

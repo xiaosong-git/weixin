@@ -7,7 +7,7 @@ if (IS_DEVELOP) {//生产环境
     url = "http://" + uri + "/";
 } else {
     appId = "wx2a1951f46acc4371";
-    uri = "47.106.82.190";
+    uri = "hfhtvg.natappfree.cc";
     url = "http://" + uri + "/";
 }
 
@@ -33,10 +33,11 @@ var recordDetailUrl=url+suffix+"recorddetail";
 var bindphoneUrl=url+suffix+"bindphone";
 
 var replyUrl=url+suffix+"reply";
+var indexUrl=url+suffix+"index1";
 function setCookie(c_name,value,expiredays)
 {
-    var exdate=new Date()
-    exdate.setDate(exdate.getDate()+expiredays)
+    var exdate=new Date();
+    exdate.setDate(exdate.getDate()+expiredays);
     document.cookie=c_name+ "=" +escape(value)+
         ((expiredays==null) ? "" : ";expires="+exdate.toGMTString())
 }
@@ -46,21 +47,22 @@ function getCookie(c_name)
 {
     if (document.cookie.length>0)
     {
-        c_start=document.cookie.indexOf(c_name + "=")
+        c_start=document.cookie.indexOf(c_name + "=");
         if (c_start!=-1)
         {
             c_start=c_start + c_name.length+1
-            c_end=document.cookie.indexOf(";",c_start)
-            if (c_end==-1) c_end=document.cookie.length
+            c_end=document.cookie.indexOf(";",c_start);
+            if (c_end==-1) c_end=document.cookie.length;
             return unescape(document.cookie.substring(c_start,c_end))
         }
     }
     return ""
 }
+//控制界面跳转
 function isLogin(state) {
     console.log(getCookie('openId'));
 if (getCookie('openId')===""){
-    window.location.href = getLoginUrl(state);
+    window.location.href = getLoginUrl(state+","+getCookie("wxId")+","+getCookie("otherOpenId"));
     return true;
 }
 return false;

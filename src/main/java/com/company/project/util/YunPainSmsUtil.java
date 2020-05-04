@@ -96,33 +96,33 @@ public class YunPainSmsUtil {
         String msg = "";
         String content = "";
         //其他
-        if(MSG_TYPE_WELCOME == type){
+        if(MSG_TYPE_WELCOME.equals(type)){
             msg = CHECK_CODE_WELCOME;
             content= msg.replace("code", checkCode);
-        }else if(MSG_TYPE_LIMIT == type){
+        }else if(MSG_TYPE_LIMIT.equals(type)){
             //输入密码多次错误
             msg = CHECK_CODE_LIMIT;
             msg= msg.replace("date", date);
             msg= msg.replace("phone", mobile);
             content= msg.replace("limit", limit);
-        }else if(MSG_TYPE_VISITORBY == type){
+        }else if(MSG_TYPE_VISITORBY.equals(type)){
             //访客
             msg = CHECK_CODE_VISITORBY;
             msg= msg.replace("visitorResult", visitorResult);
             msg= msg.replace("visitorBy", visitorBy);
             content= msg.replace("visitorDateTime", visitorDateTime);
-        }else if(MSG_TYPE_VISITOR == type){
+        }else if(MSG_TYPE_VISITOR.equals(type)){
             //审核
             msg = CHECK_CODE_VISITOR;
             msg= msg.replace("visitor1", visitor);
             msg= msg.replace("visitorBy", visitorBy);
             content= msg.replace("visitorDateTime", visitorDateTime);
-        }else if(MSG_TYPE_VERIFY == type){
+        }else if(MSG_TYPE_VERIFY.equals(type)){
             //被访者
             msg = CHECK_CODE_VERIFY;
             msg= msg.replace("visitor1", visitor);
             content= msg.replace("visitorDateTime", visitorDateTime);
-        }else if(MSG_TYPE_INVITE==type){
+        }else if(MSG_TYPE_INVITE.equals(type)){
             msg = CHECK_CODE_INVITE;
             msg= msg.replace("accName", visitor);
             msg=msg.replace("visitorBy",visitorBy);
@@ -131,7 +131,7 @@ public class YunPainSmsUtil {
             msg=msg.replace("endDateTime",visitorResult);
             msg=msg.replace("url",checkCode);
             content= msg.replace("visitorDateTime", visitorDateTime);
-        }else if(MSG_TYPE_VISITORBY_QRCODE==type){
+        }else if(MSG_TYPE_VISITORBY_QRCODE.equals(type)){
             msg=CHECK_CODE_VISITORBY_QRCODE;
             msg= msg.replace("#visitorResult#", visitorResult);
             msg= msg.replace("#visitorBy#", visitorBy);

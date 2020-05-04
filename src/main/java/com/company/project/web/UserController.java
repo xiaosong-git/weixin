@@ -8,8 +8,6 @@ import com.company.project.model.User;
 import com.company.project.service.CompanyService;
 import com.company.project.service.CompanyUserService;
 import com.company.project.service.UserService;
-import com.company.project.weixin.MyWxService;
-import com.soecode.wxtools.api.IService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -30,7 +28,6 @@ public class UserController {
     @Resource
     private CompanyService companyService;
 
-    private IService iService = new MyWxService();
 
     @AuthCheckAnnotation(checkLogin = false,checkVerify = false)
     @PostMapping("/namePhone")
@@ -102,9 +99,11 @@ public class UserController {
                          @RequestParam(defaultValue = "无") String addr,
                          @RequestParam String phone,
                          @RequestParam String code,
+                         @RequestParam String wxId,
+                         @RequestParam String otherOpenId,
     @RequestParam String localImgUrl){
         try {
-                return userService.verify(openId, idNO, realName, idHandleImgUrl, addr,localImgUrl, phone, code);
+                return userService.verify(openId, idNO, realName, idHandleImgUrl, addr,localImgUrl, phone, code,wxId,otherOpenId);
         }catch (Exception e){
             e.printStackTrace();
         }

@@ -1,0 +1,95 @@
+<!doctype html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/weui/2.0.1/style/weui.min.css"/>
+    <style type="text/css">
+        .demos-header {
+            padding: 35px 0;
+        }
+        .demos-title {
+            text-align: center;
+            font-size: 34px;
+            color: #3cc51f;
+            font-weight: 400;
+            margin: 0 15%;
+        }
+    </style>
+</head>
+
+<body >
+<header class="demos-header">
+    <h1 class="demos-title">朋悦比邻</h1>
+</header>
+<div class="weui-msg">
+    <div class="weui-grids">
+        <a href="visit"  class="weui-grid js_grid">
+            <div class="weui-grid__icon">
+                <img  src="images/fw.png" alt="">
+            </div>
+            <p class="weui-grid__label">
+                访问
+            </p>
+        </a>
+        <a href="invite" class="weui-grid js_grid">
+            <div class="weui-grid__icon">
+                <img src="images/yy.png" alt="">
+            </div>
+            <p class="weui-grid__label">
+                邀约
+            </p>
+        </a>
+        <a href="firstrecord" class="weui-grid js_grid">
+            <div class="weui-grid__icon">
+                <img src="images/lsjl.png" alt="">
+            </div>
+            <p class="weui-grid__label">
+                历史记录
+            </p>
+        </a>
+        <a href="auth3" class="weui-grid js_grid">
+            <div class="weui-grid__icon">
+                <img src="images/srrz.png" alt="">
+            </div>
+            <p class="weui-grid__label">
+                实人认证
+            </p>
+        </a>
+        <a href="clear1" class="weui-grid js_grid">
+            <div class="weui-grid__icon">
+                <img src="images/qchc.png" alt="">
+            </div>
+            <p class="weui-grid__label">
+                清除缓存
+            </p>
+        </a>
+    </div>
+</div>
+    <script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery-weui/1.2.1/js/jquery-weui.min.js"></script>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+    <script src="js/myUtil.js"></script>
+    <script>
+        $(function() {
+            // var wxId = getQueryString("wxId");
+            // var openId = getQueryString("openId");
+            // if (!isLogin("index"+"?"+"wxId="+wxId+",openId="+openId)) {
+            // }
+            setCookie('wxId', '[[${wxId}]]', 365);
+            setCookie('otherOpenId', '[[${otherOpenId}]]', 365);
+        });
+        //获取上个页面传过来的参数
+        // function getQueryString(name) {
+        //     var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+        //     var r = window.location.search.substr(1).match(reg);
+        //     if (r != null) {
+        //         return unescape(r[2]);
+        //     }
+        //     return null;
+        // }
+    </script>
+
+</body>
+</html>

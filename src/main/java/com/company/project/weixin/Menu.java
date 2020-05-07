@@ -55,15 +55,16 @@ public class Menu {
         WxMenu.WxMenuButton btn3_2 = new WxMenu.WxMenuButton();
         btn3_2.setType(WxConsts.MENU_BUTTON_VIEW);
         btn3_2.setName("清除缓存");
-        btn3_2.setUrl(URL+"clear");
 
-//        String url=null;
-//        try {
-//            //通过公众号访问地址授权
-//            url = iService.oauth2buildAuthorizationUrl(URL + "login", "snsapi_userinfo", "233");
-//        }catch (WxErrorException w){
-//            w.getStackTrace();
-//        }
+
+        String url=null;
+        try {
+            //通过公众号访问地址授权
+            url = iService.oauth2buildAuthorizationUrl("http://khfg7z.natappfree.cc/school/#/BindPhone", "snsapi_userinfo", "233");
+        }catch (WxErrorException w){
+            w.getStackTrace();
+        }
+        btn3_2.setUrl(url);
 //        WxMenu.WxMenuButton btn3_4 = new WxMenu.WxMenuButton();
 //        btn3_4.setType(WxConsts.MENU_BUTTON_VIEW);
 //        btn3_4.setUrl(url);

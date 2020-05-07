@@ -247,7 +247,7 @@ public class visitRecordServiceImpl extends AbstractService<VisitRecord> impleme
             try {
                 iService.otherTemplateSend((RedisUtil.getStrVal(otherWx.getWxValue(), 2)), sender);
             } catch (WxErrorException e) {
-                logger.error("第三方模板消息报错",e);
+                logger.error("第三方模板消息报错,发送用户:{},第三方:{}",otherWx.getExt1(),otherWx.getWxName());
             }
         }
     }

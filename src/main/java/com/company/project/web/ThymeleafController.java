@@ -127,32 +127,34 @@ public class ThymeleafController {
     public String index(@RequestParam(name = "wxId", required = false) String wxId,
                         @RequestParam(name = "state", defaultValue = "0") String state,
                         @RequestParam(name = "code", required = false) String code,Model model) {
-
-        if (wxId!=null){
-            //todo 去数据库查找信息并跳转
-            String url="index";
-            try {
-
-                otherWx otherWx = otherWxMapper.findByWx(wxId);
-
-                url = iService.OtheroAuth2buildAuthorizationUrl(otherWx.getAppid(), MenuKey.URL + "index", "snsapi_userinfo", wxId);
-
-            } catch (WxErrorException e) {
-                e.printStackTrace();
-                return "error";
-            }
-
-            return "redirect:"+url;
-        }
+            logger.info(wxId);
+            logger.info(state);
+            logger.info(code);
+//        if (wxId!=null){
+//            //todo 去数据库查找信息并跳转
+//            String url="index";
+//            try {
+//
+//                otherWx otherWx = otherWxMapper.findByWx(wxId);
+//
+//                url = iService.OtheroAuth2buildAuthorizationUrl(otherWx.getAppid(), MenuKey.URL + "index", "snsapi_userinfo", wxId);
+//
+//            } catch (WxErrorException e) {
+//                e.printStackTrace();
+//                return "error";
+//            }
+//
+//            return "redirect:"+url;
+//        }
         //todo 获取其他公众号的openid
         try {
-            otherWx wx = otherWxMapper.findByWx(state);
+            otherWx wx = otherWxMapper.findByWx(wxId);
             WxOAuth2AccessTokenResult result = iService.otherAuth2ToGetAccessToken(wx.getAppid(),wx.getSecret(),code);
             model.addAttribute("otherOpenId",result.getOpenid());
         } catch (WxErrorException e) {
             e.printStackTrace();
         }
-        model.addAttribute("wxId",state);
+        model.addAttribute("wxId",wxId);
         return "index1";
     }
     @RequestMapping(value = "/index1", method = RequestMethod.GET)

@@ -80,7 +80,7 @@ public class WxController {
                 try{
                 RedisUtil.setStr(otherWx.getWxValue(),iService.getOtherAccessToken(otherWx.getAppid(),otherWx.getSecret()),2,7000);
             }catch (Exception e){
-                    logger.error("获取第三方accessToken报错",e);
+                    logger.error("获取第三方accessToken报错,{},{}",otherWx.getWxValue(),otherWx.getAppid());
                 }}
 //            logger.info("存储acessToken时间: {},acessToken：{}" , LocalDateTime.now(),iService.getAccessToken());
         }

@@ -60,5 +60,5 @@ public interface MyService extends IService {
      * @date 2020/4/29 11:27
      */
 
-    TemplateSenderResult otherTemplateSend(String accessToken, TemplateSender sender) throws WxErrorException;
+    TemplateSenderResult otherTemplateSend(String accessToken, TemplateSender sender) throws WxErrorException, IOException;
 }

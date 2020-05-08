@@ -382,11 +382,16 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
                 Map<String, Object> resultMap = new HashMap<String, Object>();
                 resultMap.put("isAuth", "T");
                 resultMap.put("userId", user.getId());
-                boolean b = otherWxVerify(wxId, user.getId(), otherOpenId);
-                if (!b){
+                //验证第三方公众号
+                if(wxId!=null&&otherOpenId!=null&&!"".equals(wxId)&&!"".equals(otherOpenId)) {
+                    boolean b = otherWxVerify(wxId, user.getId(), otherOpenId);
+                    if (!b){
                     TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();//回滚
                     return ResultGenerator.genFailResult("异常，请稍后再试", "fail");
                 }
+                }
+//
+
                 //Long userId, String phone, String openId, String code
 
 //                Result bindPhoneResult =  bindWxPhone(user.getId(),);
@@ -405,8 +410,12 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
             return ResultGenerator.genFailResult("异常，请稍后再试", "fail");
         }
     }
+
+
     @Override
     public boolean otherWxVerify(String wxId, Long userId, String otherOpenId){
+
+        logger.info("进入第三方验证");
         if(StrUtil.isBlank(wxId)||StrUtil.isBlank(otherOpenId)){
             return false;
         } else {

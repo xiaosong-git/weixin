@@ -111,16 +111,16 @@
             show = 1;
         }
         var peopleType = "";
-        if(detailJson.recordType != "1"){
-            peopleType ="受邀人"
-        }else{
-            peopleType ="受访人"
+        if (detailJson.recordType != "1") {
+            peopleType = "受邀人"
+        } else {
+            peopleType = "受访人"
         }
         if (show == 1) {
             $("#dataDetail").append("<div class=\"weui-media-box weui-media-box_appmsg\">\n" +
                 "    <div class=\"weui-media-box__bd\" style='margin-left: 3%'>\n" +
                 "        <p class=\"weui-cell__bd\" style=\"margin-left: 5%\">&nbsp;&nbsp;&nbsp;发起人&nbsp;&nbsp;&nbsp; " + userName + "</p><br>\n" +
-                "        <p class=\"weui-cell__bd\" style=\"margin-left: 5%\">&nbsp;&nbsp;&nbsp;"+peopleType+"&nbsp;&nbsp;&nbsp; " + visitorName + "</p><br>\n" +
+                "        <p class=\"weui-cell__bd\" style=\"margin-left: 5%\">&nbsp;&nbsp;&nbsp;" + peopleType + "&nbsp;&nbsp;&nbsp; " + visitorName + "</p><br>\n" +
                 "        <p class=\"weui-cell__bd\" style=\"margin-left: 5%\">申请时间&nbsp;&nbsp; " + applyDate + "</p><br>\n" +
                 "        <p class=\"weui-cell__bd\" style=\"margin-left: 5%\">受理时间&nbsp;&nbsp; " + replyDate + "</p><br>\n" +
                 "        <p class=\"weui-cell__bd\" style=\"margin-left: 5%\">受理状态&nbsp;&nbsp; " + status + "</p><br>\n" +
@@ -132,7 +132,7 @@
             $("#dataDetail").append("<div class=\"weui-media-box weui-media-box_appmsg\">\n" +
                 "    <div class=\"weui-media-box__bd\" style='margin-left: 3%'>\n" +
                 "        <p class=\"weui-cell__bd\" style=\"margin-left: 5%\">&nbsp;&nbsp;&nbsp;发起人&nbsp;&nbsp;&nbsp; " + userName + "</p><br>\n" +
-                "        <p class=\"weui-cell__bd\" style=\"margin-left: 5%\">&nbsp;&nbsp;&nbsp;"+peopleType+"&nbsp;&nbsp;&nbsp; " + visitorName + "</p><br>\n" +
+                "        <p class=\"weui-cell__bd\" style=\"margin-left: 5%\">&nbsp;&nbsp;&nbsp;" + peopleType + "&nbsp;&nbsp;&nbsp; " + visitorName + "</p><br>\n" +
                 "        <p class=\"weui-cell__bd\" style=\"margin-left: 5%\">申请时间&nbsp;&nbsp;&nbsp; " + applyDate + "</p><br>\n" +
                 "        <p class=\"weui-cell__bd\" style=\"margin-left: 5%\">受理状态&nbsp;&nbsp;&nbsp; " + status + "</p><br>\n" +
                 "        <p class=\"weui-cell__bd\" style=\"margin-left: 5%\">访问时间&nbsp;&nbsp;&nbsp; " + visitDate + "</p><br>\n" +
@@ -146,13 +146,13 @@
                     $("#addrshow").append("<label for=\"address\" style='margin-left: 5%'>请选择您的会面地址</label><br><br>\n" +
                         "                    <p><input class=\"weui-input\" id=\"address\" type=\"text\" style='margin-left: 5%'></p><br>")
                 }
-            }else{
+            } else {
                 companyId = detailJson.companyId;
                 $("#addrshow").append("<p class=\"weui-cell__bd\" style=\"margin-left: 5%\">访问地址&nbsp;&nbsp;&nbsp; " + detailJson.companyName + "</p><br>")
             }
-           /* if (getCookie("userId") == detailJson.userId && detailJson.recordType == "1") {
-                document.getElementById("addrshow").style.display = 'none';
-            }*/
+            /* if (getCookie("userId") == detailJson.userId && detailJson.recordType == "1") {
+                 document.getElementById("addrshow").style.display = 'none';
+             }*/
         }
         getCompany();
         var identify = detailJson.recordType;
@@ -214,7 +214,7 @@
                 console.log(result)
                 var companys = [];
                 for (var i in result.data) {
-                    companys.push(result.data[i].companyname +"("+result.data[i].addr+")")
+                    companys.push(result.data[i].companyname + "(" + result.data[i].addr + ")")
                 }
                 $("#address").picker({
                     title: "请选择地址",
@@ -231,7 +231,7 @@
                         var companyName = $("#address").val()//店铺名赋值
 
                         for (var i in result.data) {
-                            if (result.data[i].companyname == companyName+"("+result.data[i].addr+")") {
+                            if (result.data[i].companyname == companyName + "(" + result.data[i].addr + ")") {
                                 companyId = result.data[i].id;
                                 console.log(companyId)
                             }

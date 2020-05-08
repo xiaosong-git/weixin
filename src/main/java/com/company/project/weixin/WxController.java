@@ -74,7 +74,7 @@ public class WxController {
         @Scheduled(fixedRate=3600*1000)
         private void configureTasks() throws WxErrorException, IOException {
             RedisUtil.setStr("accessToken",iService.getAccessToken(),2,7000);
-            thirdPartyService.setComponentAccessToken();
+//            thirdPartyService.setComponentAccessToken();
             List<otherWx> wxList = otherWxService.findAll();
             for (com.company.project.model.otherWx otherWx : wxList) {
                 try{

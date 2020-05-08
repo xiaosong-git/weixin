@@ -60,7 +60,7 @@ public class Menu {
         String url=null;
         try {
             //通过公众号访问地址授权
-            url = iService.oauth2buildAuthorizationUrl("http://khfg7z.natappfree.cc/school/#/BindPhone", "snsapi_userinfo", "233");
+            url = iService.oauth2buildAuthorizationUrl("http://wmy9kf.natappfree.cc/school/#/BindPhone", "snsapi_userinfo", "233");
         }catch (WxErrorException w){
             w.getStackTrace();
         }

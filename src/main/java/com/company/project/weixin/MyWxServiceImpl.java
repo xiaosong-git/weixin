@@ -80,17 +80,15 @@ public class MyWxServiceImpl extends WxService implements MyService {
         }
     }
     @Override
-    public TemplateSenderResult otherTemplateSend(String accessToken, TemplateSender sender) throws WxErrorException {
+    public TemplateSenderResult otherTemplateSend(String accessToken, TemplateSender sender) throws WxErrorException, IOException {
         TemplateSenderResult result = null;
         String postResult = null;
         String url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=ACCESS_TOKEN".replace("ACCESS_TOKEN", accessToken);
 
-        try {
+
             postResult = this.post(url, sender.toJson());
             result = TemplateSenderResult.fromJson(postResult);
             return result;
-        } catch (IOException var6) {
-           return null;
-        }
+
     }
 }

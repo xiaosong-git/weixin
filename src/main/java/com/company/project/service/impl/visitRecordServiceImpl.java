@@ -195,7 +195,7 @@ public class visitRecordServiceImpl extends AbstractService<VisitRecord> impleme
                 TemplateSenderResult result = iService.templateSend(sender);
                 logger.info(result.toString());
             }catch (Exception e){
-                logger.error("发送模板消息错误：用户未关注朋悦比邻公众号,用户id：{},用户openId{}",me.getId(),me.getWxOpenId());
+                logger.error("发送模板消息错误：用户未关注朋悦比邻公众号,用户id：{},用户openId{}",me.getId(),me.getWxOpenId(),e);
             }
             otherTemplateSend(me.getId(),sender);
             //todo 查找用户的
@@ -231,7 +231,7 @@ public class visitRecordServiceImpl extends AbstractService<VisitRecord> impleme
                 TemplateSenderResult result = iService.templateSend(sender);
                 logger.info(result.toString());
             }catch (Exception e){
-                logger.error("发送模板消息错误：用户未关注朋悦比邻公众号,用户id：{},用户openId{}",me.getId(),me.getWxOpenId());
+                logger.error("发送模板消息错误：用户未关注朋悦比邻公众号,用户id：{},用户openId{}",me.getId(),me.getWxOpenId(),e);
 
             }
 
@@ -249,7 +249,7 @@ public class visitRecordServiceImpl extends AbstractService<VisitRecord> impleme
                 logger.info("发送用户:{},{},{}",userId,otherWx.getExt1(),otherWx.getWxName());
                 iService.otherTemplateSend((RedisUtil.getStrVal(otherWx.getWxValue(), 2)), sender);
             } catch (Exception e) {
-                logger.error("第三方模板消息报错,发送用户:{},{},第三方:{}",userId,otherWx.getExt1(),otherWx.getWxName());
+                logger.error("第三方模板消息报错,发送用户:{},{},第三方:{}",userId,otherWx.getExt1(),otherWx.getWxName(),e);
             }
         }
     }
@@ -361,7 +361,7 @@ public class visitRecordServiceImpl extends AbstractService<VisitRecord> impleme
                     TemplateSenderResult result = iService.templateSend(sender);
                     logger.info(result.toString());
                 }catch (Exception e){
-                    logger.error("发送模板消息错误：用户未关注朋悦比邻公众号,用户id：{},用户openId{}",otherUser.getId(),otherUser.getWxOpenId());
+                    logger.error("发送模板消息错误：用户未关注朋悦比邻公众号,用户id：{},用户openId{}",otherUser.getId(),otherUser.getWxOpenId(),e);
                 }
                 otherTemplateSend(otherUser.getId(),sender);
             }else{
@@ -387,7 +387,7 @@ public class visitRecordServiceImpl extends AbstractService<VisitRecord> impleme
                     TemplateSenderResult result = iService.templateSend(sender);
                     logger.info(result.toString());
                 }catch (Exception e){
-                    logger.error("发送模板消息错误：用户未关注朋悦比邻公众号,用户id：{},用户openId{}",otherUser.getId(),otherUser.getWxOpenId());
+                    logger.error("发送模板消息错误：用户未关注朋悦比邻公众号,用户id：{},用户openId{}",otherUser.getId(),otherUser.getWxOpenId(),e);
                 }
                 otherTemplateSend(otherUser.getId(),sender);
             }

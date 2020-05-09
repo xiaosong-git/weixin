@@ -76,10 +76,11 @@
             // var wxId = getQueryString("wxId");
             // var openId = getQueryString("openId");
             // if (!isLogin("index"+"?"+"wxId="+wxId+",openId="+openId)) {
-            // }
             $('#auth').attr('href','auth3?userId='+getCookie("userId"));
             setCookie('wxId', '[[${wxId}]]', 365);
             setCookie('otherOpenId', '[[${otherOpenId}]]', 365);
+            // }
+            bindOther();
             if ("T"==getCookie("isAuth")) {
                 $('#auth').hide();
             }

@@ -107,3 +107,31 @@ function getQueryString(name) {
     }
     return null;
 }
+
+function bindOther(){
+    if(getCookie("isBind")){
+        return;
+    }
+    $.ajax({
+        type: 'POST',
+        contentType: "application/x-www-form-urlencoded",
+        url: "user/bindOther",
+        data: {
+            wxId: getCookie("wxId"),
+            userId: getCookie("userId"),
+            otherOpenId: getCookie("otherOpenId")
+        },
+        success: function (result) {
+           console.log(result);
+            if(result.message){
+                setCookie("isBind",true,1);
+            }
+        },
+        //请求失败，包含具体的错误信息
+        error: function (e) {
+            console.log(e.message);
+            $.toptip("当前网络异常");
+            console.log(e.responseText);
+        }
+    });
+}

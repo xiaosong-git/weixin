@@ -1,5 +1,6 @@
 package com.company.project.web;
 
+import cn.hutool.core.util.StrUtil;
 import com.company.project.annotation.AuthCheckAnnotation;
 import com.company.project.core.Result;
 import com.company.project.core.ResultGenerator;
@@ -8,6 +9,8 @@ import com.company.project.model.User;
 import com.company.project.service.CompanyService;
 import com.company.project.service.CompanyUserService;
 import com.company.project.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -28,7 +31,7 @@ public class UserController {
     @Resource
     private CompanyService companyService;
 
-
+    Logger logger = LoggerFactory.getLogger(UserController.class);
     @AuthCheckAnnotation(checkLogin = false,checkVerify = false)
     @PostMapping("/namePhone")
     public Result findByNamePhone(@RequestParam(defaultValue = "0") String realName, @RequestParam(defaultValue = "0") String phone) {
@@ -189,5 +192,20 @@ public class UserController {
         }
         return ResultGenerator.genSuccessResult(u);
     }
+    @PostMapping("/bindOther")
+    public Result bindOther(@RequestParam (defaultValue = "")String wxId,@RequestParam(defaultValue = "") String userId,@RequestParam (defaultValue = "") String otherOpenId ){
+        if("".equals(wxId)||"".equals(otherOpenId)||"".equals(userId)){
+            return  ResultGenerator.genSuccessResult(false);
+        }
+        boolean bind = userService.otherWxVerify(wxId, Long.valueOf(userId), otherOpenId);
+        logger.info("bind{}", bind);
+        return  ResultGenerator.genSuccessResult(bind);
+    }
 
+    public static void main(String[] args) {
+        Logger logger = LoggerFactory.getLogger(UserController.class);
+        logger.debug("ahaa");
+        logger.info("ahaa");
+        logger.error("ahaa");
+    }
 }

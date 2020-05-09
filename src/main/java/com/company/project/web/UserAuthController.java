@@ -53,4 +53,5 @@ public class UserAuthController {
         PageInfo pageInfo = new PageInfo(list);
         return ResultGenerator.genSuccessResult(pageInfo);
     }
+
 }

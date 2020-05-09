@@ -79,6 +79,8 @@
             // }
             setCookie('wxId', '[[${wxId}]]', 365);
             setCookie('otherOpenId', '[[${otherOpenId}]]', 365);
+            //绑定其他微信号
+            bindOther();
         });
         //获取上个页面传过来的参数
         // function getQueryString(name) {

@@ -1,11 +1,10 @@
 package com.company.project.web;
 
 
-import cn.hutool.core.util.StrUtil;
 import com.company.project.annotation.AuthCheckAnnotation;
 import com.company.project.dao.OtherWxMapper;
-import com.company.project.model.otherWx;
 import com.company.project.model.User;
+import com.company.project.model.otherWx;
 import com.company.project.service.UserService;
 import com.company.project.weixin.MenuKey;
 import com.company.project.weixin.MyService;
@@ -39,7 +38,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/")
 public class ThymeleafController {
-    Logger logger = LoggerFactory.getLogger(WxController.class);
+    Logger logger = LoggerFactory.getLogger(ThymeleafController.class);
     private MyService iService = new MyWxServiceImpl();
     @Autowired
     private UserService userService;
@@ -130,6 +129,7 @@ public class ThymeleafController {
             logger.info(wxId);
             logger.info(state);
             logger.info(code);
+
 //        if (wxId!=null){
 //            //todo 去数据库查找信息并跳转
 //            String url="index";
@@ -150,6 +150,7 @@ public class ThymeleafController {
         try {
             otherWx wx = otherWxMapper.findByWx(wxId);
             WxOAuth2AccessTokenResult result = iService.otherAuth2ToGetAccessToken(wx.getAppid(),wx.getSecret(),code);
+            logger.info("otherOpenId,{}",result.getOpenid());
             model.addAttribute("otherOpenId",result.getOpenid());
         } catch (WxErrorException e) {
             e.printStackTrace();

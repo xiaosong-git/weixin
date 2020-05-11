@@ -1,6 +1,7 @@
 package com.company.project.weixin;
 
 import com.company.project.util.RedisUtil;
+import com.company.project.web.ThymeleafController;
 import com.soecode.wxtools.api.WxConfig;
 import com.soecode.wxtools.api.WxService;
 import com.soecode.wxtools.bean.TemplateSender;
@@ -8,6 +9,8 @@ import com.soecode.wxtools.bean.WxAccessToken;
 import com.soecode.wxtools.bean.result.TemplateSenderResult;
 import com.soecode.wxtools.bean.result.WxOAuth2AccessTokenResult;
 import com.soecode.wxtools.exception.WxErrorException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.Map;
@@ -17,7 +20,7 @@ import java.util.Map;
  * @date 2020/4/28 9:57
  */
 public class MyWxServiceImpl extends WxService implements MyService {
-
+    Logger logger = LoggerFactory.getLogger(MyWxServiceImpl.class);
     @Override
     public String getAccessToken(boolean forceRefresh) throws WxErrorException {
         if (forceRefresh) {
@@ -83,6 +86,7 @@ public class MyWxServiceImpl extends WxService implements MyService {
     public TemplateSenderResult otherTemplateSend(String accessToken, TemplateSender sender) throws WxErrorException, IOException {
         TemplateSenderResult result = null;
         String postResult = null;
+        logger.info("发送模板时第三方accessToken为{}",accessToken);
         String url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=ACCESS_TOKEN".replace("ACCESS_TOKEN", accessToken);
 
 

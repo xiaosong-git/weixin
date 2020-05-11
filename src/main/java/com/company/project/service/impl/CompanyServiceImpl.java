@@ -33,4 +33,14 @@ public class CompanyServiceImpl extends AbstractService<Company> implements Comp
         List<Company> list = tblCompanyMapper.findNotCompanyUser(userId);
         return list;
     }
+
+    @Override
+    public List<Company> findCompany(String companyName) {
+        return tblCompanyMapper.findCompany(companyName);
+    }
+
+    @Override
+    public List<Company> findCompanyAddr(String addr) {
+        return tblCompanyMapper.findCompanyAddr(addr);
+    }
 }

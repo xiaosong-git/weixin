@@ -1,7 +1,6 @@
 package com.company.project.service;
 import com.company.project.model.Company;
 import com.company.project.core.Service;
-import com.company.project.model.CompanyUser;
 
 import java.util.List;
 
@@ -14,4 +13,8 @@ public interface CompanyService extends Service<Company> {
     List<Company> findByUserId(long userId);
 
     List<Company> findNotCompanyUser(long userId);
+
+    List<Company> findCompany(String companyName);
+
+    List<Company> findCompanyAddr(String addr);
 }

@@ -28,5 +28,9 @@ public interface CompanyMapper extends Mapper<Company> {
     
     @Select("select c.id,companyName from tbl_company c,tbl_company_user cu,tbl_user u where c.id=cu.companyId and cu.userId=u.id and u.phone=#{phone}")
     List<Company> findByPhone (String phone);
+    @Select("select id,companyName,addr from tbl_company where companyName like '%#{companyName}%' limit 10")
+    List<Company> findCompany(String companyName);
 
+    @Select("select id,companyName,addr from tbl_company where addr like '%#{addr}%' limit 10")
+    List<Company> findCompanyAddr(String addr);
 }

@@ -58,12 +58,12 @@ public class CompanyController {
 //    }
 //
     @PostMapping("/findCompany")
-    public Result findCompany(String companyName) {
+    public Result findCompany(@RequestParam String companyName) {
         List<Company> list = companyService.findCompany(companyName);
         return ResultGenerator.genSuccessResult(list);
     }
     @PostMapping("/findCompanyAddr")
-    public Result findCompanyAddr(String addr) {
+    public Result findCompanyAddr(@RequestParam String addr) {
         List<Company> list = companyService.findCompanyAddr(addr);
         return ResultGenerator.genSuccessResult(list);
     }

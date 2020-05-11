@@ -6,6 +6,14 @@ import com.company.project.core.ResultGenerator;
 import com.company.project.model.VisitRecord;
 import com.company.project.service.visitRecordService;
 import com.company.project.util.DateUtil;
+import com.company.project.util.RedisUtil;
+import com.company.project.weixin.MyService;
+import com.company.project.weixin.MyWxServiceImpl;
+import com.company.project.weixin.model.WxTemplateData;
+import com.soecode.wxtools.bean.TemplateSender;
+import com.soecode.wxtools.bean.result.TemplateSenderResult;
+import com.soecode.wxtools.bean.result.WxError;
+import com.soecode.wxtools.exception.WxErrorException;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,7 +35,7 @@ import java.util.Map;
 public class VisitRecordController {
     @Resource
     private visitRecordService visitRecordService;
-
+    private MyService iService = new MyWxServiceImpl();
     private final org.slf4j.Logger logger = LoggerFactory.getLogger(MvcConfig.class);
     /**
      * @param hour 结束时间
@@ -149,5 +158,31 @@ public class VisitRecordController {
         visitRecord.put("isValue",isValue);
         return ResultGenerator.genSuccessResult(visitRecord);
     }
+
+    @PostMapping("/test/temp")
+    public Result testTemp(String token){
+        TemplateSender sender = new TemplateSender();
+        Map<String, WxTemplateData> dataMap = new HashMap<>();
+        sender.setTemplate_id("I-nNgggadJrZcZmkJzgxMVOptw4tf2MD9NKgYhWnCdM");
+        sender.setTouser("oFw0JwGlkNWM9DByJR8C76hSgYuc");
+        dataMap.put("first",new WxTemplateData("访问消息通知", "#173177"));
+        dataMap.put("keyword1",new WxTemplateData("测试", "#173177"));
+        dataMap.put("keyword2",new WxTemplateData("测试", "#173177"));
+        dataMap.put("keyword3",new WxTemplateData("测试", "#173177"));
+        dataMap.put("keyword4",new WxTemplateData("测试", "#173177"));
+        dataMap.put("remark",new WxTemplateData("您的访问申请信息已被对方审核", "#173177"));
+        sender.setData(dataMap);
+        try {
+            TemplateSenderResult templateSenderResult = iService.otherTemplateSend(token, sender);
+
+        } catch (WxErrorException e) {
+            WxError error = e.getError();
+            logger.error("错误码:{},错误内容:{}",error.getErrcode(),error.getErrmsg());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
 }

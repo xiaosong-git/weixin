@@ -22,6 +22,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.soecode.wxtools.bean.TemplateSender;
 import com.soecode.wxtools.bean.result.TemplateSenderResult;
+import com.soecode.wxtools.bean.result.WxError;
 import com.soecode.wxtools.exception.WxErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +31,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -240,20 +242,37 @@ public class visitRecordServiceImpl extends AbstractService<VisitRecord> impleme
 
         return ResultGenerator.genSuccessResult("成功");
     }
-    public void otherTemplateSend(Long userId,TemplateSender sender){
+    @Override
+    public void otherTemplateSend(Long userId, TemplateSender sender){
         List<otherWx> wxByUser = otherWxMapper.findWxByUser(userId);
         for (otherWx otherWx : wxByUser) {
             sender.setTouser(otherWx.getExt1());
             sender.setTemplate_id(otherWx.getTemplate());
-            try {
+
                 logger.info("发送用户:{},{},{}",userId,otherWx.getExt1(),otherWx.getWxName());
                 logger.info("发送用户时的accessToken:{}", RedisUtil.getStrVal(otherWx.getWxValue(),2));
+            try {
                 iService.otherTemplateSend((RedisUtil.getStrVal(otherWx.getWxValue(), 2)), sender);
-            } catch (Exception e) {
-                logger.error("第三方模板消息报错,发送用户:{},{},第三方:{}",userId,otherWx.getExt1(),otherWx.getWxName(),e);
+            } catch (WxErrorException e) {
+                WxError error = e.getError();
+                logger.error("错误码:{},错误内容:{}",error.getErrcode(),error.getErrmsg());
+                if (error.getErrcode()==40001){
+                    //获取accessToken后重新发送模板消息
+                    try {
+                        String otherAccessToken = iService.getOtherAccessToken(otherWx.getAppid(), otherWx.getSecret());
+                        logger.info("获取第三方accessToken{}",otherAccessToken);
+                        RedisUtil.setStr(otherWx.getWxValue(), otherAccessToken,2,7000);
+                        iService.otherTemplateSend(otherAccessToken, sender);
+                    } catch (WxErrorException | IOException ex) {
+                        logger.error("重新发送模板消息失败",ex);
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
     }
+
     public Result visitCommon(VisitRecord visitRecord, String hour,int applyTpey) throws WxErrorException {
         String cstatus = "applyConfirm";
         Long userId = visitRecord.getUserId();

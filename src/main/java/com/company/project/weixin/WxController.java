@@ -1,6 +1,8 @@
 package com.company.project.weixin;
 
 import com.company.project.annotation.AuthCheckAnnotation;
+import com.company.project.core.Result;
+import com.company.project.core.ResultGenerator;
 import com.company.project.dao.VisitRecordMapper;
 import com.company.project.model.otherWx;
 import com.company.project.service.OtherWxService;
@@ -19,7 +21,6 @@ import com.soecode.wxtools.bean.WxXmlOutMessage;
 import com.soecode.wxtools.exception.WxErrorException;
 import com.soecode.wxtools.util.xml.XStreamTransformer;
 import io.swagger.annotations.ApiOperation;
-import org.apache.ibatis.annotations.Update;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @program: spring-boot-api-project-seed
@@ -78,38 +81,44 @@ public class WxController {
         private void configureTasks() throws WxErrorException, IOException {
             RedisUtil.setStr("accessToken", iService.getAccessToken(), 2, 7000);
 //            thirdPartyService.setComponentAccessToken();
-            List<otherWx> wxList = otherWxService.findAll();
-            for (com.company.project.model.otherWx otherWx : wxList) {
-                try {
-
-                    logger.info("更新前：redis第三方accessToken：{},", RedisUtil.getStrVal(otherWx.getWxValue(), 2));
-                    String otherAccessToken = iService.getOtherAccessToken(otherWx.getAppid(), otherWx.getSecret());
-                    String s = RedisUtil.setStr(otherWx.getWxValue(), otherAccessToken, 2, 7000);
-                    logger.info("更新第三方accessToken成功！,{},{}", s, otherAccessToken);
-                    logger.info("更新后：redis第三方accessToken：{},", RedisUtil.getStrVal(otherWx.getWxValue(), 2));
-                } catch (Exception e) {
-                    logger.error("获取第三方accessToken报错,{},{}", otherWx.getWxValue(), otherWx.getAppid());
-                }
-            }
+//            List<otherWx> wxList = otherWxService.findAll();
+//            for (com.company.project.model.otherWx otherWx : wxList) {
+//                try {
+//
+//                    logger.info("更新前：redis第三方accessToken：{},", RedisUtil.getStrVal(otherWx.getWxValue(), 2));
+//                    String otherAccessToken = iService.getOtherAccessToken(otherWx.getAppid(), otherWx.getSecret());
+//                    String s = RedisUtil.setStr(otherWx.getWxValue(), otherAccessToken, 2, 7000);
+//                    logger.info("更新第三方accessToken成功！,{},{}", s, otherAccessToken);
+//                    logger.info("更新后：redis第三方accessToken：{},", RedisUtil.getStrVal(otherWx.getWxValue(), 2));
+//                } catch (Exception e) {
+//                    logger.error("获取第三方accessToken报错,{},{}", otherWx.getWxValue(), otherWx.getAppid());
+//                }
+//            }
 //            logger.info("存储acessToken时间: {},acessToken：{}" , LocalDateTime.now(),iService.getAccessToken());
         }
     }
 
     @RequestMapping(value = "updateToken", method = RequestMethod.PATCH)
-    public void updateToken() {
+    public Result updateToken() {
         List<otherWx> wxList = otherWxService.findAll();
+        Map<String, Object> map=new HashMap<>();
         for (com.company.project.model.otherWx otherWx : wxList) {
             try {
 
                 logger.info("更新前：redis第三方accessToken：{},", RedisUtil.getStrVal(otherWx.getWxValue(), 2));
+                map.put("first",RedisUtil.getStrVal(otherWx.getWxValue(), 2));
                 String otherAccessToken = iService.getOtherAccessToken(otherWx.getAppid(), otherWx.getSecret());
                 String s = RedisUtil.setStr(otherWx.getWxValue(), otherAccessToken, 2, 7000);
                 logger.info("更新第三方accessToken成功！,{},{}", s, otherAccessToken);
                 logger.info("更新后：redis第三方accessToken：{},", RedisUtil.getStrVal(otherWx.getWxValue(), 2));
+                map.put("second",RedisUtil.getStrVal(otherWx.getWxValue(), 2));
+
             } catch (Exception e) {
                 logger.error("获取第三方accessToken报错,{},{}", otherWx.getWxValue(), otherWx.getAppid());
             }
         }
+        return ResultGenerator.genSuccessResult(map);
+
     }
 
 

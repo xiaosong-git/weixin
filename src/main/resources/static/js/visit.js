@@ -78,6 +78,7 @@ $("#hour").picker({
         console.log("close");
     }
 });
+
 $("#reason").picker({
     title: "请选择拜访事由",
     cols: [

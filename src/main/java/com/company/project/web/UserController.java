@@ -1,6 +1,5 @@
 package com.company.project.web;
 
-import cn.hutool.core.util.StrUtil;
 import com.company.project.annotation.AuthCheckAnnotation;
 import com.company.project.core.Result;
 import com.company.project.core.ResultGenerator;
@@ -202,10 +201,4 @@ public class UserController {
         return  ResultGenerator.genSuccessResult(bind);
     }
 
-    public static void main(String[] args) {
-        Logger logger = LoggerFactory.getLogger(UserController.class);
-        logger.debug("ahaa");
-        logger.info("ahaa");
-        logger.error("ahaa");
-    }
 }

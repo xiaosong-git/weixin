@@ -58,13 +58,13 @@ public class ThymeleafController {
         //todo 增加一个state后的参数wxId,otherId
         model.addAttribute("state", split[0]);
         WxOAuth2AccessTokenResult oAuth2AccessTokenResult = iService.oauth2ToGetAccessToken(code);
-        //获取微信登入的openid
-        WxUserList.WxUser.WxUserGet wxUser = new WxUserList.WxUser.WxUserGet();
-        wxUser.setOpenid(oAuth2AccessTokenResult.getOpenid());
-        wxUser.setLang("zh_CN");
-        WxUserList.WxUser wxUser1 = iService.oauth2ToGetUserInfo(oAuth2AccessTokenResult.getAccess_token(), wxUser);
-        model.addAttribute("openId", wxUser1.getOpenid());
-        User user = userService.getUser(wxUser1.getOpenid());
+        //获取微信登入的openid,昵称等等
+//        WxUserList.WxUser.WxUserGet wxUser = new WxUserList.WxUser.WxUserGet();
+//        wxUser.setOpenid(oAuth2AccessTokenResult.getOpenid());
+//        wxUser.setLang("zh_CN");
+//        WxUserList.WxUser wxUser1 = iService.oauth2ToGetUserInfo(oAuth2AccessTokenResult.getAccess_token(), wxUser);
+        model.addAttribute("openId", oAuth2AccessTokenResult.getOpenid());
+        User user = userService.getUser(oAuth2AccessTokenResult.getOpenid());
         if (user != null) {
             model.addAttribute("userId", user.getId());
             model.addAttribute("isAuth", user.getIsauth());
@@ -129,24 +129,7 @@ public class ThymeleafController {
             logger.info(wxId);
             logger.info(state);
             logger.info(code);
-
-//        if (wxId!=null){
-//            //todo 去数据库查找信息并跳转
-//            String url="index";
-//            try {
-//
-//                otherWx otherWx = otherWxMapper.findByWx(wxId);
-//
-//                url = iService.OtheroAuth2buildAuthorizationUrl(otherWx.getAppid(), MenuKey.URL + "index", "snsapi_userinfo", wxId);
-//
-//            } catch (WxErrorException e) {
-//                e.printStackTrace();
-//                return "error";
-//            }
-//
-//            return "redirect:"+url;
-//        }
-        //todo 获取其他公众号的openid
+        //获取其他公众号的openid
         try {
             otherWx wx = otherWxMapper.findByWx(wxId);
             WxOAuth2AccessTokenResult result = iService.otherAuth2ToGetAccessToken(wx.getAppid(),wx.getSecret(),code);
@@ -238,16 +221,8 @@ public class ThymeleafController {
     }
     @AuthCheckAnnotation(checkLogin = false, checkVerify = false)
     @RequestMapping(value = "/auth3", method = RequestMethod.GET)
-    public String auth3(@RequestParam(name = "userId", required = false) String userId,Model model) {
-        if(userId!=null&&!"".equals(userId)){
-
-//            String url = MenuKey.URL + "index1";
-            if (userService.isVerify(Long.valueOf(userId))) {
-                logger.info("跳转至index1");
-                return "index1";
-            }
-        }
-
+    public String auth3(Model model) {
+        logger.info("auth3");
         setAuth( "auth3",model);
         return "auth3";
     }

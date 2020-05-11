@@ -247,6 +247,7 @@ public class visitRecordServiceImpl extends AbstractService<VisitRecord> impleme
             sender.setTemplate_id(otherWx.getTemplate());
             try {
                 logger.info("发送用户:{},{},{}",userId,otherWx.getExt1(),otherWx.getWxName());
+                logger.info("发送用户时的accessToken:{}", RedisUtil.getStrVal(otherWx.getWxValue(),2));
                 iService.otherTemplateSend((RedisUtil.getStrVal(otherWx.getWxValue(), 2)), sender);
             } catch (Exception e) {
                 logger.error("第三方模板消息报错,发送用户:{},{},第三方:{}",userId,otherWx.getExt1(),otherWx.getWxName(),e);

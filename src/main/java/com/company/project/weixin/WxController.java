@@ -19,6 +19,7 @@ import com.soecode.wxtools.bean.WxXmlOutMessage;
 import com.soecode.wxtools.exception.WxErrorException;
 import com.soecode.wxtools.util.xml.XStreamTransformer;
 import io.swagger.annotations.ApiOperation;
+import org.apache.ibatis.annotations.Update;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +56,7 @@ public class WxController {
     private VisitRecordMapper visitorRecordMapper;
     @Resource
     private OtherWxService otherWxService;
+
     @AuthCheckAnnotation(checkLogin = false, checkVerify = false)
     @GetMapping
     public String check(String signature, String timestamp, String nonce, String echostr) {
@@ -65,27 +67,52 @@ public class WxController {
         }
         return null;
     }
+
     @Configuration      //1.主要用于标记配置类，兼备Component的效果。
     @EnableScheduling   // 2.开启定时任务
     public class SaticScheduleTask {
         //3.添加定时任务 30分钟
 //        @Scheduled(cron = "0 0/30 * * * ? ")
         //或直接指定时间间隔，例如：5秒
-        @Scheduled(fixedRate=3600*1000)
+        @Scheduled(fixedRate = 3600 * 1000)
         private void configureTasks() throws WxErrorException, IOException {
-            RedisUtil.setStr("accessToken",iService.getAccessToken(),2,7000);
+            RedisUtil.setStr("accessToken", iService.getAccessToken(), 2, 7000);
 //            thirdPartyService.setComponentAccessToken();
             List<otherWx> wxList = otherWxService.findAll();
             for (com.company.project.model.otherWx otherWx : wxList) {
-                try{
-                    String s = RedisUtil.setStr(otherWx.getWxValue(), iService.getOtherAccessToken(otherWx.getAppid(), otherWx.getSecret()), 2, 7000);
-                    logger.info("更新第三方accessToken成功！,{}",s);
-                }catch (Exception e){
-                    logger.error("获取第三方accessToken报错,{},{}",otherWx.getWxValue(),otherWx.getAppid());
-                }}
+                try {
+
+                    logger.info("更新前：redis第三方accessToken：{},", RedisUtil.getStrVal(otherWx.getWxValue(), 2));
+                    String otherAccessToken = iService.getOtherAccessToken(otherWx.getAppid(), otherWx.getSecret());
+                    String s = RedisUtil.setStr(otherWx.getWxValue(), otherAccessToken, 2, 7000);
+                    logger.info("更新第三方accessToken成功！,{},{}", s, otherAccessToken);
+                    logger.info("更新后：redis第三方accessToken：{},", RedisUtil.getStrVal(otherWx.getWxValue(), 2));
+                } catch (Exception e) {
+                    logger.error("获取第三方accessToken报错,{},{}", otherWx.getWxValue(), otherWx.getAppid());
+                }
+            }
 //            logger.info("存储acessToken时间: {},acessToken：{}" , LocalDateTime.now(),iService.getAccessToken());
         }
     }
+
+    @RequestMapping(value = "updateToken", method = RequestMethod.PATCH)
+    public void updateToken() {
+        List<otherWx> wxList = otherWxService.findAll();
+        for (com.company.project.model.otherWx otherWx : wxList) {
+            try {
+
+                logger.info("更新前：redis第三方accessToken：{},", RedisUtil.getStrVal(otherWx.getWxValue(), 2));
+                String otherAccessToken = iService.getOtherAccessToken(otherWx.getAppid(), otherWx.getSecret());
+                String s = RedisUtil.setStr(otherWx.getWxValue(), otherAccessToken, 2, 7000);
+                logger.info("更新第三方accessToken成功！,{},{}", s, otherAccessToken);
+                logger.info("更新后：redis第三方accessToken：{},", RedisUtil.getStrVal(otherWx.getWxValue(), 2));
+            } catch (Exception e) {
+                logger.error("获取第三方accessToken报错,{},{}", otherWx.getWxValue(), otherWx.getAppid());
+            }
+        }
+    }
+
+
     @ApiOperation(value = "接收component_verify_ticket 或 authorized事件", notes = "接收component_verify_ticket 或 authorized事件", response = String.class)
     @PostMapping(value = "verifyTicket")
     public String verifyTicket(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -97,7 +124,7 @@ public class WxController {
         StringBuilder sb = new StringBuilder();
         BufferedReader in = request.getReader();
         String line;
-        while((line = in.readLine()) != null) {
+        while ((line = in.readLine()) != null) {
             sb.append(line);
         }
         String postData = sb.toString();
@@ -138,7 +165,7 @@ public class WxController {
                     rule().event(WxConsts.EVT_CLICK).eventKey(MenuKey.SHARE_RECORD).handler(new MyHandler()).end();
             // 把消息传递给路由器进行处理
             WxXmlOutMessage xmlOutMsg = router.route(wx);
-            if (xmlOutMsg != null){
+            if (xmlOutMsg != null) {
                 // 因为是明文，所以不用加密，直接返回给用户
                 out.print(xmlOutMsg.toXml());
             }
@@ -154,7 +181,7 @@ public class WxController {
 
     @AuthCheckAnnotation(checkLogin = false, checkVerify = false)
     @PostMapping("/sendTempMsg")
-    public void sendTempMsg(@RequestParam(defaultValue = "0") String wxOpenId,@RequestParam(defaultValue = "0") Long userId) throws WxErrorException {
+    public void sendTempMsg(@RequestParam(defaultValue = "0") String wxOpenId, @RequestParam(defaultValue = "0") Long userId) throws WxErrorException {
         /*TemplateSender sender = new TemplateSender();
         //公众号模板id
         //朋客联盟

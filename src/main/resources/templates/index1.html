@@ -46,7 +46,7 @@
                 <img src="images/lsjl.png" alt="">
             </div>
             <p class="weui-grid__label">
-                历史记录
+                访客记录
             </p>
         </a>
         <a id="auth" href="auth3" class="weui-grid js_grid">
@@ -76,7 +76,7 @@
             // var wxId = getQueryString("wxId");
             // var openId = getQueryString("openId");
             // if (!isLogin("index"+"?"+"wxId="+wxId+",openId="+openId)) {
-            $('#auth').attr('href','auth3?userId='+getCookie("userId"));
+            // $('#auth').attr('href','auth3?userId='+getCookie("userId"));
             setCookie('wxId', '[[${wxId}]]', 365);
             setCookie('otherOpenId', '[[${otherOpenId}]]', 365);
             // }

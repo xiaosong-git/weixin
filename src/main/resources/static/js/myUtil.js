@@ -1,4 +1,4 @@
-var IS_DEVELOP = false;//是否生产环境
+var IS_DEVELOP = true;//是否生产环境
 var uri;
 var url;
 var appId = "wx1ddcdc86c83bc9a1";
@@ -15,9 +15,9 @@ function getLoginUrl(state) {
     console.log(state);
     if (IS_DEVELOP) {
         //重定向地址
-        return "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + appId + "&redirect_uri=http%3A%2F%2F" + uri + "%2Fpybl%2Flogin&response_type=code&scope=snsapi_userinfo&state=" + state + "#wechat_redirect";
+        return "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + appId + "&redirect_uri=http%3A%2F%2F" + uri + "%2Fpybl%2Flogin&response_type=code&scope=snsapi_base&state=" + state + "#wechat_redirect";
     } else {
-        return "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + appId + "&redirect_uri=http%3A%2F%2F" + uri + "%2Fpybl%2Flogin&response_type=code&scope=snsapi_userinfo&state=" + state + "#wechat_redirect";
+        return "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + appId + "&redirect_uri=http%3A%2F%2F" + uri + "%2Fpybl%2Flogin&response_type=code&scope=snsapi_base&state=" + state + "#wechat_redirect";
     }
 }
 

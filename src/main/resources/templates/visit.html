@@ -20,7 +20,12 @@
 </head>
 
 <body ontouchstart>
-<div class="weui-cells weui-cells_form">
+<div class="weui-flex">
+    <div class="weui-flex__item"><a href="javascript:;" class="weui-btn weui-btn_default" onclick='visit1()' style="background-color: #EFEFF4" id="visit1"><font size="3">联系人访问</font></a></div>
+    <div class="weui-flex__item"><a href="javascript:;" class="weui-btn weui-btn_default" onclick='visit2()' style="background-color: #f7f7f7" id="visit2"><font size="3">地址访问</font></a></div>
+</div>
+<!--联系人访问界面-->
+<div class="weui-cells weui-cells_form" id="pvisit" style="display:block">
     <div class="weui-cell">
         <div class="weui-cell__hd"><label class="weui-label">受访人姓名</label></div>
         <div class="weui-cell__bd">
@@ -125,6 +130,49 @@
     </div>
 </div>
 
+<!--地址访问界面-->
+<div class="weui-cells weui-cells_form" id="addrvisit" style="display: none">
+    <div class="weui-cell">
+        <div class="weui-cell__hd"><label class="weui-label">企业/单位地址</label></div>
+        <div class="weui-cell__bd">
+            <input class="weui-input" id="companyAddr" type="text" placeholder="请选择地区">
+        </div>
+    </div>
+    <div class="weui-cell">
+        <div class="weui-cell__hd"><label class="weui-label">企业/单位名称</label></div>
+        <div class="weui-cell__bd">
+            <input class="weui-input" id="companyName" type="text" placeholder="请输入">
+        </div>
+    </div>
+    <div class="weui-cell">
+        <div class="weui-cell__hd"><label class="weui-label">受访人姓名</label></div>
+        <div class="weui-cell__bd">
+            <input class="weui-input" id="visit2Name" type="text" placeholder="请输入">
+        </div>
+    </div>
+    <div class="weui-cell">
+        <div class="weui-cell__hd"><label for="visit2Time" class="weui-label">开始时间</label></div>
+        <div class="weui-cell__bd">
+            <input class="weui-input" id="visit2Time" type="text" value="" placeholder="">
+        </div>
+    </div>
+    <div class="weui-cell">
+        <div class="weui-cell__hd"><label for="visit2Hour" class="weui-label">时长/小时</label></div>
+        <div class="weui-cell__bd">
+            <input class="weui-input" id="visit2Hour" type="text" value="" placeholder="请选择">
+        </div>
+    </div>
+    <div class="weui-cell">
+        <div class="weui-cell__hd"><label for="visit2Reason" class="weui-label">访问事由</label></div>
+        <div class="weui-cell__bd">
+            <input class="weui-input" id="visit2Reason" type="text" value="" placeholder="">
+        </div>
+    </div>
+    <div class="weui-btn-area">
+        <a class="weui-btn weui-btn_primary" href="javascript:" id="visitByAddr">发起访问</a>
+    </div>
+</div>
+
 <script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
 <script src="https://cdn.bootcss.com/jquery-weui/1.2.1/js/jquery-weui.min.js"></script>
 <script src="https://cdn.bootcss.com/fastclick/1.0.6/fastclick.js"></script>
@@ -132,8 +180,55 @@
 <script src="js/visit.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
+
 <script>
 
+    $(function () {
+        $("#visit2Time").val(formatDateTime(0, 0, 0));
+    });
+    function visit1() {
+        document.getElementById("pvisit").style.display = 'block';
+        document.getElementById("visit1").style.background = '#EFEFF4';
+        document.getElementById("visit2").style.background = '#f7f7f7';
+        document.getElementById("addrvisit").style.display = 'none';
+    }
+    function visit2() {
+        document.getElementById('pvisit').style.display = 'none';
+        document.getElementById("visit1").style.background = '#f7f7f7';
+        document.getElementById("visit2").style.background = '#EFEFF4';
+        document.getElementById('addrvisit').style.display = 'block';
+    }
+    $("#visit2Reason").picker({
+        title: "请选择拜访事由",
+        cols: [
+            {
+                textAlign: 'center',
+                values: ['商务拜访', '配送服务', '面试', '找人', '其他']
+            }
+        ],
+        onChange: function (p, v, dv) {
+            console.log(p, v, dv);
+        },
+        onClose: function (p, v, d) {
+            console.log("close");
+        }
+    });
+    $("#visit2Hour").picker({
+        title: "请选择拜访时长",
+        cols: [
+            {
+                textAlign: 'center',
+                values: ['0.5', '1', '1.5', '2', '2.5', '3', '3.5', '4', '4.5', '5', '5.5', '6']
+            }
+        ],
+        onChange: function (p, v, dv) {
+            console.log(p, v, dv);
+        },
+        onClose: function (p, v, d) {
+            console.log("close");
+        }
+    });
+    $("#visit2Time").datetimePicker();
 
 </script>
 </body>

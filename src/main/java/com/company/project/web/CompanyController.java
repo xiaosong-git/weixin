@@ -60,13 +60,11 @@ public class CompanyController {
     @PostMapping("/findCompany")
     public Result findCompany(String companyName) {
         List<Company> list = companyService.findCompany(companyName);
-        PageInfo pageInfo = new PageInfo(list);
-        return ResultGenerator.genSuccessResult(pageInfo);
+        return ResultGenerator.genSuccessResult(list);
     }
     @PostMapping("/findCompanyAddr")
     public Result findCompanyAddr(String addr) {
         List<Company> list = companyService.findCompanyAddr(addr);
-        PageInfo pageInfo = new PageInfo(list);
-        return ResultGenerator.genSuccessResult(pageInfo);
+        return ResultGenerator.genSuccessResult(list);
     }
 }

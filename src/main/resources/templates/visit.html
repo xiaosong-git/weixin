@@ -317,6 +317,7 @@
                 if(result.code == 200){
                     $("#visit2Name").attr("userId",result.data.id)
                 }else{
+                    $("#visit2Name").attr("userId","")
                     $.toptip(result.message);
                 }
             }
@@ -330,11 +331,30 @@
             $.toptip('请先进行实人认证');
             window.location.href = authUrl;
         } else {
+            var visitorName = $("#visit2Name").val();
             var visitorId = $("#visit2Name").attr("userId");
             var reason = $("#visit2Reason").val();
-            var startDate = $("#visit2Time").val()
-            var hour = $("#visit2Hour").val()
-            visitRequest (visitorId,reason,startDate,hour);
+            var startDate = $("#visit2Time").val();
+            var hour = $("#visit2Hour").val();
+            console.log(visitorId)
+            console.log(reason)
+            console.log(startDate)
+            console.log(hour)
+            if(isEmpty(visitorName)){
+                $.toptip("请输入受访人姓名");
+                return;
+            }else if(isEmpty(startDate)){
+                $.toptip("请输入访问开始时间");
+                return;
+            }else if(isEmpty(hour)){
+                $.toptip("请输入访问时长");
+                return;
+            }else if(isEmpty(visitorId)){
+                $.toptip("受访人不存在，请重新输入访问信息");
+                return;
+            }else{
+                visitRequest (visitorId,reason,startDate,hour);
+            }
         }
     });
 

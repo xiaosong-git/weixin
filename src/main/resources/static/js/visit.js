@@ -150,6 +150,7 @@ function visit() {
     var startDate = $("#start-time").val();
     var hour = $("#hour").val();
     var reason = $("#reason").val();
+    var visitorId=$("#visitorName").attr("visitorId");
     if (isEmpty(visitorName)) {
         $.toptip("请输入受访人姓名");
         return;
@@ -169,37 +170,38 @@ function visit() {
         $.toptip("访问发起失败");
         return;
     } else {
-        $.showLoading();
-        $.ajax({
-            type: 'POST',
-            contentType: "application/x-www-form-urlencoded",
-            url: "visit/record/visitRequest",
-            data: {
-                //从跳转页获取用户id
-                userId: getCookie('userId'),
-                visitorId: $("#visitorName").attr("visitorId"),
-                reason: reason,
-                startDate: startDate,
-                hour: hour,
-            },
-            success: function (result) {
-                $.hideLoading();
-                if (result.code == 400) {
-                    $.toptip(result.message);
-                } else if (result.code == 200) {
-                    $.toast("发起访问成功", 'success');
-                    alert("访问申请已发送，等待对方审核");
-                    location.reload();
-                } else {
-                    $.toptip("系统错误，请重试");
-                }
-            }
-        });
+        visitRequest(visitorId,reason,startDate,hour);
     }
-
-
 }
-
+//调用访问接口
+function visitRequest (visitorId,reason,startDate,hour){
+    $.showLoading();
+    $.ajax({
+        type: 'POST',
+        contentType: "application/x-www-form-urlencoded",
+        url: "visit/record/visitRequest",
+        data: {
+            //从跳转页获取用户id
+            userId: getCookie('userId'),
+            visitorId: visitorId,
+            reason: reason,
+            startDate: startDate,
+            hour: hour
+        },
+        success: function (result) {
+            $.hideLoading();
+            if (result.code == 400) {
+                $.toptip(result.message);
+            } else if (result.code == 200) {
+                $.toast("发起访问成功", 'success');
+                alert("访问申请已发送，等待对方审核");
+                location.reload();
+            } else {
+                $.toptip("系统错误，请重试");
+            }
+        }
+    });
+}
 function formatDateTime(year, day, hours) {
     var date = new Date();
     var y = date.getFullYear() + year;

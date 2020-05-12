@@ -4,7 +4,7 @@ body {
     padding-bottom: env(safe-area-inset-bottom);
 }
 .dwo-mt10 { margin-top: 10px;}
-.dowebok { padding: 8px;}
+.dowebok { padding: 8px;padding-top: 0px;}
 .grids { border-radius: 10px; background-color: #fff; overflow: hidden;}
 .has-more { border-bottom-left-radius: 0; border-bottom-right-radius: 0;}
 .has-more.show-more .weui-grid-more { display: block;}
@@ -24,7 +24,7 @@ body {
 .grids-title:after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; border-top: 1px solid #d9d9d9; transform: scaleY(.5); transform-origin: 0 100%;}
 .grids-title h2 { font-size: 16px; font-weight: 400; color: #706f75;}
 
-.pay { display: flex; justify-content: space-between; height: 150px; border-radius: 10px; background-color: #3db271; overflow: hidden;}
+.pay { display: flex; justify-content: space-between; height: 150px; border-radius: 10px; background-color: white; overflow: hidden;}
 .pay-qrcode, .pay-wallet { flex: 1; padding-top: 30px; text-align: center; color: #fefefe;}
 .pay-qrcode p, .pay-wallet p { height: 50px; margin-top: 10px;}
 .pay-qrcode i { display: inline-block; width: 32px; height: 32px; background: url(images/qrcode.png) 50%  no-repeat; background-size: contain;}

@@ -5,6 +5,7 @@ import com.company.project.core.Service;
 import com.soecode.wxtools.bean.TemplateSender;
 import com.soecode.wxtools.exception.WxErrorException;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -29,7 +30,7 @@ public interface visitRecordService extends Service<VisitRecord> {
 
     Result recordComfire(Long recordId,String cstatus,String companyId) throws WxErrorException;
 
-    void otherTemplateSend(Long userId, TemplateSender sender);
+    void otherTemplateSend(Long userId, TemplateSender sender) throws WxErrorException, IOException;
 
     void sendTemplate(String wxOpenId, String templateId, String accessType, String visitResult,
                       String visitorBy, String startDate, String endDate, String qrcodeUrl, String companyFloor,

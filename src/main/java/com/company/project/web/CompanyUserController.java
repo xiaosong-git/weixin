@@ -42,30 +42,10 @@ public class CompanyUserController {
 
         return ResultGenerator.genSuccessResult(companies);
     }
-//
-//    @PostMapping("/delete")
-//    public Result delete(@RequestParam Integer id) {
-//        companyUserService.deleteById(id);
-//        return ResultGenerator.genSuccessResult();
-//    }
-//
-//    @PostMapping("/update")
-//    public Result update(CompanyUser companyUser) {
-//        companyUserService.update(companyUser);
-//        return ResultGenerator.genSuccessResult();
-//    }
-//
-//    @PostMapping("/detail")
-//    public Result detail(@RequestParam Integer id) {
-//        CompanyUser companyUser = companyUserService.findById(id);
-//        return ResultGenerator.genSuccessResult(companyUser);
-//    }
-//
-//    @PostMapping("/list")
-//    public Result list(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size) {
-//        PageHelper.startPage(page, size);
-//        List<CompanyUser> list = companyUserService.findAll();
-//        PageInfo pageInfo = new PageInfo(list);
+
+//    @PostMapping("/getUserByCompany")
+//    public Result getUserByCompany(@RequestParam Integer companyId) {
+//        companyUserMapper.getUserByCompany(companyId);
 //        return ResultGenerator.genSuccessResult(pageInfo);
 //    }
 }

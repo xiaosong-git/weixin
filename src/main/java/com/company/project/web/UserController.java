@@ -60,7 +60,16 @@ public class UserController {
         }
         return ResultGenerator.genSuccessResult(userList);
     }
+    @AuthCheckAnnotation(checkLogin = false,checkVerify = false)
+    @PostMapping("/nameCompany")
+    public Result nameCompany(@RequestParam() Long companyId, @RequestParam(defaultValue = "0") String name) {
 
+        User userList = userService.nameCompany(companyId,name);
+        if (userList==null) {
+            return ResultGenerator.genFailResult("该公司用户不存在，请填写正确姓名");
+        }
+        return ResultGenerator.genSuccessResult(userList);
+    }
     /**
      * 账号，密码登录
      * @param phone 手机号

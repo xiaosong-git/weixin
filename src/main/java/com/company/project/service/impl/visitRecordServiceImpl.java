@@ -243,16 +243,28 @@ public class visitRecordServiceImpl extends AbstractService<VisitRecord> impleme
         return ResultGenerator.genSuccessResult("成功");
     }
     @Override
-    public void otherTemplateSend(Long userId, TemplateSender sender){
+    public void otherTemplateSend(Long userId, TemplateSender sender)  {
         List<otherWx> wxByUser = otherWxMapper.findWxByUser(userId);
         for (otherWx otherWx : wxByUser) {
             sender.setTouser(otherWx.getExt1());
             sender.setTemplate_id(otherWx.getTemplate());
 
                 logger.info("发送用户:{},{},{}",userId,otherWx.getExt1(),otherWx.getWxName());
-                logger.info("发送用户时的accessToken:{}", RedisUtil.getStrVal(otherWx.getWxValue(),2));
+            String accessToken = RedisUtil.getStrVal(otherWx.getWxValue(), 2);
+            logger.info("发送用户时的accessToken:{}", accessToken);
+            if (accessToken==null){
+                try {
+                    accessToken = iService.getOtherAccessToken(otherWx.getAppid(), otherWx.getSecret());
+                    logger.info("accessToken，重新获取{}",accessToken);
+                    RedisUtil.setStr(otherWx.getWxValue(), accessToken,2,7000);
+                } catch (WxErrorException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
             try {
-                iService.otherTemplateSend((RedisUtil.getStrVal(otherWx.getWxValue(), 2)), sender);
+                iService.otherTemplateSend(accessToken, sender);
             } catch (WxErrorException e) {
                 WxError error = e.getError();
                 logger.error("错误码:{},错误内容:{}",error.getErrcode(),error.getErrmsg());
@@ -261,6 +273,7 @@ public class visitRecordServiceImpl extends AbstractService<VisitRecord> impleme
                     try {
                         String otherAccessToken = iService.getOtherAccessToken(otherWx.getAppid(), otherWx.getSecret());
                         logger.info("获取第三方accessToken{}",otherAccessToken);
+
                         RedisUtil.setStr(otherWx.getWxValue(), otherAccessToken,2,7000);
                         iService.otherTemplateSend(otherAccessToken, sender);
                     } catch (WxErrorException | IOException ex) {

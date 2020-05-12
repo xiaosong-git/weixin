@@ -674,4 +674,10 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
 
         return null;
     }
+
+    @Override
+    public User nameCompany(Long companyId, String name) {
+
+        return userMapper.nameCompany(companyId,name);
+    }
 }

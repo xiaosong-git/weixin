@@ -19,4 +19,7 @@ public interface UserMapper extends Mapper<User> {
     User findByPhone(String phone);
     @Select("select * from "+TableList.USER+" where realName=#{name} and idNO=#{idNO} limit 1")
     User findByNameIdNo(String name, String idNO);
+    @Select("select u.id,u.realName from tbl_user u left join tbl_company_user cu on u.id =cu.userId\n" +
+            "where cu.companyId=#{companyId} and u.realName = #{name} limit 1")
+    User nameCompany(Long companyId, String name);
 }

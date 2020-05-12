@@ -1,21 +1,14 @@
 <!doctype html>
-<html xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="zh-CN">
 <head>
-    <meta charset="utf-8">
-    <title></title>
-    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>软件园访客</title>
     <link rel="stylesheet" href="https://cdn.bootcss.com/weui/2.0.1/style/weui.min.css"/>
     <style type="text/css">
-        .demos-header {
-            padding: 35px 0;
-        }
-        .demos-title {
-            text-align: center;
-            font-size: 34px;
-            color: #3cc51f;
-            font-weight: 400;
-            margin: 0 15%;
-        }
+        @import url("css/style.css");
     </style>
 </head>
 
@@ -23,50 +16,56 @@
 <header  align="center">
    <img src="images/ruanjianyuanLogo.png" style="width: 35%;height: 35%;margin-top: 18%" >
 </header>
-<div class="weui-msg">
-    <div class="weui-grids">
-        <a href="visit"  class="weui-grid js_grid">
-            <div class="weui-grid__icon">
-                <img  src="images/fw.png" alt="">
-            </div>
-            <p class="weui-grid__label">
-                访问
-            </p>
-        </a>
-        <a href="invite" class="weui-grid js_grid">
-            <div class="weui-grid__icon">
-                <img src="images/yy.png" alt="">
-            </div>
-            <p class="weui-grid__label">
-                邀约
-            </p>
-        </a>
-        <a href="firstrecord" class="weui-grid js_grid">
-            <div class="weui-grid__icon">
-                <img src="images/lsjl.png" alt="">
-            </div>
-            <p class="weui-grid__label">
-                访客记录
-            </p>
-        </a>
-        <a id="auth" href="auth3" class="weui-grid js_grid">
-            <div class="weui-grid__icon">
-                <img src="images/srrz.png" alt="">
-            </div>
-            <p class="weui-grid__label">
-                实人认证
-            </p>
-        </a>
-        <a href="clear1" class="weui-grid js_grid">
-            <div class="weui-grid__icon">
-                <img src="images/qchc.png" alt="">
-            </div>
-            <p class="weui-grid__label">
-                清除缓存
-            </p>
-        </a>
+<div class="wrap dowebok">
+    <div class="grids has-more dwo-mt10">
+        <div class="grids-title dwo-title">
+            <h2>访客服务</h2>
+        </div>
+        <div class="weui-grids">
+            <a href="visit"  class="weui-grid js_grid">
+                <div class="weui-grid__icon">
+                    <img  src="images/fw.png" alt="">
+                </div>
+                <p class="weui-grid__label">
+                    访问
+                </p>
+            </a>
+            <a href="invite" class="weui-grid js_grid">
+                <div class="weui-grid__icon">
+                    <img src="images/yy.png" alt="">
+                </div>
+                <p class="weui-grid__label">
+                    邀约
+                </p>
+            </a>
+            <a href="firstrecord" class="weui-grid js_grid">
+                <div class="weui-grid__icon">
+                    <img src="images/lsjl.png" alt="">
+                </div>
+                <p class="weui-grid__label">
+                    访客记录
+                </p>
+            </a>
+            <a id="auth" href="auth3" class="weui-grid js_grid">
+                <div class="weui-grid__icon">
+                    <img src="images/srrz.png" alt="">
+                </div>
+                <p class="weui-grid__label">
+                    实人认证
+                </p>
+            </a>
+            <a href="clear1" class="weui-grid js_grid">
+                <div class="weui-grid__icon">
+                    <img src="images/qchc.png" alt="">
+                </div>
+                <p class="weui-grid__label">
+                    清除缓存
+                </p>
+            </a>
+        </div>
     </div>
 </div>
+
     <script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
     <script src="https://cdn.bootcss.com/jquery-weui/1.2.1/js/jquery-weui.min.js"></script>
     <script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>

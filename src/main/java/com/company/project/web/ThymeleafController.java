@@ -146,6 +146,7 @@ public class ThymeleafController {
 
         return "index1";
     }
+
     @AuthCheckAnnotation(checkLogin = false, checkVerify = false)
     @RequestMapping(value = "/clear", method = RequestMethod.GET)
     public String clear() {

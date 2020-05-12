@@ -20,10 +20,10 @@
 </head>
 
 <body ontouchstart>
-<!--<div class="weui-flex">-->
-<!--    <div class="weui-flex__item"><a href="javascript:;" class="weui-btn weui-btn_default" onclick='visit1()' style="background-color: #EFEFF4" id="visit1"><font size="3">联系人访问</font></a></div>-->
-<!--    <div class="weui-flex__item"><a href="javascript:;" class="weui-btn weui-btn_default" onclick='visit2()' style="background-color: #f7f7f7" id="visit2"><font size="3">地址访问</font></a></div>-->
-<!--</div>-->
+<div class="weui-flex">
+    <div class="weui-flex__item"><a href="javascript:;" class="weui-btn weui-btn_default" onclick='visit1()' style="background-color: #EFEFF4" id="visit1"><font size="3">联系人访问</font></a></div>
+    <div class="weui-flex__item"><a href="javascript:;" class="weui-btn weui-btn_default" onclick='visit2()' style="background-color: #f7f7f7" id="visit2"><font size="3">地址访问</font></a></div>
+</div>
 <!--联系人访问界面-->
 <div class="weui-cells weui-cells_form" id="pvisit" style="display:block">
     <div class="weui-cell">
@@ -133,21 +133,21 @@
 <!--地址访问界面-->
 <div class="weui-cells weui-cells_form" id="addrvisit" style="display: none">
     <div class="weui-cell">
+        <div class="weui-cell__hd"><label class="weui-label">企业/单位名称</label></div>
+        <div class="weui-cell__bd">
+            <input class="weui-input" id="companyName" type="text" placeholder="请输入" companyId=""  onkeyup="autoFindCompanyName()">
+        </div>
+    </div>
+    <div class="weui-cell">
         <div class="weui-cell__hd"><label class="weui-label">企业/单位地址</label></div>
         <div class="weui-cell__bd">
             <input class="weui-input" id="companyAddr" type="text" placeholder="请输入" onkeyup="autoFindCompanyAddr()" onautocomplete="on">
         </div>
     </div>
     <div class="weui-cell">
-        <div class="weui-cell__hd"><label class="weui-label">企业/单位名称</label></div>
-        <div class="weui-cell__bd">
-            <input class="weui-input" id="companyName" type="text" placeholder="请输入" onkeyup="autoFindCompanyName()">
-        </div>
-    </div>
-    <div class="weui-cell">
         <div class="weui-cell__hd"><label class="weui-label">受访人姓名</label></div>
         <div class="weui-cell__bd">
-            <input class="weui-input" id="visit2Name" type="text" placeholder="请输入">
+            <input class="weui-input" id="visit2Name" type="text" placeholder="请输入" userId="" onBlur="findName()" >
         </div>
     </div>
     <div class="weui-cell">
@@ -183,108 +183,161 @@
 
 <script>
 
-    // $(function () {
-    //     $("#visit2Time").val(formatDateTime(0, 0, 0));
-    // });
-    // function visit1() {
-    //     document.getElementById("pvisit").style.display = 'block';
-    //     document.getElementById("visit1").style.background = '#EFEFF4';
-    //     document.getElementById("visit2").style.background = '#f7f7f7';
-    //     document.getElementById("addrvisit").style.display = 'none';
-    // }
-    // function visit2() {
-    //     document.getElementById('pvisit').style.display = 'none';
-    //     document.getElementById("visit1").style.background = '#f7f7f7';
-    //     document.getElementById("visit2").style.background = '#EFEFF4';
-    //     document.getElementById('addrvisit').style.display = 'block';
-    // }
-    // $("#visit2Reason").picker({
-    //     title: "请选择拜访事由",
-    //     cols: [
-    //         {
-    //             textAlign: 'center',
-    //             values: ['商务拜访', '配送服务', '面试', '找人', '其他']
-    //         }
-    //     ],
-    //     onChange: function (p, v, dv) {
-    //         console.log(p, v, dv);
-    //     },
-    //     onClose: function (p, v, d) {
-    //         console.log("close");
-    //     }
-    // });
-    // $("#visit2Hour").picker({
-    //     title: "请选择拜访时长",
-    //     cols: [
-    //         {
-    //             textAlign: 'center',
-    //             values: ['0.5', '1', '1.5', '2', '2.5', '3', '3.5', '4', '4.5', '5', '5.5', '6']
-    //         }
-    //     ],
-    //     onChange: function (p, v, dv) {
-    //         console.log(p, v, dv);
-    //     },
-    //     onClose: function (p, v, d) {
-    //         console.log("close");
-    //     }
-    // });
-    // $("#visit2Time").datetimePicker();
-    //
-    // /*地址输入出现下拉选择*/
-    // function autoFindCompanyAddr() {
-    //     console.log($("#companyAddr").val());
-    //     var addr = [];
-    //     $.ajax({
-    //         type: 'POST',
-    //         contentType: "application/x-www-form-urlencoded",
-    //         url: "company/findCompanyAddr",
-    //         data: {
-    //             addr: $("#companyAddr").val(),
-    //         },
-    //         success: function (result) {
-    //             console.log(result)
-    //             if(result.data.length>0){
-    //                 for(var i in result.data){
-    //                     addr.push(result.data[i].addr)
-    //                 }
-    //             }
-    //         }
-    //     });
-    //     $("#companyAddr").autocomplete({
-    //         source:addr,
-    //         select :function (event,ui) {
-    //             console.log(ui.item);
-    //         }
-    //     })
-    // }
-    // /*地址名输入出现下拉选择*/
-    // function autoFindCompanyName() {
-    //     console.log($("#companyName").val());
-    //     var companyName = [];
-    //     $.ajax({
-    //         type: 'POST',
-    //         contentType: "application/x-www-form-urlencoded",
-    //         url: "company/findCompany",
-    //         data: {
-    //             companyName: $("#companyName").val(),
-    //         },
-    //         success: function (result) {
-    //             console.log(result)
-    //             if(result.data.length>0){
-    //                 for(var i in result.data){
-    //                     companyName.push(result.data[i].companyname)
-    //                 }
-    //             }
-    //         }
-    //
-    //     });
-    //    $("#companyName").autocomplete({
-    //         source:companyName,
-    //         select :function (event,ui) {
-    //             console.log(ui.item);
-    //         }
-    //     })
-    // }
+    $(function () {
+        $("#visit2Time").val(formatDateTime(0, 0, 0));
+
+    });
+    function visit1() {
+        document.getElementById("pvisit").style.display = 'block';
+        document.getElementById("visit1").style.background = '#EFEFF4';
+        document.getElementById("visit2").style.background = '#f7f7f7';
+        document.getElementById("addrvisit").style.display = 'none';
+    }
+    function visit2() {
+        document.getElementById('pvisit').style.display = 'none';
+        document.getElementById("visit1").style.background = '#f7f7f7';
+        document.getElementById("visit2").style.background = '#EFEFF4';
+        document.getElementById('addrvisit').style.display = 'block';
+    }
+    $("#visit2Reason").picker({
+        title: "请选择拜访事由",
+        cols: [
+            {
+                textAlign: 'center',
+                values: ['商务拜访', '配送服务', '面试', '找人', '其他']
+            }
+        ],
+        onChange: function (p, v, dv) {
+            console.log(p, v, dv);
+        },
+        onClose: function (p, v, d) {
+            console.log("close");
+        }
+    });
+    $("#visit2Hour").picker({
+        title: "请选择拜访时长",
+        cols: [
+            {
+                textAlign: 'center',
+                values: ['0.5', '1', '1.5', '2', '2.5', '3', '3.5', '4', '4.5', '5', '5.5', '6']
+            }
+        ],
+        onChange: function (p, v, dv) {
+            console.log(p, v, dv);
+        },
+        onClose: function (p, v, d) {
+            console.log("close");
+        }
+    });
+    $("#visit2Time").datetimePicker();
+
+    /*地址输入出现下拉选择*/
+    function autoFindCompanyAddr() {
+        console.log($("#companyAddr").val());
+        var addr = [];
+        $.ajax({
+            type: 'POST',
+            contentType: "application/x-www-form-urlencoded",
+            url: "company/findCompanyAddr",
+            data: {
+                addr: $("#companyAddr").val(),
+            },
+            success: function (result) {
+                console.log(result)
+                if(result.data.length>0){
+                    for(var i in result.data){
+                        var c = {};
+                        c.value = result.data[i].addr;
+                        c.label = result.data[i].addr
+                        c.companyId = result.data[i].id
+                        c.companyName = result.data[i].companyname
+                        addr.push(c)
+                    }
+                }
+            }
+        });
+        $("#companyAddr").autocomplete({
+            source:addr,
+            select :function (event,ui) {
+                console.log(ui.item);
+              /*  $("#companyName").val(ui.item.companyName);
+                $("#companyName").attr("companyId",ui.item.companyId);*/
+            }
+        })
+    }
+
+    /*公司名输入出现下拉选择*/
+    function autoFindCompanyName() {
+        var companyName = [];
+        $.ajax({
+            type: 'POST',
+            contentType: "application/x-www-form-urlencoded",
+            url: "company/findCompany",
+            data: {
+                companyName: $("#companyName").val(),
+            },
+            success: function (result) {
+                console.log(result)
+                if(result.data.length>0){
+                    for(var i in result.data){
+                        var c ={};
+                        c.value = result.data[i].companyname
+                        c.label = result.data[i].companyname;
+                        c.companyAddr = result.data[i].addr
+                        c.companyId = result.data[i].id
+                        companyName.push(c)
+                    }
+                }
+            }
+
+        });
+       $("#companyName").autocomplete({
+            source:companyName,
+            select :function (event,ui) {
+                console.log(ui.item)
+                $("#companyAddr").val(ui.item.companyAddr);
+                $("#companyName").attr("companyId",ui.item.companyId);
+                console.log("companyId;"+ui.item.value)
+            }
+        })
+    }
+
+    /*输入完人名查找是否有该用户*/
+    function findName() {
+        $.ajax({
+            type: 'POST',
+            contentType: "application/x-www-form-urlencoded",
+            url: "user/nameCompany",
+            data: {
+               companyId:$("#companyName").attr("companyId"),
+                name:$("#visit2Name").val()
+            },
+            success: function (result) {
+                console.log(result)
+                if(result.code == 200){
+                    $("#visit2Name").attr("userId",result.data.id)
+                }else{
+                    $.toptip(result.message);
+                }
+            }
+
+        });
+    }
+    //发起地址访问
+    $("#visitByAddr").click(function () {
+        var isAuth = getCookie("isAuth")
+        if (isAuth != "T") {
+            $.toptip('请先进行实人认证');
+            window.location.href = authUrl;
+        } else {
+            var visitorId = $("#visit2Name").attr("userId");
+            var reason = $("#visit2Reason").val();
+            var startDate = $("#visit2Time").val()
+            var hour = $("#visit2Hour").val()
+            visitRequest (visitorId,reason,startDate,hour);
+        }
+    });
+
 
 </script>
 </body>

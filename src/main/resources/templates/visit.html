@@ -135,13 +135,13 @@
     <div class="weui-cell">
         <div class="weui-cell__hd"><label class="weui-label">企业/单位地址</label></div>
         <div class="weui-cell__bd">
-            <input class="weui-input" id="companyAddr" type="text" placeholder="请选择地区">
+            <input class="weui-input" id="companyAddr" type="text" placeholder="请输入" onkeyup="autoFindCompanyAddr()" onautocomplete="on">
         </div>
     </div>
     <div class="weui-cell">
         <div class="weui-cell__hd"><label class="weui-label">企业/单位名称</label></div>
         <div class="weui-cell__bd">
-            <input class="weui-input" id="companyName" type="text" placeholder="请输入">
+            <input class="weui-input" id="companyName" type="text" placeholder="请输入" onkeyup="autoFindCompanyName()">
         </div>
     </div>
     <div class="weui-cell">
@@ -229,6 +229,62 @@
     //     }
     // });
     // $("#visit2Time").datetimePicker();
+
+    /*地址输入出现下拉选择*/
+    function autoFindCompanyAddr() {
+        console.log($("#companyAddr").val());
+        var addr = [];
+        $.ajax({
+            type: 'POST',
+            contentType: "application/x-www-form-urlencoded",
+            url: "company/findCompanyAddr",
+            data: {
+                addr: $("#companyAddr").val(),
+            },
+            success: function (result) {
+                console.log(result)
+                if(result.data.length>0){
+                    for(var i in result.data){
+                        addr.push(result.data[i].addr)
+                    }
+                }
+            }
+        });
+        $("#companyAddr").autocomplete({
+            source:addr,
+            select :function (event,ui) {
+                console.log(ui.item);
+            }
+        })
+    }
+    /*地址名输入出现下拉选择*/
+    function autoFindCompanyName() {
+        console.log($("#companyName").val());
+        var companyName = [];
+        $.ajax({
+            type: 'POST',
+            contentType: "application/x-www-form-urlencoded",
+            url: "company/findCompany",
+            data: {
+                companyName: $("#companyName").val(),
+            },
+            success: function (result) {
+                console.log(result)
+                if(result.data.length>0){
+                    for(var i in result.data){
+                        companyName.push(result.data[i].companyname)
+                    }
+                }
+            }
+
+        });
+       $("#companyName").autocomplete({
+            source:companyName,
+            select :function (event,ui) {
+                console.log(ui.item);
+            }
+        })
+    }
 
 </script>
 </body>

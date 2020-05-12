@@ -20,10 +20,10 @@
 </head>
 
 <body ontouchstart>
-<!--<div class="weui-flex">-->
-<!--    <div class="weui-flex__item"><a href="javascript:;" class="weui-btn weui-btn_default" onclick='visit1()' style="background-color: #EFEFF4" id="visit1"><font size="3">联系人访问</font></a></div>-->
-<!--    <div class="weui-flex__item"><a href="javascript:;" class="weui-btn weui-btn_default" onclick='visit2()' style="background-color: #f7f7f7" id="visit2"><font size="3">地址访问</font></a></div>-->
-<!--</div>-->
+<div class="weui-flex">
+    <div class="weui-flex__item"><a href="javascript:;" class="weui-btn weui-btn_default" onclick='visit1()' style="background-color: #EFEFF4" id="visit1"><font size="3">联系人访问</font></a></div>
+    <div class="weui-flex__item"><a href="javascript:;" class="weui-btn weui-btn_default" onclick='visit2()' style="background-color: #f7f7f7" id="visit2"><font size="3">地址访问</font></a></div>
+</div>
 <!--联系人访问界面-->
 <div class="weui-cells weui-cells_form" id="pvisit" style="display:block">
     <div class="weui-cell">
@@ -183,52 +183,52 @@
 
 <script>
 
-    // $(function () {
-    //     $("#visit2Time").val(formatDateTime(0, 0, 0));
-    // });
-    // function visit1() {
-    //     document.getElementById("pvisit").style.display = 'block';
-    //     document.getElementById("visit1").style.background = '#EFEFF4';
-    //     document.getElementById("visit2").style.background = '#f7f7f7';
-    //     document.getElementById("addrvisit").style.display = 'none';
-    // }
-    // function visit2() {
-    //     document.getElementById('pvisit').style.display = 'none';
-    //     document.getElementById("visit1").style.background = '#f7f7f7';
-    //     document.getElementById("visit2").style.background = '#EFEFF4';
-    //     document.getElementById('addrvisit').style.display = 'block';
-    // }
-    // $("#visit2Reason").picker({
-    //     title: "请选择拜访事由",
-    //     cols: [
-    //         {
-    //             textAlign: 'center',
-    //             values: ['商务拜访', '配送服务', '面试', '找人', '其他']
-    //         }
-    //     ],
-    //     onChange: function (p, v, dv) {
-    //         console.log(p, v, dv);
-    //     },
-    //     onClose: function (p, v, d) {
-    //         console.log("close");
-    //     }
-    // });
-    // $("#visit2Hour").picker({
-    //     title: "请选择拜访时长",
-    //     cols: [
-    //         {
-    //             textAlign: 'center',
-    //             values: ['0.5', '1', '1.5', '2', '2.5', '3', '3.5', '4', '4.5', '5', '5.5', '6']
-    //         }
-    //     ],
-    //     onChange: function (p, v, dv) {
-    //         console.log(p, v, dv);
-    //     },
-    //     onClose: function (p, v, d) {
-    //         console.log("close");
-    //     }
-    // });
-    // $("#visit2Time").datetimePicker();
+    $(function () {
+        $("#visit2Time").val(formatDateTime(0, 0, 0));
+    });
+    function visit1() {
+        document.getElementById("pvisit").style.display = 'block';
+        document.getElementById("visit1").style.background = '#EFEFF4';
+        document.getElementById("visit2").style.background = '#f7f7f7';
+        document.getElementById("addrvisit").style.display = 'none';
+    }
+    function visit2() {
+        document.getElementById('pvisit').style.display = 'none';
+        document.getElementById("visit1").style.background = '#f7f7f7';
+        document.getElementById("visit2").style.background = '#EFEFF4';
+        document.getElementById('addrvisit').style.display = 'block';
+    }
+    $("#visit2Reason").picker({
+        title: "请选择拜访事由",
+        cols: [
+            {
+                textAlign: 'center',
+                values: ['商务拜访', '配送服务', '面试', '找人', '其他']
+            }
+        ],
+        onChange: function (p, v, dv) {
+            console.log(p, v, dv);
+        },
+        onClose: function (p, v, d) {
+            console.log("close");
+        }
+    });
+    $("#visit2Hour").picker({
+        title: "请选择拜访时长",
+        cols: [
+            {
+                textAlign: 'center',
+                values: ['0.5', '1', '1.5', '2', '2.5', '3', '3.5', '4', '4.5', '5', '5.5', '6']
+            }
+        ],
+        onChange: function (p, v, dv) {
+            console.log(p, v, dv);
+        },
+        onClose: function (p, v, d) {
+            console.log("close");
+        }
+    });
+    $("#visit2Time").datetimePicker();
 
     /*地址输入出现下拉选择*/
     function autoFindCompanyAddr() {

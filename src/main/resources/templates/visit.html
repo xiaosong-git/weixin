@@ -135,13 +135,13 @@
     <div class="weui-cell">
         <div class="weui-cell__hd"><label class="weui-label"><font size="4" color="red">* </font>企业/单位名称</label></div>
         <div class="weui-cell__bd">
-            <input class="weui-input" id="companyName" type="text" placeholder="请输入单位名称" companyId=""  onkeyup="autoFindCompanyName()">
+            <input class="weui-input" id="companyName" type="text" placeholder="请输入单位名称" companyId=""  onkeydown="autoFindCompanyName()">
         </div>
     </div>
     <div class="weui-cell">
         <div class="weui-cell__hd"><label class="weui-label"><font size="4" color="red">* </font>企业/单位地址</label></div>
         <div class="weui-cell__bd">
-            <input class="weui-input" id="companyAddr" type="text" placeholder="请输入单位地址" onkeyup="autoFindCompanyAddr()" onautocomplete="on">
+            <input class="weui-input" id="companyAddr" type="text" placeholder="请输入单位地址" onkeydown="autoFindCompanyAddr()" onautocomplete="on">
         </div>
     </div>
     <div class="weui-cell">
@@ -185,7 +185,7 @@
 
     $(function () {
         $("#visit2Time").val(formatDateTime(0, 0, 0));
-        autoFindCompanyAddr();
+        findCompanyAdd();
     });
     function visit1() {
         document.getElementById("pvisit").style.display = 'block';
@@ -230,11 +230,22 @@
         }
     });
     $("#visit2Time").datetimePicker();
-
+    let last;
     /*地址输入出现下拉选择*/
     function autoFindCompanyAddr() {
+        last = (new Date()).getTime();
+        let time=last;
+        //得到输入的值
+        setTimeout(function(){
+            console.log(last == time);
+            if (last == time) {
+                findCompanyAdd();
+            }
+        },1000);
+    }
+    function findCompanyAdd(){
         console.log($("#companyAddr").val());
-        var addr = [];
+        let addr = [];
         $.ajax({
             type: 'POST',
             contentType: "application/x-www-form-urlencoded",
@@ -260,15 +271,26 @@
             source:addr,
             select :function (event,ui) {
                 console.log(ui.item);
-              /*  $("#companyName").val(ui.item.companyName);
-                $("#companyName").attr("companyId",ui.item.companyId);*/
+                /*  $("#companyName").val(ui.item.companyName);
+                  $("#companyName").attr("companyId",ui.item.companyId);*/
             }
         })
     }
-
     /*公司名输入出现下拉选择*/
     function autoFindCompanyName() {
-        var companyName = [];
+        last = (new Date()).getTime();
+        let time=last;
+        //得到输入的值
+        setTimeout(function(){
+            console.log(last == time);
+            if (last == time) {
+                findCompanyName();
+            }
+        },1000);
+    }
+
+    function findCompanyName(){
+        let companyName = [];
         $.ajax({
             type: 'POST',
             contentType: "application/x-www-form-urlencoded",
@@ -291,7 +313,7 @@
             }
 
         });
-       $("#companyName").autocomplete({
+        $("#companyName").autocomplete({
             source:companyName,
             select :function (event,ui) {
                 console.log(ui.item)

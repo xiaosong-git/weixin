@@ -46,7 +46,7 @@ public class ThymeleafController {
     private OtherWxMapper otherWxMapper;
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login(@RequestParam(name = "code", required = false) String code,
-                        @RequestParam(name = "state", defaultValue = "0") String state, Model model) throws WxErrorException {
+                        @RequestParam(name = "state", defaultValue = "0") String state, Model model)  {
 
         logger.info(state);
 //        Map<String, Object> parameter =getParameter(state);
@@ -57,7 +57,12 @@ public class ThymeleafController {
 
         //todo 增加一个state后的参数wxId,otherId
         model.addAttribute("state", split[0]);
-        WxOAuth2AccessTokenResult oAuth2AccessTokenResult = iService.oauth2ToGetAccessToken(code);
+        WxOAuth2AccessTokenResult oAuth2AccessTokenResult = null;
+        try {
+            oAuth2AccessTokenResult = iService.oauth2ToGetAccessToken(code);
+        } catch (WxErrorException e) {
+            logger.error("获取用户openId报错：{},{}",e.getError().getErrcode(),e.getError().getErrmsg());
+        }
         //获取微信登入的openid,昵称等等
 //        WxUserList.WxUser.WxUserGet wxUser = new WxUserList.WxUser.WxUserGet();
 //        wxUser.setOpenid(oAuth2AccessTokenResult.getOpenid());

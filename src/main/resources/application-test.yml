@@ -9,7 +9,6 @@ spring:
     username: root
     password: root
   redis:
-    database: 0
     password: cwf #密码
     port: 6379
     addr: 106.52.245.57

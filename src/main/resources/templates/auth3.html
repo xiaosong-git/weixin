@@ -320,9 +320,11 @@
                         setCookie("userId",result.data.userId);
                         setCookie("isAuth","T");
                         $.toptip("认证成功！", 'success');
-                        $.toast("认证成功，页面即将关闭");
+                        $.toast("认证成功，即将返回主页");
                         //点击确认后的回调函数
-                        setTimeout(function(){ quit();},1500);
+                        setTimeout(function () {
+                            window.location.href=indexUrl;
+                        }, 1500);
 
                     }
                 },

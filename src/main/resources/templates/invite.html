@@ -141,10 +141,7 @@
             if (getCookie("isAuth") != "T") {
                 window.location.href = authUrl;
                 $.showLoading();
-            } else if (getCookie("phone") == "") {
-                window.location.href = bindphoneUrl;
-                $.showLoading();
-            } else {
+            }else {
                 getCompany();
                 FastClick.attach(document.body);
                 $("#start-time").val(formatDateTime(0, 0, 0));

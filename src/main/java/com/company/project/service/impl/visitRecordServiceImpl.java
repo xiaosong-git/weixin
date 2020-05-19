@@ -247,12 +247,12 @@ public class visitRecordServiceImpl extends AbstractService<VisitRecord> impleme
             msg="您的邀约已过期，请重新邀约！";
         }
         //软件园推送成功
-        if (software) {
+        if (software&&"applySuccess".equals(cstatus)) {
             String member = visitRecord.getId() + "," + me.getId() + "," + otherUser.getRealname() + "," + otherUser.getPhone() + ","
                     + visitRecord.getStartDate() + "," + visitRecord.getReason()+","+msg+","+url;
             DateTime dateTime = cn.hutool.core.date.DateUtil.parse(visitRecord.getEndDate());
             Long delayBucket = RedisUtil.zsetAdd("delayBucket", dateTime.getTime(), member, 2);
-            logger.info("delayBucket",delayBucket);
+            logger.info("delayBucket",member);
         }
         return ResultGenerator.genSuccessResult("成功");
     }

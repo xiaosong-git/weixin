@@ -71,32 +71,7 @@ public class WxController {
         return null;
     }
 
-    @Configuration      //1.主要用于标记配置类，兼备Component的效果。
-    @EnableScheduling   // 2.开启定时任务
-    public class SaticScheduleTask {
-        //3.添加定时任务 30分钟
-//        @Scheduled(cron = "0 0/30 * * * ? ")
-        //或直接指定时间间隔，例如：5秒
-        @Scheduled(fixedRate = 3600 * 1000)
-        private void configureTasks() throws WxErrorException, IOException {
-            RedisUtil.setStr("accessToken", iService.getAccessToken(), 2, 7000);
-//            thirdPartyService.setComponentAccessToken();
-//            List<otherWx> wxList = otherWxService.findAll();
-//            for (com.company.project.model.otherWx otherWx : wxList) {
-//                try {
-//
-//                    logger.info("更新前：redis第三方accessToken：{},", RedisUtil.getStrVal(otherWx.getWxValue(), 2));
-//                    String otherAccessToken = iService.getOtherAccessToken(otherWx.getAppid(), otherWx.getSecret());
-//                    String s = RedisUtil.setStr(otherWx.getWxValue(), otherAccessToken, 2, 7000);
-//                    logger.info("更新第三方accessToken成功！,{},{}", s, otherAccessToken);
-//                    logger.info("更新后：redis第三方accessToken：{},", RedisUtil.getStrVal(otherWx.getWxValue(), 2));
-//                } catch (Exception e) {
-//                    logger.error("获取第三方accessToken报错,{},{}", otherWx.getWxValue(), otherWx.getAppid());
-//                }
-//            }
-//            logger.info("存储acessToken时间: {},acessToken：{}" , LocalDateTime.now(),iService.getAccessToken());
-        }
-    }
+
 
     @RequestMapping(value = "updateToken", method = RequestMethod.PATCH)
     public Result updateToken() {

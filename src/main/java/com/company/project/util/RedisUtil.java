@@ -1,6 +1,8 @@
 package com.company.project.util;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import redis.clients.jedis.BinaryClient;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -10,16 +12,26 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public final class RedisUtil {
-    //我的测试版
-      private static String    ADDR           = "106.52.245.57";
-      private static int       PORT           = 6379;
-      private static String    AUTH           = "cwf";
+@Component
+public class RedisUtil {
+    private static int PORT;
+    private static String ADDR;
+    private static String AUTH;
 
-    //生产
-//        private static String    ADDR           = "r-bp126e543bb7e944.redis.rds.aliyuncs.com";
-//        private static int       PORT           = 6379;
-//        private static String    AUTH           = "xiaosBAnxin2019";
+    @Value("${spring.redis.port}")
+    public void setPort(int port) {
+        RedisUtil.PORT = port;
+    }
+
+    @Value("${spring.redis.addr}")
+    public void setAddr(String addr) {
+        RedisUtil.ADDR = addr;
+    }
+
+    @Value("${spring.redis.password}")
+    public void setAuth(String password) {
+        RedisUtil.AUTH = password;
+    }
 
     //可用连接实例的最大数目，默认值为8；
     //如果赋值为-1，则表示不限制；如果pool已经分配了maxActive个jedis实例，则此时pool的状态为exhausted(耗尽)。
@@ -36,24 +48,34 @@ public final class RedisUtil {
     //在borrow一个jedis实例时，是否提前进行validate操作；如果为true，则得到的jedis实例均是可用的；
     private static boolean TEST_ON_BORROW = true;
 
-    private static JedisPool jedisPool = null;
+    private static volatile JedisPool jedisPool = null;
 
-    /**
-     * 初始化Redis连接池
-     */
-    static {
-        try {
 
-            JedisPoolConfig config = new JedisPoolConfig();
-            config.setMaxTotal(MAX_TOTAL);
-            config.setMaxIdle(MAX_IDLE);
-            config.setMaxWaitMillis(MAX_WAIT);
-            config.setTestOnBorrow(TEST_ON_BORROW);
-            jedisPool = new JedisPool(config, ADDR, PORT, TIMEOUT, AUTH);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    private RedisUtil() {
     }
+    /**
+     * 单例Redis连接池
+     */
+    private static JedisPool getPool() {
+        if (jedisPool == null) {
+            synchronized (RedisUtil.class) {
+                if (jedisPool == null) {
+                    try {
+                        JedisPoolConfig config = new JedisPoolConfig();//配置
+                        config.setMaxTotal(MAX_TOTAL);
+                        config.setMaxIdle(MAX_IDLE);
+                        config.setMaxWaitMillis(MAX_WAIT);
+                        config.setTestOnBorrow(TEST_ON_BORROW);
+                        jedisPool = new JedisPool(config, ADDR, PORT, TIMEOUT, AUTH);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+        return jedisPool;
+    }
+
 
     /**
      * 获取Jedis实例
@@ -62,6 +84,9 @@ public final class RedisUtil {
      */
     public synchronized static Jedis getJedis(Integer dbNum) {
         try {
+            if (jedisPool == null) {
+                getPool();
+            }
             if (jedisPool != null) {
                 Jedis resource = jedisPool.getResource();
                 resource.select(dbNum);
@@ -82,7 +107,7 @@ public final class RedisUtil {
      */
     public static void returnResource(final Jedis jedis) {
         if (jedis != null) {
-            jedisPool.returnResource(jedis);
+            jedis.close();
         }
     }
 
@@ -125,7 +150,7 @@ public final class RedisUtil {
             e.printStackTrace();
             return null;
         } finally {
-            if(expire != null){
+            if (expire != null) {
                 jedis.expire(key, expire);
             }
             returnResource(jedis);
@@ -250,7 +275,7 @@ public final class RedisUtil {
             return jedis.setnx(key, value);
         } catch (Exception e) {
             e.printStackTrace();
-            return 0l;
+            return 0L;
         } finally {
             returnResource(jedis);
         }
@@ -1609,7 +1634,10 @@ public final class RedisUtil {
     }
 
     public static void main(String[] args) {
-        String key = "params_maxNewPlanUserId";
-        System.out.println(RedisUtil.del(8, key));
+//        String key = "params_maxNewPlanUserId";
+//        System.out.println(RedisUtil.del(8, key));
+        String dogs[] = {"Jimmy", "Gougou", "Doggy"};
+        Long addSet = RedisUtil.addSet("小松", 4, dogs);
+        System.out.println(addSet);
     }
 }

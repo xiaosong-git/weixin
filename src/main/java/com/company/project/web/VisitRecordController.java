@@ -6,7 +6,6 @@ import com.company.project.core.ResultGenerator;
 import com.company.project.model.VisitRecord;
 import com.company.project.service.visitRecordService;
 import com.company.project.util.DateUtil;
-import com.company.project.util.RedisUtil;
 import com.company.project.weixin.MyService;
 import com.company.project.weixin.MyWxServiceImpl;
 import com.company.project.weixin.model.WxTemplateData;
@@ -22,9 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**

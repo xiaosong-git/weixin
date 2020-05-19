@@ -6,7 +6,6 @@ import com.soecode.wxtools.bean.TemplateSender;
 import com.soecode.wxtools.exception.WxErrorException;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 
@@ -28,9 +27,17 @@ public interface visitRecordService extends Service<VisitRecord> {
 
     Result recordReply(VisitRecord visitRecord, Long loginId);
 
+    /**
+     * 回应
+     * @param recordId 记录id
+     * @param cstatus 是否同意
+     * @param companyId 公司id
+     * @return
+     * @throws WxErrorException
+     */
     Result recordComfire(Long recordId,String cstatus,String companyId) throws WxErrorException;
 
-    void otherTemplateSend(Long userId, TemplateSender sender) throws WxErrorException, IOException;
+    boolean otherTemplateSend(Long userId, TemplateSender sender) throws WxErrorException, IOException;
 
     void sendTemplate(String wxOpenId, String templateId, String accessType, String visitResult,
                       String visitorBy, String startDate, String endDate, String qrcodeUrl, String companyFloor,

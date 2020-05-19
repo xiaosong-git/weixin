@@ -349,6 +349,7 @@ function autocompletename() {
                     if (result.code == 400) {
                         $.toptip(result.message);
                         $("#visitorName").attr("flag", -1);
+                        //todo 改成未查到用户
                     } else if (result.code == 200) {
                         $("#visitorName").attr("visitorId", data[0].id);
                         $("#visitorName").attr("flag", 0);

@@ -1,9 +1,12 @@
 package com.company.project.service.impl;
 
+import cn.hutool.core.util.StrUtil;
+import com.alibaba.fastjson.JSON;
 import com.company.project.core.AbstractService;
 import com.company.project.dao.CompanyMapper;
 import com.company.project.model.Company;
 import com.company.project.service.CompanyService;
+import com.company.project.util.RedisUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,7 +39,20 @@ public class CompanyServiceImpl extends AbstractService<Company> implements Comp
 
     @Override
     public List<Company> findCompany(String companyName) {
-        return tblCompanyMapper.findCompany(companyName);
+        List<Company> companyList = null;
+        //redis修改
+        String json = RedisUtil.getStrVal(companyName, 4);
+        if(StrUtil.isNotBlank(json)&&!"null".equals(json)){
+            System.out.println("null".equals(json));
+            //先从缓存中获取
+            companyList = JSON.parseObject(json, List.class);
+        }else {
+            companyList = tblCompanyMapper.findCompany(companyName);
+            json = JSON.toJSONString(companyList);
+            System.out.println(json);
+            RedisUtil.setStr(companyName, json, 4, 24*3600);
+        }
+        return companyList;
     }
 
     @Override

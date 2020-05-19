@@ -52,26 +52,26 @@ public class Menu {
         btn3_4.setUrl(URL+MenuKey.BINDPHONE);
         btn3_4.setName("绑定手机");*/
 
-        WxMenu.WxMenuButton btn3_2 = new WxMenu.WxMenuButton();
-        btn3_2.setType(WxConsts.MENU_BUTTON_VIEW);
-        btn3_2.setName("清除缓存");
-
-
-        String url=null;
-        try {
-            //通过公众号访问地址授权
-            url = iService.oauth2buildAuthorizationUrl("http://wmy9kf.natappfree.cc/school/#/BindPhone", "snsapi_userinfo", "233");
-        }catch (WxErrorException w){
-            w.getStackTrace();
-        }
-        btn3_2.setUrl(url);
+//        WxMenu.WxMenuButton btn3_2 = new WxMenu.WxMenuButton();
+//        btn3_2.setType(WxConsts.MENU_BUTTON_VIEW);
+//        btn3_2.setName("清除缓存");
+//
+//
+//        String url=null;
+//        try {
+//            //通过公众号访问地址授权
+//            url = iService.oauth2buildAuthorizationUrl("http://h8zrcv.natappfree.cc/school/#/BindPhone", "snsapi_userinfo", "233");
+//        }catch (WxErrorException w){
+//            w.getStackTrace();
+//        }
+//        btn3_2.setUrl(url);
 //        WxMenu.WxMenuButton btn3_4 = new WxMenu.WxMenuButton();
 //        btn3_4.setType(WxConsts.MENU_BUTTON_VIEW);
 //        btn3_4.setUrl(url);
 //        //授权登入
 //        btn3_4.setName("登入");
         //子按钮加入列表
-        subList3.addAll(Arrays.asList(btn3_1,btn3_3,btn3_2));
+//        subList3.addAll(Arrays.asList(btn3_1,btn3_3,btn3_2));
         //子按钮绑定父按钮
         btn3.setSub_button(subList3);
         List<WxMenu.WxMenuButton> btnList = new ArrayList<>();

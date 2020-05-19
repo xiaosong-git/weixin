@@ -3,6 +3,7 @@ import com.company.project.core.Result;
 import com.company.project.core.ResultGenerator;
 import com.company.project.model.Key;
 import com.company.project.service.KeyService;
+import com.company.project.util.RedisUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -49,8 +50,9 @@ public class KeyController {
 //    @PostMapping("/list")
 //    public Result list(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size) {
 //        PageHelper.startPage(page, size);
-//        List<Key> list = keyService.findAll();
-//        PageInfo pageInfo = new PageInfo(list);
-//        return ResultGenerator.genSuccessResult(pageInfo);
+////        List<Key> list = keyService.findAll();
+////        PageInfo pageInfo = new PageInfo(list);
+//        String s = RedisUtil.setStr("2333", "0", 0, 7200);
+//        return ResultGenerator.genSuccessResult(s);
 //    }
 }

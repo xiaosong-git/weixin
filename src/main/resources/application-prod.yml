@@ -9,10 +9,9 @@ spring:
     username: xiaosong
     password: Xsafe!@1v$Lq
   redis:
-    database: 0
-    password: xiaosBAnxin2019 #密码
     port: 6379
     addr: r-bp126e543bb7e944.redis.rds.aliyuncs.com
+    password: xiaosBAnxin2019 #密码
     timeout: 10000
     jedis:
       pool:

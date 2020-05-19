@@ -61,7 +61,7 @@ public class SaticScheduleTask {
 
     @Scheduled(fixedRate = 60 * 1000)
     private void pushOverTime() throws WxErrorException, IOException {
-        Set<String> delayBucket2 = RedisUtil.getZsetByMaxMinRegion("delayBucket", System.currentTimeMillis() + 3600 * 1000, 0L, 2);
+        Set<String> delayBucket2 = RedisUtil.getZsetByMaxMinRegion("delayBucket", System.currentTimeMillis(), 0L, 2);
         if (delayBucket2.size() > 0) {
             Map<String, Object> dataMap = new HashMap<>();
             TemplateSender sender = new TemplateSender();

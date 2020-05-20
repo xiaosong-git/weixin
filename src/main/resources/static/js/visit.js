@@ -294,7 +294,7 @@ function getRecord() {
                     }
                     console.log(JSON.stringify(list[i]));
 
-                    $("#recorddiv").append("<a href=\"javascript:void(0);\" class=\"weui-media-box weui-media-box_appmsg\" onclick=\"toSecond('" + username + "','" + list[i].visitorId + "')\">\n" +
+                   /* $("#recorddiv").append("<a href=\"javascript:void(0);\" class=\"weui-media-box weui-media-box_appmsg\" onclick=\"toSecond('" + username + "','" + list[i].visitorId + "')\">\n" +
                         "\n" +
                         "    <div class=\"weui-media-box__bd\">\n" +
                         "        <p class=\"weui-cell__bd\" ><strong>" + username + "</strong></p><br>\n" +
@@ -304,7 +304,20 @@ function getRecord() {
                         "    <div class=\"weui-panel__ft\">\n" +
                         "        <div class=\"weui-cell__bd\">查看更多》</div>\n" +
                         "    </div>\n" +
-                        "</a>")
+                        "</a>")*/
+
+                    $("#recorddiv").append("<a href=\"javascript:void(0);\" class=\"weui-media-box weui-media-box_appmsg\" onclick=\"toSecond('" + username + "','" + list[i].visitorId + "','" + list[i].visitorId + "')\">\n" +
+                        "            <div class=\"weui-media-box__hd\">\n" +
+                        "                <h3>"+username+"</h3>\n" +
+                        "            </div>\n" +
+                        "            <div class=\"weui-media-box__bd\">\n" +
+                        "                <p >" + date + " " + startTime + "-" + endTime + "</p>\n" +
+                        "                <p style=\"padding-top: 5px\">"+addr+"</p>\n" +
+                        "            </div>\n" +
+                        "            <div class=\"weui-media-box__foot\">\n" +
+                        "                <font size=\"5\">></font>\n" +
+                        "            </div>\n" +
+                        "        </a>")
 
                 }
                 $('.weui-loadmore').hide();

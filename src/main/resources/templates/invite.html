@@ -67,10 +67,10 @@
     <div class="weui-tab">
         <div class="weui-navbar">
             <a class="weui-navbar__item weui-bar__item--on" href="#tab1">
-                常用联系人
+                <img src="images/contacts.png" style="width: 8%;"/> 常用联系人
             </a>
             <a class="weui-navbar__item" href="#tab2" onclick="getRecord()">
-                访问邀约记录
+                <img src="images/record.png" style="width: 8%;"/> 访问邀约记录
             </a>
         </div>
         <div class="weui-tab__bd">
@@ -187,7 +187,7 @@
                             "                             <p>" + data[i].realname + "</p>\n" +
                             "                        </div>\n" +
                             "                        <div class=\"weui-cell__ft\">\n" +
-                            "                            <a href=\"javascript:void(0);\" style=\"font-size:25px;\" onclick=\"addPersonInfo('" + realname + "','" + phone + "','" + visitorId + "')\">+</a>\n" +
+                            "                            <a href=\"javascript:void(0);\" onclick=\"addPersonInfo('" + realname + "','" + phone + "','" + visitorId + "')\"><img src=\"images\\add.png\" style=\"width: 32%;\"></a>\n" +
                             "                        </div>\n" +
                             "                    </div>")
                     }
@@ -437,17 +437,29 @@
                         }
                         console.log(list[i])
 
-                        $("#recorddiv").append("<a href=\"javascript:void(0);\" class=\"weui-media-box weui-media-box_appmsg\" onclick=\"toSecond('" + username + "','" + list[i].visitorId + "')\">\n" +
-                            "\n" +
-                            "    <div class=\"weui-media-box__bd\">\n" +
-                            "        <p class=\"weui-cell__bd\" ><strong>" + username + "</strong></p><br>\n" +
-                            "        <p class=\"weui-cell__bd\">访问时间&nbsp;&nbsp;&nbsp;" + date + " " + startTime + "-" + endTime + "</p>\n" +
-                            "        <p class=\"weui-cell__bd\">访问地址&nbsp;&nbsp;&nbsp;" + addr + "</p>\n" +
-                            "    </div>\n" +
-                            "    <div class=\"weui-panel__ft\">\n" +
-                            "        <div class=\"weui-cell__bd\">查看更多》</div>\n" +
-                            "    </div>\n" +
-                            "</a>")
+                        /* $("#recorddiv").append("<a href=\"javascript:void(0);\" class=\"weui-media-box weui-media-box_appmsg\" onclick=\"toSecond('" + username + "','" + list[i].visitorId + "')\">\n" +
+                             "\n" +
+                             "    <div class=\"weui-media-box__bd\">\n" +
+                             "        <p class=\"weui-cell__bd\" ><strong>" + username + "</strong></p><br>\n" +
+                             "        <p class=\"weui-cell__bd\">访问时间&nbsp;&nbsp;&nbsp;" + date + " " + startTime + "-" + endTime + "</p>\n" +
+                             "        <p class=\"weui-cell__bd\">访问地址&nbsp;&nbsp;&nbsp;" + addr + "</p>\n" +
+                             "    </div>\n" +
+                             "    <div class=\"weui-panel__ft\">\n" +
+                             "        <div class=\"weui-cell__bd\">查看更多》</div>\n" +
+                             "    </div>\n" +
+                             "</a>")*/
+                        $("#recorddiv").append("<a href=\"javascript:void(0);\" class=\"weui-media-box weui-media-box_appmsg\" onclick=\"toSecond('" + username + "','" + list[i].visitorId + "','" + list[i].visitorId + "')\">\n" +
+                            "            <div class=\"weui-media-box__hd\">\n" +
+                            "                <h3>"+username+"</h3>\n" +
+                            "            </div>\n" +
+                            "            <div class=\"weui-media-box__bd\">\n" +
+                            "                <p >" + date + " " + startTime + "-" + endTime + "</p>\n" +
+                            "                <p style=\"padding-top: 5px\">"+addr+"</p>\n" +
+                            "            </div>\n" +
+                            "            <div class=\"weui-media-box__foot\">\n" +
+                            "                <font size=\"5\">></font>\n" +
+                            "            </div>\n" +
+                            "        </a>")
 
                     }
                     $('.weui-loadmore').hide();

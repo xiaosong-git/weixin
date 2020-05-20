@@ -27,7 +27,7 @@ function getContacts(searchName) {
                         "                             <p>" + data[i].realname + "</p>\n" +
                         "                        </div>\n" +
                         "                        <div class=\"weui-cell__ft\">\n" +
-                        "                           <a href=\"javascript:void(0);\" style=\"font-size:25px;\" onclick=\"addPersonInfo('" + realname + "','" + phone + "','" + visitorid + "')\">+</a>\n" +
+                        "                           <a href=\"javascript:void(0);\"  onclick=\"addPersonInfo('" + realname + "','" + phone + "','" + visitorid + "')\"><img src=\"images\\add.png\" style=\"width: 32%;\"></a>\n" +
                         "                        </div>\n" +
                         "                    </div>")
                 }

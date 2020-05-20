@@ -283,6 +283,7 @@ function getRecord() {
             $.hideLoading();
             if (result.code == 200) {
                 var list = result.data.list;
+                console.log(list)
                 for (var i in list) {
                     var username = list[i].user.realname;
                     var date = list[i].startDate.substring(0, 10);
@@ -308,7 +309,7 @@ function getRecord() {
 
                     $("#recorddiv").append("<a href=\"javascript:void(0);\" class=\"weui-media-box weui-media-box_appmsg\" onclick=\"toSecond('" + username + "','" + list[i].visitorId + "','" + list[i].visitorId + "')\">\n" +
                         "            <div class=\"weui-media-box__hd\">\n" +
-                        "                <h3>"+username+"</h3>\n" +
+                        "                <font size='3'>"+username+"</font>\n" +
                         "            </div>\n" +
                         "            <div class=\"weui-media-box__bd\">\n" +
                         "                <p >" + date + " " + startTime + "-" + endTime + "</p>\n" +

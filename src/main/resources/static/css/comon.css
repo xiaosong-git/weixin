@@ -19,9 +19,21 @@ div {
     font-size: 14px;
 }
 label {
-    text-align: right;
+    text-align: left;
 }
 
 input {
     margin-left: 20px;
+}
+
+.circle {
+    width: 40px;
+    height: 40px;
+    background: grey;
+    border-radius: 50%;
+    text-align: center;
+    padding-top: 20px;
+}
+.visit_btn{
+    font-size: 16px;
 }

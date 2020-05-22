@@ -21,8 +21,8 @@
 
 <body ontouchstart>
 <div class="weui-flex">
-    <div class="weui-flex__item"><a href="javascript:;" class="weui-btn weui-btn_default" onclick='visit1()' style="background-color: #EFEFF4" id="visit1"><font size="3">联系人访问</font></a></div>
-    <div class="weui-flex__item"><a href="javascript:;" class="weui-btn weui-btn_default" onclick='visit2()' style="background-color: #f7f7f7" id="visit2"><font size="3">地址访问</font></a></div>
+    <div class="weui-flex__item"><a href="javascript:;" class="weui-btn weui-btn_default visit_btn" onclick='visit1()' style="background-color: #EFEFF4" id="visit1">联系人访问</a></div>
+    <div class="weui-flex__item"><a href="javascript:;" class="weui-btn weui-btn_default visit_btn" onclick='visit2()' style="background-color: #f7f7f7" id="visit2">地址访问</a></div>
 </div>
 <!--联系人访问界面-->
 <div class="weui-cells weui-cells_form" id="pvisit" style="display:block">
@@ -195,12 +195,16 @@
         document.getElementById("visit1").style.background = '#EFEFF4';
         document.getElementById("visit2").style.background = '#f7f7f7';
         document.getElementById("addrvisit").style.display = 'none';
+        $("#visit1").css("color","green");
+        $("#visit2").css("color","black");
     }
     function visit2() {
         document.getElementById('pvisit').style.display = 'none';
         document.getElementById("visit1").style.background = '#f7f7f7';
         document.getElementById("visit2").style.background = '#EFEFF4';
         document.getElementById('addrvisit').style.display = 'block';
+        $("#visit2").css("color","green");
+        $("#visit1").css("color","black");
     }
     $("#visit2Reason").picker({
         title: "请选择拜访事由",

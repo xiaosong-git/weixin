@@ -19,13 +19,13 @@
 
 </head>
 
-<body ontouchstart>
+<body ontouchstart style="background-color: #f7f7f7">
 <div class="content"
-     style="background-color: #FFFFFF; width: 100%;height:100%;position: absolute; margin-bottom:45px;padding:0px; overflow: hidden;">
+     style="width: 100%;height:100%;position: absolute; margin-bottom:45px;padding:0px; overflow: hidden;">
     <div class="list-main-mian weui-form-preview infinite weui-pull-to-refresh" id="listwrap"
-         style="height:100%; margin-top: 1px;overflow:auto;  z-index: 1">
+         style="height:100%; margin-top: 1px;overflow:auto;background-color: #f7f7f7;  z-index: 1">
         <!--    内容展示区-->
-        <div class="weui-form-preview" id="recorddiv">
+        <div class="weui-form-preview" id="recorddiv" style="background-color: #f7f7f7;">
         </div>
 
         <div class="weui-loadmore" id="loading" style="padding-bottom:30px;height:20px;display: none">
@@ -44,7 +44,7 @@
 <script src="js/myUtil.js"></script>
 <script>
     $(function () {
-        if (isLogin("firstrecord")){
+        if (isLogin("firstrecord")) {
             return;
         }
         $.showLoading();
@@ -65,6 +65,7 @@
         getRecord();
 
     });
+
     function getRecord() {
         $.ajax({
             type: 'POST',
@@ -88,23 +89,35 @@
                         var endTime = list[i].endDate.substring(11, 16);
                         var addr = list[i].org.addr;
 
-                        console.log(startTime+"==="+endTime)
-                        if(isEmpty(addr)){
+                        console.log(startTime + "===" + endTime)
+                        if (isEmpty(addr)) {
                             addr = "未选";
                         }
-
-                        $("#recorddiv").append("<a href=\"javascript:void(0);\" class=\"weui-media-box weui-media-box_appmsg\" onclick=\"toSecond('" + username + "','" + list[i].userId + "','" + list[i].visitorId + "')\">\n" +
-                            "            <div class=\"weui-media-box__hd\">\n" +
-                            "                <h3>"+username+"</h3>\n" +
-                            "            </div>\n" +
-                            "            <div class=\"weui-media-box__bd\">\n" +
-                            "                <p >" + date + " " + startTime + "-" + endTime + "</p>\n" +
-                            "                <p style=\"padding-top: 5px\">"+addr+"</p>\n" +
-                            "            </div>\n" +
-                            "            <div class=\"weui-media-box__foot\">\n" +
-                            "                <font size=\"5\">></font>\n" +
-                            "            </div>\n" +
-                            "        </a>")
+                        const recorddiv = `<a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg myfirst"style="background-color: white" onclick="toSecond('${username}','${list[i].userId}','${list[i].visitorId}')">
+                                       <div class="weui-media-box__hd">
+                                           <p style='color:#373737;font-size: 16px'>${username}</p>
+                                       </div>
+                                       <div class="weui-media-box__bd">
+                                           <p >${date} ${startTime}-${endTime}</p>
+                                           <p style="padding-top: 5px">${addr}</p>
+                                       </div>
+                                       <div class="weui-media-box__foot">
+                                           <span style="font-size: large;color:#979797 ">></span>
+                                       </div>
+                                         </a>`;
+                        $("#recorddiv").append(recorddiv);
+                        // $("#recorddiv").append("<a href=\"javascript:void(0);\" class=\"weui-media-box weui-media-box_appmsg\" onclick=\"toSecond('" + username + "','" + list[i].userId + "','" + list[i].visitorId + "')\">\n" +
+                        //     "            <div class=\"weui-media-box__hd\">\n" +
+                        //     "                <p style='color:#373737;font-size: 16px'>"+username+"</p>\n" +
+                        //     "            </div>\n" +
+                        //     "            <div class=\"weui-media-box__bd\">\n" +
+                        //     "                <p >" + date + " " + startTime + "-" + endTime + "</p>\n" +
+                        //     "                <p style=\"padding-top: 5px\">"+addr+"</p>\n" +
+                        //     "            </div>\n" +
+                        //     "            <div class=\"weui-media-box__foot\">\n" +
+                        //     "                <font size=\"5\">></font>\n" +
+                        //     "            </div>\n" +
+                        //     "        </a>")
                     }
                     $('.weui-loadmore').hide();
                     loading = false;
@@ -123,7 +136,7 @@
 
     }
 
-    function toSecond(username, userId,visitorId) {
+    function toSecond(username, userId, visitorId) {
         window.localStorage.setItem("rName", username);
         window.localStorage.setItem("rUserId", userId);
         window.localStorage.setItem("rVisitorId", visitorId);

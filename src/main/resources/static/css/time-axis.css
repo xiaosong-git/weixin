@@ -25,10 +25,10 @@ body, p{
 /*}*/
 .time-axis-item{
 	margin-left: 2em;
-	margin-right: 2em;
+	/*margin-right: 2em;*/
 	list-style: none;
-	padding: 10px 0;
-	padding-left: 140px;
+	padding: .5em;
+	padding-left: 8em;
 	position: relative;
 	line-height: 2em;
 	font-size: 14px;
@@ -51,7 +51,7 @@ body, p{
 
 .time-axis-date span{
 	position: absolute;
-	right: -1.9rem;
+	right: -.9rem;
 	top: 20%;
 	display: block;
 	width: 13px;

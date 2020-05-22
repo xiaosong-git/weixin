@@ -21,7 +21,9 @@ div {
 label {
     text-align: left;
 }
-
+.weui-media-box:before{
+display: none;
+}
 input {
     margin-left: 20px;
 }
@@ -36,4 +38,14 @@ input {
 }
 .visit_btn{
     font-size: 16px;
+}
+.myfirst {
+    padding:1em;
+    border-left: .2em solid #f7f7f7;
+    /*border-right: 1em solid #f7f7f7;*/
+    border-top: .5em solid #f7f7f7;
+    border-radius: 1em;
+    border-image: -webkit-linear-gradient(-180deg, rgba(255,255,255,0.00) 0%,#19AD1A 20%, rgba(255,255,255,0.00) 99%) 2 2 2 2;
+    border-image: -moz-linear-gradient(-180deg, rgba(255,255,255,0.00) 0%,#19AD1A 20%, rgba(255,255,255,0.00) 99%) 2 2 2 2;
+    border-image: linear-gradient(-180deg, rgba(255,255,255,0.00) 0%,#19AD1A 20%, rgba(255,255,255,0.00) 99%) 2 2 2 2;
 }

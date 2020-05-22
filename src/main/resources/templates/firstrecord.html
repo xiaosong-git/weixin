@@ -106,18 +106,7 @@
                                        </div>
                                          </a>`;
                         $("#recorddiv").append(recorddiv);
-                        // $("#recorddiv").append("<a href=\"javascript:void(0);\" class=\"weui-media-box weui-media-box_appmsg\" onclick=\"toSecond('" + username + "','" + list[i].userId + "','" + list[i].visitorId + "')\">\n" +
-                        //     "            <div class=\"weui-media-box__hd\">\n" +
-                        //     "                <p style='color:#373737;font-size: 16px'>"+username+"</p>\n" +
-                        //     "            </div>\n" +
-                        //     "            <div class=\"weui-media-box__bd\">\n" +
-                        //     "                <p >" + date + " " + startTime + "-" + endTime + "</p>\n" +
-                        //     "                <p style=\"padding-top: 5px\">"+addr+"</p>\n" +
-                        //     "            </div>\n" +
-                        //     "            <div class=\"weui-media-box__foot\">\n" +
-                        //     "                <font size=\"5\">></font>\n" +
-                        //     "            </div>\n" +
-                        //     "        </a>")
+
                     }
                     $('.weui-loadmore').hide();
                     loading = false;
@@ -136,7 +125,7 @@
 
     }
 
-    function toSecond(username, userId, visitorId) {
+    function toSecond(username, userId,visitorId) {
         window.localStorage.setItem("rName", username);
         window.localStorage.setItem("rUserId", userId);
         window.localStorage.setItem("rVisitorId", visitorId);

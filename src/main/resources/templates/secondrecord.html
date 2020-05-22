@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.1/css/jquery-weui.min.css">
     <style type="text/css">
         @import url("css/comon.css");
+        @import url("css/time-axis.css");
     </style>
     <title>
         <h3 class="demos-title">访问</h3>
@@ -24,10 +25,10 @@
         <div class="weui-cell">
             <div class="weui-cell__hd"><img src="images/user.png" style="width: 40px;height: 40px;"></div>
             <div class="weui-cell__bd">
-                    <p id="his-name"> 暂无</p>
-                </div>
-                <div class="weui-cell__ft">Ta和我有 <font color="blue" id ="record-count">0 </font> 条来往记录</div>
+                <p id="his-name"> 暂无</p>
             </div>
+            <div class="weui-cell__ft">Ta和我有 <font color="blue" id="record-count">0 </font> 条来往记录</div>
+        </div>
     </div>
 
 </div>
@@ -38,7 +39,7 @@
     <div class="list-main-mian weui-form-preview infinite weui-pull-to-refresh" id="listwrap"
          style="height:100%; margin-top: 1px;overflow:auto;  z-index: 1">
         <!--    内容展示区-->
-        <div class="weui-form-preview" id="recordBody">
+        <div class="weui-form-preview time-axis" id="recordBody">
         </div>
         <div class="weui-loadmore" id="loading" style="padding-bottom:30px;height:20px;display: none">
             <i class="weui-loading"></i>
@@ -59,10 +60,10 @@
         getRecord2();
         $("#his-name").html(window.localStorage.getItem("rName"));
     });
-    var pages = 1;
-    var sizes = 10;
-    var loading = false;  //状态标记
-    var hasNextPage = true;
+    let pages = 1;
+    let sizes = 10;
+    let loading = false;  //状态标记
+    let hasNextPage = true;
     $("#listwrap").infinite().on("infinite", function () {
         if (loading) return;
         if (!hasNextPage) return;
@@ -84,57 +85,77 @@
                 pages: pages,
                 sizes: sizes,
                 visitorId: window.localStorage.getItem("rVisitorId"),
-                loginId:getCookie("userId")
+                loginId: getCookie("userId")
             },
             // visitorId: window.localStorage.getItem("rVisitorId"),
             // userId:getCookie("userId")},
             success: function (result) {
                 $.hideLoading();
-                var list = result.data.list;
-                console.log("==============")
-                console.log(result)
+                let list = result.data.list;
+                console.log("==============");
+                console.log(result);
                 $("#record-count").html(result.data.total);
-                for (var i in list) {
-                    var date = list[i].startDate.substring(0, 10);
-                    var startTime = list[i].startDate.substring(11, 16)
-                    var endTime = list[i].endDate.substring(11, 16)
-                    var divShow = "";
+                for (let i in list) {
+                    let date = list[i].startDate.substring(0, 10);
+                    let startTime = list[i].startDate.substring(11, 16);
+                    let endTime = list[i].endDate.substring(11, 16);
+                    let divShow = "";
 
                     if (list[i].vstatus == "access") {
-                        divShow = "<div class=\"weui-cell__bd\"><font color=\"#006400\">通过</font></div>";
+                        divShow = `<div class="time-axis-achievement col-block" style="color:#50B650" >已通过</div>`;
                     } else if (list[i].vstatus == "refuse") {
-                        divShow = "<div class=\"weui-cell__bd\"><font color=\"#8b0000\">拒绝</font></div>";
+                        divShow = `<div class="time-axis-achievement col-block" style="color:#E02020" >已拒绝</div>`;
                     } else if (list[i].vstatus == "unaudited") {
-                        divShow = "<div class=\"weui-cell__bd\"><font color=\"blue\">待审核</font></div>";
+                        divShow = `<div class="time-axis-achievement col-block" style="color:#0073FE" >待审核</div>`;
                     } else if (list[i].vstatus == "expired") {
-                        divShow = "<div class=\"weui-cell__bd\"><font color=\"#696969\">过期</font></div>";
+                        divShow = `<div class="time-axis-achievement col-block" style="color:#B8E4B9" >已过期</div>`;
+
                     } else {
-                        divShow = "<div class=\"weui-cell__bd\">未知状态</div>";
+                        divShow = `<div class="time-axis-achievement col-block" style="color:#B8E4B9" >未知状态</div>`;
                     }
-                    var timeStr ="";
-                    var addrStr ="";
-                    if(list[i].recordType == 1){
+                    let timeStr = "";
+                    let addrStr = "";
+                    if (list[i].recordType == 1) {
                         timeStr = "访问时间";
                         addrStr = "访问地址";
-                    }else{
+                    } else {
                         timeStr = "邀约时间";
                         addrStr = "邀约地址";
                     }
 
-                    var addr = list[i].addr;
-                    if(isEmpty(addr)){
+                    let addr = list[i].addr;
+                    if (isEmpty(addr)) {
                         addr = "未选";
                     }
-                    $("#recordBody").append("<a href=\"javascript:void(0);\" class=\"weui-media-box weui-media-box_appmsg\" onclick=\"toDetail('"+encodeURI(JSON.stringify(list[i]))+"')\">\n" +
-                        "\n" +
-                        "    <div class=\"weui-media-box__bd\">\n" +
-                        "        <p class=\"weui-cell__bd\">"+timeStr+"&nbsp;&nbsp;&nbsp; " + date + " " + startTime + "-" + endTime + "</p><br>\n" +
-                        "        <p class=\"weui-cell__bd\">"+addrStr+"&nbsp;&nbsp;&nbsp; " + addr+ "</p>\n" +
-                        "    </div>\n" +
-                        "    <div class=\"weui-panel__ft\">\n" +
-                        divShow +
-                        "    </div>\n" +
-                        "</a>");
+                    const html = `
+				<li href="javascript:void(0);" class="time-axis-item" onclick="toDetail( '${encodeURI(JSON.stringify(list[i]))}')">
+					<div class="time-axis-date col-block">
+						${date}
+						<span></span>
+					</div>
+					<div class="time-axis-content">
+						<div class="time-axis-wrap col-block">
+							<p class="time-axis-title">${addr}</p>
+							<p class="time-axis-second">${startTime}-${endTime}</p>
+						</div>
+<!--						<div class="time-axis-achievement col-block" >未过期</div>-->
+						${divShow}
+				</li>
+			`;
+                    $("#recordBody").append(html);
+                    // $("#recordBody").append("<a href=\"javascript:void(0);\" class=\"weui-media-box weui-media-box_appmsg\" onclick=\"toDetail('" + encodeURI(JSON.stringify(list[i])) + "')\">\n" +
+                    //     "\n" +
+                    //     "    <div class=\"weui-media-box__info__meta\">\n" +
+                    //     "        <p class=\"weui-cell__bd\">" + date + "</p><br>\n" +
+                    //     "    </div>\n" +
+                    //     "    <div class=\"weui-media-box__bd\">\n" +
+                    //     "        <h4 class=\"weui-cell__bd\">" + addr + "</h4>\n" +
+                    //     "        <p class=\"weui-cell__desc\">" + startTime + "-" + endTime + "</p><br>\n" +
+                    //     "    </div>\n" +
+                    //     "    <div class=\"weui-panel__ft\">\n" +
+                    //     divShow +
+                    //     "    </div>\n" +
+                    //     "</a>");
                 }
                 $('.weui-loadmore').hide();
                 loading = false;

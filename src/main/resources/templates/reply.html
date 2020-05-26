@@ -51,15 +51,15 @@
             <label class="weui-form-preview__label">访问地址</label>
             <span class="weui-form-preview__value" id="appliedAddr"></span>
         </div>
-        <div class="weui-form-preview__item" id="applyAddrShow" style="padding-top: 3px">
+        <div class="weui-form-preview__item" id="applyAddrShow" style="padding-top: 3px;display: none">
             <label class="weui-form-preview__label"><font color="red" size="4">*</font>地址选择</label>
             <span class="weui-form-preview__value"><input id='address' placeholder="请选择会面地址" style="width: 95%;border:none;font-size: 16px;margin-top: 10px;text-align:right;"/></span>
         </div>
     </div>
     <div style="padding-top: 5%"></div>
     <div class="weui-form-preview__ft">
-        <a class="weui-form-preview__btn weui-form-preview__btn_default" href="javascript:" id="refuse" onclick="verify('applyFail')"><font color="red">拒绝</font></a>
-        <button type="submit" class="weui-form-preview__btn weui-form-preview__btn_primary" href="javascript:" id="agree" onclick="verify('applySuccess')">同意</button>
+        <a class="weui-form-preview__btn weui-form-preview__btn_default" href="javascript:" id="refuse" onclick="verify('applyFail')" style="display: none"><font color="red">拒绝</font></a>
+        <button type="submit" class="weui-form-preview__btn weui-form-preview__btn_primary" href="javascript:" id="agree" onclick="verify('applySuccess')" style="display: none">同意</button>
     </div>
 </div>
 
@@ -77,6 +77,7 @@
     var myId;
     var index;
     $(function () {
+        $.showLoading("数据加载中")
          index = getQueryString("index");
          recordId = getQueryString("recordId");
          //发起人ID
@@ -289,11 +290,14 @@
             document.getElementById("refuse").style.display = 'none';
             document.getElementById("agree").style.display = 'none';
         }else{
+            document.getElementById("applyAddrShow").style.display = 'block';
             document.getElementById("appliedDateShow").style.display = 'none';
             document.getElementById("appliedAddrShow").style.display = 'none';
+            document.getElementById("refuse").style.display = 'block';
+            document.getElementById("agree").style.display = 'block';
             getCompany();
         }
-
+        $.hideLoading()
     }
     //获取上个页面传过来的参数
     function getQueryString(name) {

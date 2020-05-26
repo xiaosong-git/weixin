@@ -290,12 +290,18 @@
             document.getElementById("refuse").style.display = 'none';
             document.getElementById("agree").style.display = 'none';
         }else{
-            document.getElementById("applyAddrShow").style.display = 'block';
-            document.getElementById("appliedDateShow").style.display = 'none';
-            document.getElementById("appliedAddrShow").style.display = 'none';
             document.getElementById("refuse").style.display = 'block';
             document.getElementById("agree").style.display = 'block';
-            getCompany();
+            document.getElementById("appliedDateShow").style.display = 'none';
+            if(recordType == 1){
+                document.getElementById("applyAddrShow").style.display = 'block';
+                document.getElementById("appliedAddrShow").style.display = 'none';
+                getCompany();
+            }else{
+                document.getElementById("applyAddrShow").style.display = 'none';
+                document.getElementById("appliedAddrShow").style.display = 'block';
+
+            }
         }
         $.hideLoading()
     }

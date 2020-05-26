@@ -341,10 +341,12 @@ public class visitRecordServiceImpl extends AbstractService<VisitRecord> impleme
 
         String endDate = DateUtil.addMinute(startDate, v);
         Integer recordType = visitRecord.getRecordType();
-        VisitRecord check = visitorRecordMapper.check(userId, visitorId, recordType, startDate, endDate);
-        if (check != null) {
-            return ResultGenerator.genFailResult("在" + startDate + "——" + endDate + "内已经有访问信息存在");
-        }
+        /** update by cwf  2020/5/22 17:14 Reason:不再检测用户重复访问问题
+        */
+//        VisitRecord check = visitorRecordMapper.check(userId, visitorId, recordType, startDate, endDate);
+//        if (check != null) {
+//            return ResultGenerator.genFailResult("在" + startDate + "——" + endDate + "内已经有访问信息存在");
+//        }
         //储存新的来访记录
         Date date = new Date();
         visitRecord.setCstatus(cstatus);

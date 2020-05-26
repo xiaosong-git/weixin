@@ -96,11 +96,11 @@
             document.getElementById('visitType1').innerText = "邀约人";
             document.getElementById('visitType2').innerText = "受邀人";
             if (getCookie("userId") == detailJson.userId) {
-                replyStatus =0 ;
+                replyStatus =1 ;
                 userName = detailJson.realName;
                 visitorName = "本人";
             } else {
-                replyStatus =1 ;
+                replyStatus =0;
                 userName = "本人"
                 visitorName = detailJson.realName;
             }
@@ -161,6 +161,10 @@
             document.getElementById("refuse").style.display = 'none';
             document.getElementById("agree").style.display = 'none';
         } else if (show == 0) {
+
+
+
+
             document.getElementById("appliedDateShow").style.display = 'none';
             document.getElementById("appliedAddrShow").style.display = 'none';
             if(replyStatus == 0){

@@ -5,8 +5,6 @@
     <meta charset="utf-8">
     <meta content="IE=edge" http-equiv="X-UA-Compatible">
     <meta content="width=device-width, initial-scale=1, user-scalable=no" name="viewport">
-    <meta content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
-" name="description">
     <link href="https://cdn.bootcss.com/weui/1.1.3/style/weui.min.css" rel="stylesheet">
     <link href="https://cdn.bootcss.com/jquery-weui/1.2.1/css/jquery-weui.min.css" rel="stylesheet">
 
@@ -20,8 +18,50 @@
 </head>
 
 <body ontouchstart>
-<div id="dataDetail"></div>
-
+<div id="dataDetail" style="display: none"></div>
+<div class="weui-form-preview"  style="margin-left: 3%;margin-right: 3%;margin-top: 3%;background-color: white;">
+    <div class="weui-form-preview__hd" style="padding-top: 5%">
+        <label class="weui-form-preview__label"><font id="visitType1"></font></label>
+        <em class="weui-form-preview__value"><font size="3" id="userName"></font></em>
+        <label class="weui-form-preview__label"><font id="visitType2"></font></label>
+        <em class="weui-form-preview__value"><font size="3" id="visitorName"></font></em>
+    </div>
+    <div class="weui-form-preview__bd">
+        <div class="weui-form-preview__item">
+            <label class="weui-form-preview__label">申请时间</label>
+            <span class="weui-form-preview__value" id="applyDate"></span>
+        </div>
+        <div class="weui-form-preview__item" style="padding-top: 3px">
+            <label class="weui-form-preview__label">申请状态</label>
+            <span class="weui-form-preview__value"><font id="vstatus"></font></span>
+        </div>
+        <div class="weui-form-preview__item" id="appliedDateShow" style="padding-top: 3px">
+            <label class="weui-form-preview__label">受理时间</label>
+            <span class="weui-form-preview__value" id="appliedDate"></span>
+        </div>
+        <div class="weui-form-preview__item" style="padding-top: 3px">
+            <label class="weui-form-preview__label">访问时间</label>
+            <span class="weui-form-preview__value" id="visitDate"></span>
+        </div>
+        <div class="weui-form-preview__item" style="padding-top: 3px">
+            <label class="weui-form-preview__label" >事由</label>
+            <span class="weui-form-preview__value" id="reason"></span>
+        </div>
+        <div class="weui-form-preview__item" id="appliedAddrShow" style="padding-top: 3px">
+            <label class="weui-form-preview__label">访问地址</label>
+            <span class="weui-form-preview__value" id="appliedAddr"></span>
+        </div>
+        <div class="weui-form-preview__item" id="applyAddrShow" style="padding-top: 3px;display: none">
+            <label class="weui-form-preview__label"><font color="red" size="4">*</font>地址选择</label>
+            <span class="weui-form-preview__value"><input id='address' placeholder="请选择会面地址" style="width: 95%;border:none;font-size: 16px;margin-top: 10px;text-align:right;"/></span>
+        </div>
+    </div>
+    <div style="padding-top: 5%"></div>
+    <div class="weui-form-preview__ft">
+        <a class="weui-form-preview__btn weui-form-preview__btn_default" href="javascript:" id="refuse" onclick="verify('applyFail')" style="display: none"><font color="red">拒绝</font></a>
+        <button type="submit" class="weui-form-preview__btn weui-form-preview__btn_primary" href="javascript:" id="agree" onclick="verify('applySuccess')" style="display: none">同意</button>
+    </div>
+</div>
 
 <script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
 <script src="https://cdn.bootcss.com/jquery-weui/1.2.1/js/jquery-weui.min.js"></script>
@@ -31,23 +71,21 @@
 <script>
     var recordId;
     var companyId = -1;
-    var recordType;
     var otherId;
     var realName;
-    var visitDate;
-    var applyDate;
-    var cstatus;
-    var isValue;
     var addr;
     var myId;
     var index;
     $(function () {
+        $.showLoading("数据加载中")
          index = getQueryString("index");
          recordId = getQueryString("recordId");
          //发起人ID
          otherId = getQueryString("otherId");
          //被访问（邀约）人ID
          myId = getQueryString("myId");
+         console.log("发起人ID:"+otherId);
+         console.log("被访人ID:"+myId);
          getOtherUser();
          setTimeout(function () { getRecord();}, 1000);
     });
@@ -127,14 +165,12 @@
         });
     }
 
-
     //退出
     function quit() {
         wx.closeWindow();
     }
 
     function getRecord() {
-        console.log(recordId + "0=======")
         $.ajax({
             type: 'POST',
             contentType: "application/x-www-form-urlencoded",
@@ -151,29 +187,27 @@
                     } else {
                         otherId = data.visitorId;
                     }
-                    recordType = data.recordType;
-                    cstatus = data.cstatus;
-                    applyDate = data.visitDate + " " + data.visitTime;
-                    var date = data.startDate.substring(0, 10);
-                    var startTime = data.startDate.substring(11, 16);
-                    var endTime = data.endDate.substring(11, 16);
-                    visitDate = date + " " + startTime + "-" + endTime;
-                    isValue = data.isValue;
+
+
+
+
                     companyId = data.companyId;
                     addr = data.addr;
-                    content();
+                    content(data);
                 }
             }
         });
     }
-
+    //获取对方名字
     function getOtherUser() {
         var userId;
+        //index=reply 审核状态，useId为对方Id;
         if(index =="reply"){
             userId = otherId;
         }else{
             userId = myId;
         }
+
         $.ajax({
             type: 'POST',
             contentType: "application/x-www-form-urlencoded",
@@ -188,7 +222,8 @@
             }
         });
     }
-    function content() {
+
+    function content(data) {
         var userName = "";
         var visitorName = "";
 
@@ -198,76 +233,72 @@
         }else{
             userName = "本人";
             visitorName = realName;
-
         }
-
-
-        //记录状态
-        var status = "";
-        //show=1 界面为详情数据，show=0 界面为审核界面
-        var show = 1;
-        console.log("isValue:"+isValue)
+        document.getElementById('userName').innerText = userName;
+        document.getElementById('visitorName').innerText = visitorName;
+        var recordType = data.recordType;
+        if(recordType == "1"){
+            document.getElementById('visitType1').innerText = "访问人";
+            document.getElementById('visitType2').innerText = "被访人";
+        }else{
+            document.getElementById('visitType1').innerText = "邀约人";
+            document.getElementById('visitType2').innerText = "被邀人";
+        }
+        var applyDate = data.visitDate + " " + data.visitTime;
+        document.getElementById('applyDate').innerText = applyDate;
+        var isValue = data.isValue;
+        var cstatus = data.cstatus;
+        //show=0：已审核或者过期，show=1：未审核
+        var show = 0;
         if (isValue == "T") {
             if (cstatus == "applySuccess") {
-                status = "<font color=\"#006400\">通过</font>";
-                show = 1;
-            } else if (cstatus == "applyFail") {
-                status = "<font color=\"#8b0000\">拒绝</font>";
-                show = 1;
-            } else if (cstatus == "applyConfirm") {
-                status = "<font color=\"blue\">待审核</font>";
                 show = 0;
+                document.getElementById('vstatus').innerText = "通过";
+                document.getElementById("vstatus").style.color = '#006400';
+            } else if (cstatus == "applyFail") {
+                show = 0;
+                document.getElementById('vstatus').innerText = "拒绝";
+                document.getElementById("vstatus").style.color = '#8b0000';
+            } else if (cstatus == "applyConfirm") {
+                show = 1;
+                document.getElementById("vstatus").style.color = 'blue';
+                document.getElementById('vstatus').innerText = "待审核";
             }
-        } else {
-            status = "<font color=\"#696969\">过期</font>";
-            show = 1;
+        }else{
+            show = 0;
+            document.getElementById("vstatus").style.color = '#696969';
+            document.getElementById('vstatus').innerText = "过期";
         }
-        var peopleType = "";
-        if (recordType != "1") {
-            peopleType = "受邀人"
-        } else {
-            peopleType = "受访人"
+        var appliedDate = data.replyDate + " " + data.replyTime;
+        if(appliedDate !=null){
+           document.getElementById("appliedDate").innerText = appliedDate;
         }
-        if (show == 1) {
-            $("#dataDetail").append("<div class=\"weui-media-box weui-media-box_appmsg\">\n" +
-                "    <div class=\"weui-media-box__bd\">\n" +
-                "\n" +
-                "        <p class=\"weui-cell__bd\" style=\"margin-left: 5%\">&nbsp;&nbsp;&nbsp;发起人&nbsp;&nbsp;&nbsp; " + userName + "</p><br>\n" +
-                "        <p class=\"weui-cell__bd\" style=\"margin-left: 5%\">&nbsp;&nbsp;&nbsp;" + peopleType + "&nbsp;&nbsp;&nbsp; " + visitorName + "</p><br>\n" +
-                "        <p class=\"weui-cell__bd\" style=\"margin-left: 5%\">申请时间&nbsp;&nbsp;&nbsp; " + applyDate + "</p><br>\n" +
-                "        <p class=\"weui-cell__bd\" style=\"margin-left: 5%\">受理状态&nbsp;&nbsp;&nbsp; " + status + "</p><br>\n" +
-                "        <p class=\"weui-cell__bd\" style=\"margin-left: 5%\">访问时间&nbsp;&nbsp;&nbsp; " + visitDate + "</p><br>\n" +
-                "        <p class=\"weui-cell__bd\" style=\"margin-left: 5%\">访问地址&nbsp;&nbsp;&nbsp; " + addr + "</p><br>\n" +
-                "    </div>\n" +
-                "</div>")
-        } else if (show == 0) {
-            $("#dataDetail").append("<div class=\"weui-media-box weui-media-box_appmsg\">\n" +
-                "    <div class=\"weui-media-box__bd\">\n" +
-                "        <p class=\"weui-cell__bd\" style=\"margin-left: 5%\">&nbsp;&nbsp;&nbsp;发起人&nbsp;&nbsp;&nbsp; " + userName + "</p><br>\n" +
-                "        <p class=\"weui-cell__bd\" style=\"margin-left: 5%\">&nbsp;&nbsp;&nbsp;" + peopleType + "&nbsp;&nbsp;&nbsp; " + visitorName + "</p><br>\n" +
-                "        <p class=\"weui-cell__bd\" style=\"margin-left: 5%\">申请时间&nbsp;&nbsp;&nbsp; " + applyDate + "</p><br>\n" +
-                "        <p class=\"weui-cell__bd\" style=\"margin-left: 5%\">访问时间&nbsp;&nbsp;&nbsp; " + visitDate + "</p><br>\n" +
-                "       <p style=\"display: block\" id=\"addrshow\"></p> \n" +
-                "    </div>\n" +
-                "</div>")
-            if (recordType == "1") {
 
-                $("#addrshow").append("<label for=\"address\" style='margin-left: 5%'><font color='#8b0000' size='3'>* </font><font color='blue' size='3'>请点击此处选择会面地址</font></label><br><br>\n" +
-                    "                    <p><input class=\"weui-input\" id=\"address\" type=\"text\" style='margin-left: 5%'></p><br>")
-                getCompany();
-            } else {
-                companyId = companyId;
-                $("#addrshow").append("<p class=\"weui-cell__bd\" style=\"margin-left: 5%\">访问地址&nbsp;&nbsp;&nbsp; " + addr + "</p><br>")
-            }
-            if (cstatus == "applyConfirm" ) {
-                $("#dataDetail").append("<div>\n" +
-                    "    <a href=\"javascript:;\" class=\"weui-btn weui-btn_primary\" onclick=\"verify('applySuccess')\">通过</a>\n" +
-                    "    <a href=\"javascript:;\" class=\"weui-btn weui-btn_warn\" onclick=\"verify('applyFail')\">拒绝</a>\n" +
-                    "</div>")
-            }
+        var date = data.startDate.substring(0, 10);
+        var startTime = data.startDate.substring(11, 16);
+        var endTime = data.endDate.substring(11, 16);
+        var visitDate = date + " " + startTime + "-" + endTime;
+        document.getElementById('visitDate').innerText = visitDate;
+        if(data.reason != null){
+            document.getElementById('reason').innerText = data.reason;
         }
+        if(data.addr!=null){
+            document.getElementById('appliedAddr').innerText = data.addr;
+        }
+        if(show==0){
+            document.getElementById("applyAddrShow").style.display = 'none';
+            document.getElementById("refuse").style.display = 'none';
+            document.getElementById("agree").style.display = 'none';
+        }else{
+            document.getElementById("applyAddrShow").style.display = 'block';
+            document.getElementById("appliedDateShow").style.display = 'none';
+            document.getElementById("appliedAddrShow").style.display = 'none';
+            document.getElementById("refuse").style.display = 'block';
+            document.getElementById("agree").style.display = 'block';
+            getCompany();
+        }
+        $.hideLoading()
     }
-
     //获取上个页面传过来的参数
     function getQueryString(name) {
         var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
@@ -277,6 +308,7 @@
         }
         return null;
     }
+
 </script>
 </body>
 </html>

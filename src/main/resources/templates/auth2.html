@@ -107,7 +107,7 @@
                 $.toast("您已填写过详细信息，页面即将关闭");
                 //点击确认后的回调函数
                 setTimeout(function () {
-                    quit();
+                    wx.closeWindow();
                 }, 1500);
             }
 

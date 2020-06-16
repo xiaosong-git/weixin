@@ -163,24 +163,37 @@
                $("#appliedAddrShow").hide();
            }else{
                $("#appliedAddrShow").show();
-
                document.getElementById("appliedAddr").innerText =detailJson.addr;
            }
-            $("#appliedAddrShow").hide();
+            $("#applyAddrShow").hide();
             $("#refuse").hide();
             $("#agree").hide();
-        } else if (show == 0) {
+        } else if (show == 0) {     //审核界面
             $("#appliedDateShow").hide();
-            $("#appliedAddrShow").hide();
-            if(replyStatus == 0){
+            if(detailJson.recordType == '1'){ //访问界面
+                $("#appliedAddrShow").hide();
+                if(replyStatus == 0){
+                    $("#applyAddrShow").hide();
+                    $("#refuse").hide();
+                    $("#agree").hide();
+                }else{
+                    companyId = detailJson.companyId;
+                    $("#applyAddrShow").show();
+                    $("#refuse").show();
+                    $("#agree").show();
+                }
+            }else{  //邀约界面
+                companyId = 1;
+                $("#appliedAddrShow").show();
+                document.getElementById("appliedAddr").innerText =detailJson.addr;
                 $("#applyAddrShow").hide();
-                $("#refuse").hide();
-                $("#agree").hide();
-
-            }else{
-                $("#applyAddrShow").show();
-                $("#refuse").show();
-                $("#agree").show();
+                if(replyStatus == 0){
+                    $("#refuse").hide();
+                    $("#agree").hide();
+                }else{
+                    $("#refuse").show();
+                    $("#agree").show();
+                }
             }
         }
         getCompany();

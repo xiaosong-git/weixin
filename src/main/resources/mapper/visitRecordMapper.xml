@@ -99,24 +99,26 @@
  vr.isReceive,
  vr.isFlag,
  vr.remarkName,
- IF(companyName is null ,'',companyName) companyName,IF(c.addr is null ,'',c.addr) addr
+ IF(companyName is null ,'',companyName) companyName,IF(c.addr is null ,IF(o.addr is null,'',o.addr),c.addr) addr
    </sql>
     <sql id="visitorDetail">
-        <include refid="record"/>,if(userId=#{loginId},u.realName,vu.realName) realName,(case when
-        DATE_FORMAT(endDate,'%Y-%m-%d %H:%i:%s')&lt;NOW() then 'expired' else (case cstatus when 'applyFail' then
-        'refuse' when 'applySuccess' then 'access' else 'unaudited' end ) end ) vstatus
+        <include refid="record"/>,if(userId=#{loginId},u.realName,vu.realName) realName,(case cstatus when 'applyFail'
+        then
+        'refuse' when 'applySuccess' then 'access' else (case when
+        DATE_FORMAT(endDate,'%Y-%m-%d %H:%i:%s')&lt;NOW() then 'expired' else 'unaudited' end ) end ) vstatus
 
     </sql>
 
     <select id="record" parameterType="Long" resultMap="visitorMessageResultMap">
 SELECT vr.id,vr.visitorId, Max( startDate ) startDate, Max( endDate ) endDate,u.realName,
 IF( companyName IS NULL, '', companyName ) companyName,
-IF( c.addr IS NULL, '', c.addr ) addr FROM (
+IF(c.addr is null ,IF(o.addr is null,'',o.addr),c.addr) addr FROM (
 select id,IF(userId=#{userId},visitorId,userId) visitorId,startDate,endDate,companyId,orgCode
 from tbl_visitor_record
 where userId=#{userId} or visitorId=#{userId})vr
 LEFT JOIN tbl_user u ON vr.visitorId = u.id
 LEFT JOIN tbl_company c ON c.id = vr.companyId
+left join t_org o on o.id=c.orgId
 where u.realName is not null
 GROUP BY visitorId order by startDate desc
   </select>
@@ -128,6 +130,7 @@ GROUP BY visitorId order by startDate desc
         left join tbl_user u on vr.visitorId=u.id
         left join tbl_user vu on vr.userId=vu.id
         left join tbl_company c on c.id=vr.companyId
+        left join t_org o on o.id=c.orgId
         where (userId=#{visitorId} and visitorId=#{loginId}) or(userId=#{loginId} and visitorId=#{visitorId})
         ORDER BY startDate>NOW() desc, IF(startDate > NOW(), FIELD(cstatus,'Cancle','applyFail',
         'applySuccess','applyConfirm'), startDate ) desc,startDate desc,endDate asc

@@ -22,36 +22,36 @@ public class UserAuthController {
     @Resource
     private UserAuthService userAuthService;
 
-    @PostMapping("/add")
-    public Result add(UserAuth userAuth) {
-        userAuthService.save(userAuth);
-        return ResultGenerator.genSuccessResult();
-    }
-
-    @PostMapping("/delete")
-    public Result delete(@RequestParam Integer id) {
-        userAuthService.deleteById(id);
-        return ResultGenerator.genSuccessResult();
-    }
-
-    @PostMapping("/update")
-    public Result update(UserAuth userAuth) {
-        userAuthService.update(userAuth);
-        return ResultGenerator.genSuccessResult();
-    }
-
-    @PostMapping("/detail")
-    public Result detail(@RequestParam Integer id) {
-        UserAuth userAuth = userAuthService.findById(id);
-        return ResultGenerator.genSuccessResult(userAuth);
-    }
-
-    @PostMapping("/list")
-    public Result list(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size) {
-        PageHelper.startPage(page, size);
-        List<UserAuth> list = userAuthService.findAll();
-        PageInfo pageInfo = new PageInfo(list);
-        return ResultGenerator.genSuccessResult(pageInfo);
-    }
+//    @PostMapping("/add")
+//    public Result add(UserAuth userAuth) {
+//        userAuthService.save(userAuth);
+//        return ResultGenerator.genSuccessResult();
+//    }
+//
+//    @PostMapping("/delete")
+//    public Result delete(@RequestParam Integer id) {
+//        userAuthService.deleteById(id);
+//        return ResultGenerator.genSuccessResult();
+//    }
+//
+//    @PostMapping("/update")
+//    public Result update(UserAuth userAuth) {
+//        userAuthService.update(userAuth);
+//        return ResultGenerator.genSuccessResult();
+//    }
+//
+//    @PostMapping("/detail")
+//    public Result detail(@RequestParam Integer id) {
+//        UserAuth userAuth = userAuthService.findById(id);
+//        return ResultGenerator.genSuccessResult(userAuth);
+//    }
+//
+//    @PostMapping("/list")
+//    public Result list(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size) {
+//        PageHelper.startPage(page, size);
+//        List<UserAuth> list = userAuthService.findAll();
+//        PageInfo pageInfo = new PageInfo(list);
+//        return ResultGenerator.genSuccessResult(pageInfo);
+//    }
 
 }

@@ -80,6 +80,43 @@ public class Configuration {
         return encoder.encode(data);
 
     }
+    public static String GetImageStrFromPath1(String imgPath,long fileSize) {
+//        InputStream in = null;
+        byte[] data = FilesUtils.getImageFromNetByUrl(imgPath);
+
+        // 对字节数组Base64编码
+        BASE64Encoder encoder = new BASE64Encoder();
+
+
+        System.out.println("原始数据大小=======" + data.length);
+
+        if (data.length < fileSize * 1024) {
+            return encoder.encode(data);
+        }
+
+        try {
+            while (data.length > fileSize * 1024) {
+                ByteArrayInputStream inputStream = new ByteArrayInputStream(data);
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream(data.length);
+                /**
+                 * Thumbnails.of(InputStream... inputStreams) 从流读入源;
+                 * .scale(double scale) 按比例缩放，0~1缩小，1原比例，>1放大;
+                 * .scale(doublescaleWidth, double scaleHeight) 长宽各自设置比例，会拉伸;
+                 * .outputQuality(double quality) 质量0.0<=quality<=1.0;
+                 * .toOutputStream(OutputStream os) 无返回，写入outputStream里;
+                 *
+                 */
+                Thumbnails.of(inputStream).scale(accuracy)
+                        .outputQuality(accuracy).toOutputStream(outputStream);
+                data = outputStream.toByteArray();
+            }
+        } catch (Exception e) {
+            // logger.error("图片压缩失败=======", e);
+        }
+        System.out.println("压缩后数据大小=======" + data.length);
+        return encoder.encode(data);
+
+    }
 //
 //    public static void main(String[] args) {
 //        System.out.println(s);

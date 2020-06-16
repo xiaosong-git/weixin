@@ -25,8 +25,23 @@ public interface UserService extends Service<User> {
 
     Result loginByVerifyCode(String phone, String code, String openId) throws Exception;
 
+    /**
+     * 半实人，不做CTID认证
+     * @param openId
+     * @param name
+     * @param idHandleImgUrl
+     * @param phone
+     * @param code
+     * @param wxId
+     * @param otherOpenId
+     * @return
+     */
+
+    Result halfVerify(String openId, String name, String idHandleImgUrl, String phone, String code, String wxId, String otherOpenId);
 
     Result verify(String openId, String idNO, String name, String idHandleImgUrl, String addr, String localImgUrl, String phone, String code, String wxId, String otherOpenId);
+
+    Result authAfter(String userId, String idNO, String realName) throws Exception;
 
     /**
      * 有则不变 无则插入第三方平台的id
@@ -40,6 +55,16 @@ public interface UserService extends Service<User> {
     boolean isVerify(long userId);
 
     boolean isExistIdNo(long userId, String idNo) throws Exception;
+
+    /**
+     * 图片上传
+     * @param userId
+     * @param mediaId
+     * @param type
+     * @return
+     * @throws WxErrorException
+     * @throws Exception
+     */
 
     Result uploadPhoto(String userId, String mediaId, String type) throws WxErrorException, Exception;
 

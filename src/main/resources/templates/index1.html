@@ -53,7 +53,7 @@
                     <img src="images/srrz.png" alt="">
                 </div>
                 <p class="weui-grid__label">
-                    实人认证
+                    信息填写
                 </p>
             </a>
             <a href="clear1" class="weui-grid js_grid">
@@ -82,7 +82,7 @@
             setCookie('otherOpenId', '[[${otherOpenId}]]', 365);
             // }
             bindOther();
-            if ("T"==getCookie("isAuth")) {
+            if ("T"==getCookie("isAuth")||getCookie("isAuth") == "H") {
                 $('#auth').hide();
             }
         });

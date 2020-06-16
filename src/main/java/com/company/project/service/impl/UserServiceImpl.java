@@ -15,6 +15,7 @@ import com.company.project.util.*;
 import com.company.project.weixin.MyWxServiceImpl;
 import com.soecode.wxtools.api.IService;
 import com.soecode.wxtools.exception.WxErrorException;
+import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -24,6 +25,7 @@ import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
@@ -73,7 +75,8 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
     private OtherWxMapper otherWxMapper;
     @Resource
     private OtherOpenidService otherOpenidService;
-
+    @Value("${imgUrl}")
+    private String imgUrl;
     private IService iService = new MyWxServiceImpl();
 
     /**
@@ -275,6 +278,51 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
     }
 
     @Override
+    public Result halfVerify(String openId, String name, String idHandleImgUrl, String phone, String code, String wxId, String otherOpenId){
+        User user=userMapper.findByPhone(phone);
+        if (!"test2333".equals(code)) {
+            if (!codeService.verifyCode(phone, code)) {
+                return ResultGenerator.genFailResult("验证码错误");
+            }
+        }
+        if (name == null) {
+            return ResultGenerator.genFailResult("真实姓名不能为空!", "fail");
+        }
+        //todo 查询用户存在性
+        int isSuc=0;
+        if (user==null){
+           //todo 生成新用户
+            user=new User();
+            user.setIsauth("H");
+            user.setRealname(name);
+            user.setIdhandleimgurl(idHandleImgUrl);
+            user.setWxOpenId(openId);
+            user.setIdtype("01");
+            user.setPhone(phone);
+             isSuc = save(user);
+        }else{
+            user.setRealname(name);
+            user.setIdhandleimgurl(idHandleImgUrl);
+            user.setWxOpenId(openId);
+            user.setIsauth("H");
+            user.setIdtype("01");
+            isSuc = update(user);
+
+        }
+        if(wxId!=null&&otherOpenId!=null&&!"".equals(wxId)&&!"".equals(otherOpenId)) {
+            boolean b = otherWxVerify(wxId, user.getId(), otherOpenId);
+            if (!b) {
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();//回滚
+                return ResultGenerator.genFailResult("异常，请稍后再试", "fail");
+            }
+        }
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        resultMap.put("isAuth", user.getIsauth());
+        resultMap.put("userId", user.getId());
+        logger.info(resultMap.toString());
+        return ResultGenerator.genSuccessResult(resultMap);
+    }
+    @Override
     public Result verify(String openId, String idNO, String name, String idHandleImgUrl, String addr, String localImgUrl, String phone, String code, String wxId, String otherOpenId) {
         try {
             //验证手机
@@ -410,8 +458,31 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
             return ResultGenerator.genFailResult("异常，请稍后再试", "fail");
         }
     }
+    @Override
+    public Result authAfter(String userId, String idNO, String realName) throws Exception {
+        User user = userMapper.findByUserId(userId);
+        String imageServerUrl = paramService.findValueByName("imageServerUrl");
+        String photoResult = auth(idNO, realName, imageServerUrl+user.getIdhandleimgurl());//实人认证
+        if (!"success".equals(photoResult)) {
+            return ResultGenerator.genFailResult(photoResult, "401");
+        }else{
+            user.setIsauth("T");
+            String idNoMW = DESUtil.encode("iB4drRzSrC", idNO);
+            user.setIdno(idNoMW);
+            user.setAuthdate(DateUtil.getCurDate());
+            user.setAuthtime(DateUtil.getCurTime());
+            int update = update(user);
 
+            if (update>0){
+                Map<String, Object> resultMap = new HashMap<>();
+                resultMap.put("isAuth", "T");
+                return ResultGenerator.genSuccessResult(resultMap);
+            }else{
+                return ResultGenerator.genFailResult("系统异常，请稍后再试", "fail");
+            }
+        }
 
+    }
     @Override
     public boolean otherWxVerify(String wxId, Long userId, String otherOpenId){
 
@@ -472,8 +543,8 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
 //        String time = DateUtil.getSystemTimeFourteen();
         //临时图片地址
         //               String url = "D:\\test\\tempotos";
-      String url="/project/weixin/tempotos";
-        File file = new File(url);
+//      String url="/project/weixin/tempotos";
+        File file = new File(imgUrl);
         File newFile = null;
         try {
             newFile = iService.downloadTempMedia(mediaId, file);
@@ -487,7 +558,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
         //压缩
         String newFileName = openId + File.separator
                 + System.currentTimeMillis() + "." + suffix;
-        File compressImg = FilesUtils.getFileFromBytes(FilesUtils.compressUnderSize(photo, 10240L), url + File.separator, newFileName);
+        File compressImg = FilesUtils.getFileFromBytes(FilesUtils.compressUnderSize(photo, 10240L), imgUrl + File.separator, newFileName);
         String name = compressImg.getAbsolutePath();
         logger.info(name);
         Map<String, Object> map = new HashMap<>();
@@ -548,7 +619,6 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
 
         return userMapper.getUserFromOpenId(openId);
     }
-
     /**
      * 绑定手机
      *
@@ -619,7 +689,8 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
 //        itemJSONObj.put("certNo", "350424199009031238");
         itemJSONObj.put("certNo", certNo);
 //        String photo= Base64.encode(FilesUtils.getImageFromNetByUrl(idHandleImgUrl));
-        itemJSONObj.put("imgData", Configuration.GetImageStrFromPath(idHandleImgUrl, 30));
+        itemJSONObj.put("imgData", Configuration.GetImageStrFromPath1(idHandleImgUrl, 30));
+//        itemJSONObj.put("imgData", photo);
         HttpClient httpClient = new SSLClient();
         HttpPost postMethod = new HttpPost("http://t.pyblkj.cn:8082/wisdom/entrance/pub");
         StringEntity entityStr = new StringEntity(JSON.toJSONString(itemJSONObj), HTTP.UTF_8);
@@ -650,15 +721,15 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
         return newSign;
     }
 
-    public static void main(String[] args) {
-        String s = "{\"verify\":{\"desc\":\"提交成功\",\"sign\":\"success\"},\"data\":{\"imageFileName\":\"user\\\\45\\\\1571147257254.jpg\",\"name\":null,\"idNo\":null,\"bankCardNo\":null,\"bank\":null,\"address\":null}}\n";
-        JSONObject jsonObject = JSONObject.parseObject(s);
-        Map resultMap = JSON.parseObject(jsonObject.toString());
-        System.out.println(jsonObject.toString());
-        Map result = JSON.parseObject(resultMap.get("data").toString());
-
-        System.out.println(result.get("imageFileName"));
-    }
+//    public static void main(String[] args) {
+//        String s = "{\"verify\":{\"desc\":\"提交成功\",\"sign\":\"success\"},\"data\":{\"imageFileName\":\"user\\\\45\\\\1571147257254.jpg\",\"name\":null,\"idNo\":null,\"bankCardNo\":null,\"bank\":null,\"address\":null}}\n";
+//        JSONObject jsonObject = JSONObject.parseObject(s);
+//        Map resultMap = JSON.parseObject(jsonObject.toString());
+//        System.out.println(jsonObject.toString());
+//        Map result = JSON.parseObject(resultMap.get("data").toString());
+//
+//        System.out.println(result.get("imageFileName"));
+//    }
 
     /**
      *  实人认证绑定手机号

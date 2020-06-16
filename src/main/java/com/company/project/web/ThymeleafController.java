@@ -9,10 +9,8 @@ import com.company.project.service.UserService;
 import com.company.project.weixin.MenuKey;
 import com.company.project.weixin.MyService;
 import com.company.project.weixin.MyWxServiceImpl;
-import com.company.project.weixin.WxController;
 import com.soecode.wxtools.api.WxConfig;
 import com.soecode.wxtools.bean.WxJsapiConfig;
-import com.soecode.wxtools.bean.WxUserList;
 import com.soecode.wxtools.bean.result.WxOAuth2AccessTokenResult;
 import com.soecode.wxtools.exception.WxErrorException;
 import org.slf4j.Logger;
@@ -20,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -232,6 +231,17 @@ public class ThymeleafController {
         setAuth( "auth3",model);
         return "auth3";
     }
+    @AuthCheckAnnotation(checkLogin = false, checkVerify = false)
+    @RequestMapping(value = "/verify", method = RequestMethod.GET)
+    public String verify(Model model, @CookieValue(name="isAuth",required = false) String isAuth,
+                         @CookieValue(name="userId",required = false) String userId) {
+
+        System.out.println(isAuth);
+        logger.info("verify");
+        setAuth( "verify",model);
+        return "verify";
+    }
+
     public void setAuth(String path,Model model){
         List<String> jsApiList = new ArrayList<>();
 

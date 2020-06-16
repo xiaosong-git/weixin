@@ -121,6 +121,40 @@ public class UserController {
         return ResultGenerator.genFailResult("系统错误，请重试","");
     }
 
+    @AuthCheckAnnotation(checkLogin = false,checkVerify = false)
+    @RequestMapping("/halfVerify")
+    @ResponseBody
+    public Result halfVerify(@RequestParam String openId,
+                         @RequestParam String realName,
+                         @RequestParam String idHandleImgUrl,
+                         @RequestParam String phone,
+                         @RequestParam String code,
+                         @RequestParam String wxId,
+                         @RequestParam String otherOpenId
+                         ){
+        try {
+            return userService.halfVerify(openId, realName, idHandleImgUrl, phone, code,wxId,otherOpenId);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return ResultGenerator.genFailResult("系统错误，请重试","");
+    }
+    /**
+     * 实人认证
+
+     * @return
+     */
+    @AuthCheckAnnotation(checkLogin = false,checkVerify = false)
+    @RequestMapping("/authAfter")
+    @ResponseBody
+    public Result authAfter(@RequestParam String userId,@RequestParam String idNO,@RequestParam String realName){
+        try {
+            return userService.authAfter(userId,idNO,realName);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return ResultGenerator.genFailResult("系统错误，请重试","");
+    }
     /**
      * 实人认证图片上传
      * @param openId 用户id

@@ -23,7 +23,7 @@ public class GTNotification {
 
     private static String appId = "VAnoRfQ8kk69vx2rrR9tS4";
     private static String appKey = "dnYA43YSz16MGwebloMGA6";
-    private static String masterSecret = "Hr87hFYtt08cDbhIauIsY6";
+    private static String masterSecret = "g4zRVmEd258kBkSNuHRPQ4";
 //    static String CID = "3d2e89613f875ac8fecf1568a8d06e9d";
     // 别名推送方式
 //     static String Alias = "18150797748";

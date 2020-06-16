@@ -23,6 +23,7 @@ spring:
         min-idle: 0
 
 templateId: I-nNgggadJrZcZmkJzgxMVOptw4tf2MD9NKgYhWnCdM
+imgUrl: D:\\test\\tempotos
 #property配置
 # 开发环境配置
 # 数据源配置，请修改为你项目的实际配置

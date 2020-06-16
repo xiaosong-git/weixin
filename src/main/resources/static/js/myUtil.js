@@ -1,4 +1,4 @@
-var IS_DEVELOP = true;//是否生产环境
+var IS_DEVELOP = false;//是否生产环境
 var uri;
 var url;
 var appId = "wx1ddcdc86c83bc9a1";
@@ -7,7 +7,7 @@ if (IS_DEVELOP) {//生产环境
     url = "http://" + uri + "/";
 } else {
     appId = "wx2a1951f46acc4371";
-    uri = "h8zrcv.natappfree.cc";
+    uri = "x946wf.natappfree.cc";
     url = "http://" + uri + "/";
 }
 
@@ -32,12 +32,13 @@ var firstRecordUrl=url+suffix+"firstrecord";
 var secondRecordUrl=url+suffix+"secondrecord";
 var recordDetailUrl=url+suffix+"recorddetail";
 var bindphoneUrl=url+suffix+"bindphone";
+var verifyUrl=url+suffix+"verify";
 
 var replyUrl=url+suffix+"reply";
 var indexUrl=url+suffix+"index1";
 function setCookie(c_name,value,expiredays)
 {
-    var exdate=new Date();
+    let exdate=new Date();
     exdate.setDate(exdate.getDate()+expiredays);
     document.cookie=c_name+ "=" +escape(value)+
         ((expiredays==null) ? "" : ";expires="+exdate.toGMTString())
@@ -70,7 +71,7 @@ return false;
 }
 
 window.alert = function(name){
-    var iframe = document.createElement("IFRAME");
+    let iframe = document.createElement("IFRAME");
     iframe.style.display="none";
     iframe.setAttribute("src", 'data:text/plain,');
     document.documentElement.appendChild(iframe);
@@ -92,7 +93,7 @@ function isEmpty(v) {
             break;
         case 'object':
             if (null === v || v.length === 0) return true;
-            for (var i in v) {
+            for (let i in v) {
                 return false;
             }
             return true;
@@ -101,8 +102,8 @@ function isEmpty(v) {
 }
 //获取上个页面传过来的参数
 function getQueryString(name) {
-    var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
-    var r = window.location.search.substr(1).match(reg);
+    let reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+    let r = window.location.search.substr(1).match(reg);
     if (r != null) {
         return unescape(r[2]);
     }

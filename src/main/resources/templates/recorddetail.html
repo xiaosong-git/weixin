@@ -20,10 +20,14 @@
 
 <div class="weui-form-preview"  style="margin-left: 3%;margin-right: 3%;margin-top: 3%;background-color: white">
     <div class="weui-form-preview__hd" style="padding-top: 5%">
+        <div id="user">
         <label class="weui-form-preview__label"><font id="visitType1"></font></label>
         <em class="weui-form-preview__value"><font size="3" id="userName"></font></em>
+        </div>
+        <div id="visitor">
         <label class="weui-form-preview__label"><font id="visitType2"></font></label>
         <em class="weui-form-preview__value"><font size="3" id="visitorName"></font></em>
+        </div>
     </div>
     <div class="weui-form-preview__bd ">
         <div class="weui-form-preview__item">
@@ -56,7 +60,7 @@
         </div>
     </div>
     <div style="padding-top: 5%"></div>
-    <div class="weui-form-preview__ft">
+    <div class="weui-form-preview__ft" id="submit">
         <a class="weui-form-preview__btn weui-form-preview__btn_default" href="javascript:" id="refuse" onclick="verify('applyFail')"><font color="red">拒绝</font></a>
         <button type="submit" class="weui-form-preview__btn weui-form-preview__btn_primary" href="javascript:" id="agree" onclick="verify('applySuccess')">同意</button>
     </div>
@@ -68,59 +72,63 @@
 <script src="https://cdn.bootcss.com/fastclick/1.0.6/fastclick.js"></script>
 <script src="js/myUtil.js"></script>
 <script>
-    var recordId;
-    var companyId = -1;
+    let recordId;
+    let companyId = -1;
     $(function () {
-        var detail = window.localStorage.getItem("detailRecord");
-        var detailJson = JSON.parse(detail)
+        let detail = window.localStorage.getItem("detailRecord");
+        let detailJson = JSON.parse(detail);
         recordId = detailJson.id;
         console.log("========================")
         console.log(detailJson)
-        var userName = "";
-        var visitorName = "";
+        let userName = "";
+        let visitorName = "";
         // replyStatus = 0 ：自己查看自己的申请，replyStatus = 1 ：对方查看自己的申请
-        replyStatus = 0;
-        if (detailJson.recordType == '1') {
-            document.getElementById('visitType1').innerText = "访问人";
-            document.getElementById('visitType2').innerText = "受访人";
-            if (getCookie("userId") == detailJson.userId) {
+        let replyStatus = 0;
+        if (detailJson.recordType == '1') { //recordType=1访问
+            $("#visitType1").html("访问人");
+            $("#visitType2").html("受访人");
+            if (getCookie("userId") == detailJson.userId) {//发起人为自己
                 replyStatus =0 ;
                 userName = "本人";
+                $("#user").hide();
                 visitorName = detailJson.realName;
-            } else {
+            } else {//发起人为对方
                 replyStatus =1 ;
                 userName = detailJson.realName;
                 visitorName = "本人";
+                $("#visitor").hide();
             }
-        } else {
-            document.getElementById('visitType1').innerText = "邀约人";
-            document.getElementById('visitType2').innerText = "受邀人";
+        } else {//recordType=2邀约
+            $("#visitType1").html("邀约人");
+            $("#visitType2").html("受邀人");
             if (getCookie("userId") == detailJson.userId) {
                 replyStatus =1 ;
                 userName = detailJson.realName;
                 visitorName = "本人";
+                $("#visitor").hide();
             } else {
                 replyStatus =0;
-                userName = "本人"
+                userName = "本人";
                 visitorName = detailJson.realName;
+                $("#user").hide();
             }
         }
-        document.getElementById('userName').innerText = userName;
-        document.getElementById('visitorName').innerText = visitorName;
+        $("#userName").html(userName);
+        $("#visitorName").html(visitorName);
 
         //申请时间
-        var applyDate = detailJson.visitDate + " " + detailJson.visitTime;
-        document.getElementById("applyDate").innerText = applyDate;
-        document.getElementById("reason").innerText = detailJson.reason;
-        //访问时间
-        var date = detailJson.startDate.substring(0, 10);
-        var startTime = detailJson.startDate.substring(11, 16);
-        var endTime = detailJson.endDate.substring(11, 16);
-        var visitDate = date + " " + startTime + "-" + endTime;
-        document.getElementById("visitDate").innerText = visitDate;
+        let applyDate = detailJson.visitDate + " " + detailJson.visitTime;
+        $("#applyDate").html(applyDate);
+        $("#reason").html(detailJson.reason);
 
+        //访问时间
+        let date = detailJson.startDate.substring(0, 10);
+        let startTime = detailJson.startDate.substring(11, 16);
+        let endTime = detailJson.endDate.substring(11, 16);
+        let visitDate = date + " " + startTime + "-" + endTime;
+        $("#visitDate").html(visitDate);
         //show=1 界面为详情数据，show=0 界面为审核界面
-        var show = 1;
+        let show = 1;
         if (detailJson.vstatus == "access") {
             document.getElementById("vstatus").style.color = '#006400';
             document.getElementById("vstatus").innerText = "通过";
@@ -147,34 +155,32 @@
             if(detailJson.replyDate == ""){
                 document.getElementById("appliedDateShow").style.display = 'none';
             }else{
-                var replyDate = detailJson.replyDate + " " + detailJson.replyTime;
+                let replyDate = detailJson.replyDate + " " + detailJson.replyTime;
                 document.getElementById("appliedDateShow").style.display = 'block';
                 document.getElementById("appliedDate").innerText = replyDate;
             }
            if(detailJson.addr ==""){
-               document.getElementById("appliedAddrShow").style.display = 'none';
+               $("#appliedAddrShow").hide();
            }else{
-               document.getElementById("appliedAddrShow").style.display = 'block';
+               $("#appliedAddrShow").show();
+
                document.getElementById("appliedAddr").innerText =detailJson.addr;
            }
-            document.getElementById("applyAddrShow").style.display = 'none';
-            document.getElementById("refuse").style.display = 'none';
-            document.getElementById("agree").style.display = 'none';
+            $("#appliedAddrShow").hide();
+            $("#refuse").hide();
+            $("#agree").hide();
         } else if (show == 0) {
-
-
-
-
-            document.getElementById("appliedDateShow").style.display = 'none';
-            document.getElementById("appliedAddrShow").style.display = 'none';
+            $("#appliedDateShow").hide();
+            $("#appliedAddrShow").hide();
             if(replyStatus == 0){
-                document.getElementById("applyAddrShow").style.display = 'none';
-                document.getElementById("refuse").style.display = 'none';
-                document.getElementById("agree").style.display = 'none';
+                $("#applyAddrShow").hide();
+                $("#refuse").hide();
+                $("#agree").hide();
+
             }else{
-                document.getElementById("applyAddrShow").style.display = 'block';
-                document.getElementById("refuse").style.display = 'block';
-                document.getElementById("agree").style.display = 'block';
+                $("#applyAddrShow").show();
+                $("#refuse").show();
+                $("#agree").show();
             }
         }
         getCompany();
@@ -220,8 +226,8 @@
             success: function (result) {
                 console.log("===================")
                 console.log(result)
-                var companys = [];
-                for (var i in result.data) {
+                let companys = [];
+                for (let i in result.data) {
                     companys.push(result.data[i].companyname + "(" + result.data[i].addr + ")")
                 }
                 $("#address").picker({
@@ -236,9 +242,9 @@
                         console.log();
                     },
                     onClose: function (p, v, d) {
-                        var companyName = $("#address").val()//店铺名赋值
+                        let companyName = $("#address").val()//店铺名赋值
 
-                        for (var i in result.data) {
+                        for (let i in result.data) {
                             if (result.data[i].companyname + "(" + result.data[i].addr + ")"== companyName ) {
                                 companyId = result.data[i].id;
                                 console.log(companyId)

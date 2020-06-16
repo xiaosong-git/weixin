@@ -15,11 +15,13 @@ public interface UserMapper extends Mapper<User> {
     List<User> frequentContacts(Object userId);
     @Select("select id,realName,phone,isAuth from "+TableList.USER+" where wx_open_id=#{openId} limit 1")
     User getUserFromOpenId(Object openId);
-    @Select("select id from "+TableList.USER+" where phone=#{phone} limit 1")
+    @Select("select id,isAuth from "+TableList.USER+" where phone=#{phone} limit 1")
     User findByPhone(String phone);
     @Select("select * from "+TableList.USER+" where realName=#{name} and idNO=#{idNO} limit 1")
     User findByNameIdNo(String name, String idNO);
     @Select("select u.id,u.realName from tbl_user u left join tbl_company_user cu on u.id =cu.userId\n" +
             "where cu.companyId=#{companyId} and u.realName = #{name}  and u.isAuth='T' and cu.currentStatus='normal' and status='applySuc' limit 1")
     User nameCompany(Long companyId, String name);
+    @Select(" select id,realName,idHandleImgUrl from tbl_user where id=#{userId}")
+    User findByUserId(String userId);
 }

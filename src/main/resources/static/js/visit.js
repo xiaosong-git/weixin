@@ -43,7 +43,7 @@ function getContacts(searchName) {
 
 $(function () {
     if (!isLogin("visit")) {
-        if (getCookie("isAuth") != "T") {
+        if (getCookie("isAuth") != "T"&&getCookie("isAuth") != "H") {
             window.location.href = authUrl;
             $.showLoading();
         } else {
@@ -99,8 +99,7 @@ $('.weui-cell_swiped').swipeout('open')
 
 
 $("#showTooltips").click(function () {
-    var isAuth = getCookie("isAuth")
-    if (isAuth != "T") {
+    if (getCookie("isAuth") != "T"&&getCookie("isAuth") != "H") {
         $.toptip('请先进行实人认证');
         window.location.href = authUrl;
     } else {

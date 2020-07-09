@@ -2,6 +2,7 @@ package com.company.project.weixin;
 
 import com.soecode.wxtools.api.IService;
 import com.soecode.wxtools.api.WxConsts;
+import com.soecode.wxtools.api.WxService;
 import com.soecode.wxtools.bean.WxMenu;
 import com.soecode.wxtools.bean.result.WxUserTagResult;
 import com.soecode.wxtools.exception.WxErrorException;
@@ -22,7 +23,7 @@ public class Menu {
 
 
     public static void creatMenu(){
-        IService iService = new MyWxServiceImpl();
+        IService iService =new WxService();
         WxMenu menu = new WxMenu();
 
 
@@ -45,17 +46,18 @@ public class Menu {
         WxMenu.WxMenuButton btn3_3 = new WxMenu.WxMenuButton();
         btn3_3.setType(WxConsts.MENU_BUTTON_VIEW);
         btn3_3.setUrl(URL+"auth2");
-        btn3_3.setName("实人认证");
+        btn3_3.setName("信息填写");
 /*
         WxMenu.WxMenuButton btn3_4 = new WxMenu.WxMenuButton();
         btn3_4.setType(WxConsts.MENU_BUTTON_VIEW);
         btn3_4.setUrl(URL+MenuKey.BINDPHONE);
         btn3_4.setName("绑定手机");*/
 
-//        WxMenu.WxMenuButton btn3_2 = new WxMenu.WxMenuButton();
-//        btn3_2.setType(WxConsts.MENU_BUTTON_VIEW);
-//        btn3_2.setName("清除缓存");
-//
+        WxMenu.WxMenuButton btn3_2 = new WxMenu.WxMenuButton();
+        btn3_2.setType(WxConsts.MENU_BUTTON_VIEW);
+        btn3_2.setName("清除缓存");
+        btn3_2.setUrl(URL+"clear");
+
 //
 //        String url=null;
 //        try {
@@ -71,7 +73,7 @@ public class Menu {
 //        //授权登入
 //        btn3_4.setName("登入");
         //子按钮加入列表
-//        subList3.addAll(Arrays.asList(btn3_1,btn3_3,btn3_2));
+        subList3.addAll(Arrays.asList(btn3_1,btn3_3,btn3_2));
         //子按钮绑定父按钮
         btn3.setSub_button(subList3);
         List<WxMenu.WxMenuButton> btnList = new ArrayList<>();

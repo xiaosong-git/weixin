@@ -80,6 +80,7 @@
         recordId = detailJson.id;
         console.log("========================")
         console.log(detailJson)
+
         let userName = "";
         let visitorName = "";
         // replyStatus = 0 ：自己查看自己的申请，replyStatus = 1 ：对方查看自己的申请
@@ -90,13 +91,17 @@
             if (getCookie("userId") == detailJson.userId) {//发起人为自己
                 replyStatus =0 ;
                 userName = "本人";
-                $("#user").hide();
+                // $("#user").hide();
                 visitorName = detailJson.realName;
+                if (detailJson.level==0&&detailJson.vstatus == "access"&&getCookie("isAuth")!="T"){
+                    window.location.href = verifyUrl;
+                }   
             } else {//发起人为对方
                 replyStatus =1 ;
                 userName = detailJson.realName;
                 visitorName = "本人";
-                $("#visitor").hide();
+
+                // $("#visitor").hide();
             }
         } else {//recordType=2邀约
             $("#visitType1").html("邀约人");
@@ -105,12 +110,16 @@
                 replyStatus =1 ;
                 userName = detailJson.realName;
                 visitorName = "本人";
-                $("#visitor").hide();
+                if (detailJson.level==0&&detailJson.vstatus == "unaudited"&&getCookie("isAuth")!="T") {
+                        $.toptip("该公司安全等级较高，需要通过实人认证才能访问！");
+                        window.location.href = verifyUrl;
+                }
+                // $("#visitor").hide();
             } else {
                 replyStatus =0;
                 userName = "本人";
                 visitorName = detailJson.realName;
-                $("#user").hide();
+                // $("#user").hide();
             }
         }
         $("#userName").html(userName);
@@ -133,6 +142,7 @@
             document.getElementById("vstatus").style.color = '#006400';
             document.getElementById("vstatus").innerText = "通过";
             show = 1;
+
         } else if (detailJson.vstatus == "refuse") {
             document.getElementById("vstatus").style.color = '#8b0000';
             document.getElementById("vstatus").innerText = "拒绝";

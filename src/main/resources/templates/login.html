@@ -42,7 +42,7 @@
             }else if ("bindphone"=='[[${state}]]') {
                 window.location.href=bindphoneUrl;
             }else if ("reply"=='[[${state}]]') {
-                window.location.href=replyUrl;
+                window.history.go(-(window.history.length-1));
             }else if ("index"=='[[${state}]]') {
                 window.location.href=indexUrl;
             }else if ("auth3"=='[[${state}]]') {

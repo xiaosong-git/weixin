@@ -459,7 +459,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
         }
     }
     @Override
-    public Result authAfter(String userId, String idNO, String realName) throws Exception {
+    public Result authAfter(Long userId, String idNO, String realName) throws Exception {
         User user = userMapper.findByUserId(userId);
         String imageServerUrl = paramService.findValueByName("imageServerUrl");
         String photoResult = auth(idNO, realName, imageServerUrl+user.getIdhandleimgurl());//实人认证

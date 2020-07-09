@@ -191,7 +191,7 @@ function halfVerify() {
                     $.toptip("认证成功！", 'success');
                     $.toast("认证成功，页面即将关闭");
                     //点击确认后的回调函数
-                    window.history.go(-1);
+                    document.referrer===''? wx.closeWindow():window.history.go(-1);
 
                 }
             },

@@ -135,7 +135,7 @@
     <div class="weui-cell">
         <div class="weui-cell__hd"><label class="weui-label"><font size="4" color="red">* </font>企业/单位名称</label></div>
         <div class="weui-cell__bd">
-            <input class="weui-input" id="companyName" type="text" placeholder="请输入单位名称" companyId=""  onkeydown="autoFindCompanyName()">
+            <input class="weui-input" id="companyName" type="text" placeholder="请输入单位名称" companyId="" level=""  onkeydown="autoFindCompanyName()">
         </div>
     </div>
     <div style="display: none" id="addrshow">
@@ -298,38 +298,42 @@
 
     function findCompanyName(){
         let companyName = [];
-        $.ajax({
-            type: 'POST',
-            contentType: "application/x-www-form-urlencoded",
-            url: "company/findCompany",
-            data: {
-                companyName: $("#companyName").val(),
-            },
-            success: function (result) {
-                console.log(result)
-                if(result.data.length>0){
-                    for(var i in result.data){
-                        var c ={};
-                        c.value = result.data[i].companyname
-                        c.label = result.data[i].companyname;
-                        c.companyAddr = result.data[i].addr
-                        c.companyId = result.data[i].id
-                        companyName.push(c)
+        if ($("#companyName").val()!=''&&$("#companyName").val()!=null&&$("#companyName").val()!='undefined') {
+            $.ajax({
+                type: 'POST',
+                contentType: "application/x-www-form-urlencoded",
+                url: "company/findCompany",
+                data: {
+                    companyName: $("#companyName").val(),
+                },
+                success: function (result) {
+                    console.log(result);
+                    if (result.data.length > 0) {
+                        for (var i in result.data) {
+                            var c = {};
+                            c.value = result.data[i].companyname;
+                            c.label = result.data[i].companyname;
+                            c.companyAddr = result.data[i].addr;
+                            c.companyId = result.data[i].id;
+                            c.level=result.data[i].level;
+                            companyName.push(c)
+                        }
                     }
                 }
-            }
 
-        });
-        $("#companyName").autocomplete({
-            source:companyName,
-            select :function (event,ui) {
-                console.log(ui.item)
-                $("#companyAddr").val(ui.item.companyAddr);
-                $("#companyName").attr("companyId",ui.item.companyId);
-               document.getElementById('addrshow').style.display ='block'
-                console.log("companyId;"+ui.item.value)
-            }
-        })
+            });
+            $("#companyName").autocomplete({
+                source: companyName,
+                select: function (event, ui) {
+                    console.log(ui.item);
+                    $("#companyAddr").val(ui.item.companyAddr);
+                    $("#companyName").attr("companyId", ui.item.companyId);
+                    $("#companyName").attr("level",ui.item.level);
+                    document.getElementById('addrshow').style.display = 'block';
+                    console.log("companyId;" + ui.item.value)
+                }
+            })
+        }
     }
 
     /*输入完人名查找是否有该用户*/
@@ -343,11 +347,12 @@
                 name:$("#visit2Name").val()
             },
             success: function (result) {
-                console.log(result)
+                console.log(result);
                 if(result.code == 200){
-                    $("#visit2Name").attr("userId",result.data.id)
+                    $("#visit2Name").attr("userId",result.data.id);
+
                 }else{
-                    $("#visit2Name").attr("userId","")
+                    $("#visit2Name").attr("userId","");
                     $.toptip(result.message);
                 }
             }
@@ -357,18 +362,18 @@
     //发起地址访问
     $("#visitByAddr").click(function () {
         if (getCookie("isAuth") != "T"&&getCookie("isAuth") != "H") {
-            $.toptip('请先进行实人认证');
+            $.toptip('请先进行信息填写！');
             window.location.href = authUrl;
         } else {
-            var visitorName = $("#visit2Name").val();
-            var visitorId = $("#visit2Name").attr("userId");
-            var reason = $("#visit2Reason").val();
-            var startDate = $("#visit2Time").val();
-            var hour = $("#visit2Hour").val();
-            console.log(visitorId)
-            console.log(reason)
-            console.log(startDate)
-            console.log(hour)
+            let visitorName = $("#visit2Name").val();
+            let visitorId = $("#visit2Name").attr("userId");
+            let reason = $("#visit2Reason").val();
+            let startDate = $("#visit2Time").val();
+            let hour = $("#visit2Hour").val();
+            console.log(visitorId);
+            console.log(reason);
+            console.log(startDate);
+            console.log(hour);
             if(isEmpty(visitorName)){
                 $.toptip("请输入受访人姓名");
                 return;
@@ -382,7 +387,12 @@
                 $.toptip("受访人不存在，请重新输入访问信息");
                 return;
             }else{
-                visitRequest (visitorId,reason,startDate,hour);
+                //查询是否有实人认证
+                if ($("#companyName").attr("level")==0&&getCookie("isAuth")!="T"){
+                    window.location.href = verifyUrl;
+                }else{
+                    visitRequest (visitorId,reason,startDate,hour);
+                }
             }
         }
     });

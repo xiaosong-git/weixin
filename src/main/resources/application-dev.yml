@@ -1,8 +1,8 @@
 #测试端配置
 server:
-  port: 80
+  port: 8077
   servlet:
-    context-path: /pybl
+    context-path: /
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -23,7 +23,7 @@ spring:
         min-idle: 0
 
 templateId: I-nNgggadJrZcZmkJzgxMVOptw4tf2MD9NKgYhWnCdM
-imgUrl: D:\\test\\tempotos
+imgUrl: /project/weixin/tempotos
 #property配置
 # 开发环境配置
 # 数据源配置，请修改为你项目的实际配置

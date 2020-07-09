@@ -69,15 +69,18 @@
 <script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
 <script src="js/myUtil.js"></script>
 <script>
-    var recordId;
-    var companyId = -1;
-    var otherId;
-    var realName;
-    var addr;
-    var myId;
-    var index;
+    let recordId;
+    let companyId = -1;
+    let otherId;
+    let realName;
+    let addr;
+    let myId;
+    let index;
     $(function () {
-        $.showLoading("数据加载中")
+        if (isLogin("reply")) {
+            return;
+        }
+        $.showLoading("数据加载中");
          index = getQueryString("index");
          recordId = getQueryString("recordId");
          //发起人ID
@@ -105,7 +108,7 @@
                     companyId: companyId
                 },
                 success: function (result) {
-                    console.log(result)
+                    console.log(result);
                     $.toptip("审核成功", "success");
                     $.toast("审核成功，页面即将关闭");
                     //点击确认后的回调函数
@@ -134,12 +137,12 @@
             },
             success: function (result) {
                 console.log(result)
-                var companys = [];
-                for (var i in result.data) {
+                let companys = [];
+                for (let i in result.data) {
                     companys.push(result.data[i].companyname +"("+result.data[i].addr+")")
                 }
-                console.log("==========")
-                console.log(companys)
+                console.log("==========");
+                console.log(companys);
                 $("#address").picker({
                     title: "请选择地址",
                     cols: [
@@ -152,9 +155,9 @@
                         console.log();
                     },
                     onClose: function (p, v, d) {
-                        var companyName = $("#address").val()//店铺名赋值
+                        let companyName = $("#address").val()//店铺名赋值
 
-                        for (var i in result.data) {
+                        for (let i in result.data) {
                             if ((result.data[i].companyname+"("+result.data[i].addr+")") == companyName) {
                                 companyId = result.data[i].id;
                             }
@@ -180,19 +183,17 @@
             },
             success: function (result) {
                 if (result.code == 200) {
-                    var data = result.data;
+                    let data = result.data;
                     console.log(data)
                     if (data.userId != myId) {
                         otherId = data.userId;
                     } else {
                         otherId = data.visitorId;
                     }
-
-
-
-
                     companyId = data.companyId;
                     addr = data.addr;
+
+
                     content(data);
                 }
             }
@@ -200,7 +201,7 @@
     }
     //获取对方名字
     function getOtherUser() {
-        var userId;
+        let userId;
         //index=reply 审核状态，useId为对方Id;
         if(index =="reply"){
             userId = otherId;
@@ -224,8 +225,8 @@
     }
 
     function content(data) {
-        var userName = "";
-        var visitorName = "";
+        let userName = "";
+        let visitorName = "";
 
         if(index == "reply"){
             userName = realName;
@@ -236,7 +237,7 @@
         }
         document.getElementById('userName').innerText = userName;
         document.getElementById('visitorName').innerText = visitorName;
-        var recordType = data.recordType;
+        let recordType = data.recordType;
         if(recordType == "1"){
             document.getElementById('visitType1').innerText = "访问人";
             document.getElementById('visitType2').innerText = "被访人";
@@ -244,17 +245,22 @@
             document.getElementById('visitType1').innerText = "邀约人";
             document.getElementById('visitType2').innerText = "被邀人";
         }
-        var applyDate = data.visitDate + " " + data.visitTime;
+        let applyDate = data.visitDate + " " + data.visitTime;
         document.getElementById('applyDate').innerText = applyDate;
-        var isValue = data.isValue;
-        var cstatus = data.cstatus;
+        let isValue = data.isValue;
+        let cstatus = data.cstatus;
         //show=0：已审核或者过期，show=1：未审核
-        var show = 0;
-        if (isValue == "T") {
+        let show = 0;
+        if (isValue == "T") {//是否未过期
             if (cstatus == "applySuccess") {
                 show = 0;
                 document.getElementById('vstatus').innerText = "通过";
                 document.getElementById("vstatus").style.color = '#006400';
+                if (recordType==1&&data.level==0&&getCookie("isAuth")!="T"&&index == "reply"){
+                    //todo 跳转实人界面
+                    window.location.href = verifyUrl;
+                // alert("访问跳转实人界面");
+                }
             } else if (cstatus == "applyFail") {
                 show = 0;
                 document.getElementById('vstatus').innerText = "拒绝";
@@ -263,21 +269,27 @@
                 show = 1;
                 document.getElementById("vstatus").style.color = 'blue';
                 document.getElementById('vstatus').innerText = "待审核";
+                console.log(recordType==2&&data.level==0&&getCookie("isAuth")!="T"&&index == "reply");
+                if (recordType==2&&data.level==0&&getCookie("isAuth")!="T"&&index == "reply"){
+                    //todo 跳转实人界面
+                    window.location.href = verifyUrl;
+                    // alert("邀约跳转实人界面");
+                }
             }
         }else{
             show = 0;
             document.getElementById("vstatus").style.color = '#696969';
             document.getElementById('vstatus').innerText = "过期";
         }
-        var appliedDate = data.replyDate + " " + data.replyTime;
+        let appliedDate = data.replyDate + " " + data.replyTime;
         if(appliedDate !=null){
            document.getElementById("appliedDate").innerText = appliedDate;
         }
 
-        var date = data.startDate.substring(0, 10);
-        var startTime = data.startDate.substring(11, 16);
-        var endTime = data.endDate.substring(11, 16);
-        var visitDate = date + " " + startTime + "-" + endTime;
+        let date = data.startDate.substring(0, 10);
+        let startTime = data.startDate.substring(11, 16);
+        let endTime = data.endDate.substring(11, 16);
+        let visitDate = date + " " + startTime + "-" + endTime;
         document.getElementById('visitDate').innerText = visitDate;
         if(data.reason != null){
             document.getElementById('reason').innerText = data.reason;
@@ -307,8 +319,8 @@
     }
     //获取上个页面传过来的参数
     function getQueryString(name) {
-        var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
-        var r = window.location.search.substr(1).match(reg);
+        let reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+        let r = window.location.search.substr(1).match(reg);
         if (r != null) {
             return unescape(r[2]);
         }

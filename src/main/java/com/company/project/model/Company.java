@@ -77,6 +77,8 @@ public class Company {
 
     @Column(name = "companyFloor2")
     private String companyfloor2;
+    @Column(name = "level")
+    private String level;
     /**
      * 大楼
      */
@@ -342,5 +344,13 @@ public class Company {
 
     public void setUsers(List<User> users) {
         this.users = users;
+    }
+
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
     }
 }

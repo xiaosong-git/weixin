@@ -99,7 +99,8 @@
  vr.isReceive,
  vr.isFlag,
  vr.remarkName,
- IF(companyName is null ,'',companyName) companyName,IF(c.addr is null ,IF(o.addr is null,'',o.addr),c.addr) addr
+ IF(companyName is null ,'',companyName) companyName,IF(c.addr is null or c.addr='',IF(o.addr is null,'',o.addr),c.addr) addr,
+ c.level
    </sql>
     <sql id="visitorDetail">
         <include refid="record"/>,if(userId=#{loginId},u.realName,vu.realName) realName,(case cstatus when 'applyFail'
@@ -136,9 +137,10 @@ GROUP BY visitorId order by startDate desc
         'applySuccess','applyConfirm'), startDate ) desc,startDate desc,endDate asc
     </select>
     <select id="findRecordCompany" parameterType="Long" resultType="map">
-        select vr.*,c.companyName,c.addr
+        select vr.*,c.companyName,IF(c.addr is null or c.addr='' ,IF(o.addr is null,'',o.addr),c.addr) addr,c.level
         from tbl_visitor_record vr
         left join tbl_company c on c.id=vr.companyId
+        left join t_org o on o.org_code=vr.orgCode
         where vr.id = #{recordId} limit 1
     </select>
 </mapper>

@@ -41,7 +41,7 @@ public interface UserService extends Service<User> {
 
     Result verify(String openId, String idNO, String name, String idHandleImgUrl, String addr, String localImgUrl, String phone, String code, String wxId, String otherOpenId);
 
-    Result authAfter(String userId, String idNO, String realName) throws Exception;
+    Result authAfter(Long userId, String idNO, String realName) throws Exception;
 
     /**
      * 有则不变 无则插入第三方平台的id

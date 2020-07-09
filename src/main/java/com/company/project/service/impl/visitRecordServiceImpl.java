@@ -198,6 +198,7 @@ public class visitRecordServiceImpl extends AbstractService<VisitRecord> impleme
             dataMap.put("keyword4", new WxTemplateData(visitRecord.getReason(), "#173177"));
             dataMap.put("remark", new WxTemplateData("您的访问申请信息已被对方审核", "#173177"));
             sender.setData(dataMap);
+            //index=check表示对方已经审核
             String params = "?recordId=" + visitRecord.getId() + "&otherId=" + me.getId() + "&myId=" + otherUser.getId() + "&index=check";
             url = URL + REPLY + params;
             sender.setUrl(url);
@@ -415,6 +416,7 @@ public class visitRecordServiceImpl extends AbstractService<VisitRecord> impleme
                 dataMap.put("keyword3", new WxTemplateData(vt.getStartDate(), "#173177"));
                 dataMap.put("keyword4", new WxTemplateData(vt.getReason(), "#173177"));
                 dataMap.put("remark", new WxTemplateData("点击查看详情信息↓", "#173177"));
+                //index=reply 发送给对方让对方审核
                 String params = "?recordId=" + vt.getId() + "&otherId=" + me.getId() + "&myId=" + otherUser.getId() + "&index=reply";
                 sender.setUrl(URL + REPLY + params);
                 sender.setData(dataMap);

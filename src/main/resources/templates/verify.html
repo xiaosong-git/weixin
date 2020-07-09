@@ -130,6 +130,7 @@
                     wx.closeWindow();
                 }, 1500);
             }else{
+                $.toptip('该公司安全等级较高，需要通过实人认证才能访问！', 'warning');
                $('#realName').val(getCookie("myName"));
             }
 
@@ -178,13 +179,11 @@
                     $.hideLoading();
                 } else {
                     $.hideLoading();
-                    setCookie("userId", result.data.userId);
                     setCookie("isAuth", "T");
                     $.toptip("认证成功！", 'success');
-                    $.toast("认证成功，页面即将关闭");
+                    $.toast("认证成功，页面即将返回");
                     //点击确认后的回调函数
                     window.history.go(-1);
-
                 }
             },
             error: function (e) {

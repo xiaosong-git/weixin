@@ -1,13 +1,13 @@
-var IS_DEVELOP = false;//是否生产环境
-var uri;
-var url;
-var appId = "wx1ddcdc86c83bc9a1";
+let IS_DEVELOP = false;//是否生产环境
+let uri;
+let url;
+let appId = "wx1ddcdc86c83bc9a1";
 if (IS_DEVELOP) {//生产环境
     uri = "f.pyblkj.cn";
     url = "http://" + uri + "/";
 } else {
     appId = "wx2a1951f46acc4371";
-    uri = "b99dib.natappfree.cc";
+    uri = "fager.pyblkj.cn";
     url = "http://" + uri + "/";
 }
 
@@ -22,20 +22,20 @@ function getLoginUrl(state) {
 }
 
 //朋悦比邻
-var suffix="pybl/";
-var visitUrl=url+suffix+"visit";
-var authUrl=url+suffix+"auth";
-var auth2Url=url+suffix+"auth2";
-var auth3Url=url+suffix+"auth3";
-var invitUrl=url+suffix+"invite";
-var firstRecordUrl=url+suffix+"firstrecord";
-var secondRecordUrl=url+suffix+"secondrecord";
-var recordDetailUrl=url+suffix+"recorddetail";
-var bindphoneUrl=url+suffix+"bindphone";
-var verifyUrl=url+suffix+"verify";
+let suffix="pybl/";
+let visitUrl=url+suffix+"visit";
+let authUrl=url+suffix+"auth";
+let auth2Url=url+suffix+"auth2";
+let auth3Url=url+suffix+"auth3";
+let invitUrl=url+suffix+"invite";
+let firstRecordUrl=url+suffix+"firstrecord";
+let secondRecordUrl=url+suffix+"secondrecord";
+let recordDetailUrl=url+suffix+"recorddetail";
+let bindphoneUrl=url+suffix+"bindphone";
+let verifyUrl=url+suffix+"verify";
 
-var replyUrl=url+suffix+"reply";
-var indexUrl=url+suffix+"index1";
+let replyUrl=url+suffix+"reply";
+let indexUrl=url+suffix+"index1";
 function setCookie(c_name,value,expiredays)
 {
     let exdate=new Date();

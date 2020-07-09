@@ -147,7 +147,7 @@ public class UserController {
     @AuthCheckAnnotation(checkLogin = false,checkVerify = false)
     @RequestMapping("/authAfter")
     @ResponseBody
-    public Result authAfter(@RequestParam String userId,@RequestParam String idNO,@RequestParam String realName){
+    public Result authAfter(@RequestParam Long userId,@RequestParam String idNO,@RequestParam String realName){
         try {
             return userService.authAfter(userId,idNO,realName);
         }catch (Exception e){

@@ -3,6 +3,7 @@ package com.company.project.dao;
 import com.company.project.compose.TableList;
 import com.company.project.core.Mapper;
 import com.company.project.model.User;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -18,10 +19,10 @@ public interface UserMapper extends Mapper<User> {
     @Select("select id,isAuth from "+TableList.USER+" where phone=#{phone} limit 1")
     User findByPhone(String phone);
     @Select("select * from "+TableList.USER+" where realName=#{name} and idNO=#{idNO} limit 1")
-    User findByNameIdNo(String name, String idNO);
+    User findByNameIdNo(@Param("name") String name, @Param("idNO") String idNO);
     @Select("select u.id,u.realName from tbl_user u left join tbl_company_user cu on u.id =cu.userId\n" +
             "where cu.companyId=#{companyId} and u.realName = #{name}  and (u.isAuth='T' or u.isAuth='H') and cu.currentStatus='normal' and status='applySuc' limit 1")
-    User nameCompany(Long companyId, String name);
+    User nameCompany(@Param("companyId") Long companyId, @Param("name") String name);
     @Select(" select id,realName,idHandleImgUrl from tbl_user where id=#{userId}")
     User findByUserId(Long userId);
 }

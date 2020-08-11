@@ -139,6 +139,12 @@
                 console.log(result)
                 let companys = [];
                 for (let i in result.data) {
+                    // 默认地址
+                    var b = result.data[i].id == result.data[i].users[0].companyId;
+                    console.log(result.data[i].id + "_" + result.data[i].users[0].companyId);
+                    if(b){
+                        $("#address").val(result.data[i].companyname +"("+result.data[i].addr+")");
+                    }
                     companys.push(result.data[i].companyname +"("+result.data[i].addr+")")
                 }
                 console.log("==========");

@@ -20,9 +20,9 @@ import static com.company.project.core.ProjectConstant.*;
 public class CodeGenerator {
     //JDBC配置，请修改为你项目的实际配置
 
-    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/visitor?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&autoReconnect=true&serverTimezone=UTC";
+    private static final String JDBC_URL = "jdbc:mysql://cdb-ia6vd64i.cd.tencentcdb.com:10028/visitor?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&autoReconnect=true&serverTimezone=UTC";
     private static final String JDBC_USERNAME = "root";
-    private static final String JDBC_PASSWORD = "root";
+    private static final String JDBC_PASSWORD = "flzxsqc!11";
     private static final String JDBC_DIVER_CLASS_NAME = "com.mysql.cj.jdbc.Driver";
 
     private static final String PROJECT_PATH = System.getProperty("user.dir");//项目在硬盘上的基础路径
@@ -39,7 +39,7 @@ public class CodeGenerator {
     private static final String DATE = new SimpleDateFormat("yyyy/MM/dd").format(new Date());//@date
 
     public static void main(String[] args) {
-        genCode(TableList.OTHER_OPENID);
+        genCode("t_park_order");
 //        genCode("输入表名");
         //genCodeByCustomModelName("输入表名","输入自定义Model名称");
     }
@@ -52,7 +52,7 @@ public class CodeGenerator {
     public static void genCode(String... tableNames) {
         for (String tableName : tableNames) {
             //修改表名
-            genCodeByCustomModelName(tableName, "OtherRlat");
+            genCodeByCustomModelName(tableName, "TParkInout");
         }
     }
 

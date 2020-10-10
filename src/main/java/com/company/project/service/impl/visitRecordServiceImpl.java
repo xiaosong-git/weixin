@@ -74,6 +74,12 @@ public class visitRecordServiceImpl extends AbstractService<VisitRecord> impleme
     @Override
     public Result visitRequest(VisitRecord visitRecord, String hour) throws Exception {
         visitRecord.setRecordType(1);
+        //访问朋悦比邻
+        if(visitRecord.getVisitorId()==-1){
+            visitRecord.setCstatus("applySuccess");
+            //发送推送
+            sendTemplate(visitRecord);
+        }
         return visitCommon(visitRecord, hour, 1);
     }
 
@@ -523,5 +529,32 @@ public class visitRecordServiceImpl extends AbstractService<VisitRecord> impleme
     @Override
     public Map<String, Object> findRecordCompany(Long recordId) {
         return visitorRecordMapper.findRecordCompany(recordId);
+    }
+
+    public void sendTemplate(VisitRecord visitRecord){
+        TemplateSender sender = new TemplateSender();
+        sender.setTemplate_id(templateId);
+        //访问发起人
+       User me = userService.findById(visitRecord.getUserId());
+        User otherUser = userService.findById(visitRecord.getVisitorId());
+        Map<String, WxTemplateData> dataMap = new HashMap<>();
+        sender.setTouser(me.getWxOpenId());
+        dataMap.put("first", new WxTemplateData("访问消息通知", "#173177"));
+        dataMap.put("keyword1", new WxTemplateData(otherUser.getRealname(), "#173177"));
+        dataMap.put("keyword2", new WxTemplateData(otherUser.getPhone(), "#173177"));
+        dataMap.put("keyword3", new WxTemplateData(visitRecord.getStartDate(), "#173177"));
+        dataMap.put("keyword4", new WxTemplateData(visitRecord.getReason(), "#173177"));
+        dataMap.put("remark", new WxTemplateData("您的访问申请信息已被对方审核", "#173177"));
+        sender.setData(dataMap);
+        //index=check表示对方已经审核
+        String params = "?recordId=" + visitRecord.getId() + "&otherId=" + me.getId() + "&myId=" + otherUser.getId() + "&index=check";
+       String url = URL + REPLY + params;
+        sender.setUrl(url);
+        try {
+            TemplateSenderResult result = iService.templateSend(sender);
+            logger.info(result.toString());
+        } catch (Exception e) {
+            logger.error("发送模板消息错误：用户未关注朋悦比邻公众号,用户id：{},用户openId{}", me.getId(), me.getWxOpenId(), e);
+        }
     }
 }

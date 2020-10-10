@@ -89,7 +89,7 @@ public class MD5Util {
 
     public static void main(String[] args) throws Exception {
 
-        String s = "000000";
+        String s = "webApp";
 
         System.out.println(MD5(s));
         System.out.println(MD5Encode(s));

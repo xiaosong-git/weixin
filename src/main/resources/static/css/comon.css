@@ -50,3 +50,22 @@ input {
     border-image: linear-gradient(-180deg, rgba(255,255,255,0.00) 0%,#19AD1A 20%, rgba(255,255,255,0.00) 99%) 2 2 2 2;
 
 }
+.weui-cells_checkbox_cus .weui-check-cus:checked+.weui-icon-checked:before {
+    content: '\EA06';
+    color: #09bb07;
+}
+
+.weui-cells_checkbox_cus .weui-icon-checked:before {
+    content: '\EA01';
+    color: #c9c9c9;
+    font-size: 23px;
+    display: block;
+}
+.weui-check-cus {
+    position: absolute;
+    right: 18px;
+    top: 14px;
+    height: 24px;
+    width: 24px;
+    opacity: 0;
+}

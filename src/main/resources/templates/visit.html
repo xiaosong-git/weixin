@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>发起访问</title>
     <meta charset="utf-8">
@@ -9,9 +10,11 @@
 ">
     <link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.3/style/weui.min.css">
     <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.1/css/jquery-weui.min.css">
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <style type="text/css">
         @import url("css/comon.css");
+        @import url("css/keyboard.css");
+        @import url("css/jquery-ui.min.css");
+
     </style>
     <title>
         <h3 class="demos-title">访问</h3>
@@ -20,83 +23,111 @@
 </head>
 
 <body ontouchstart>
-<div class="weui-flex">
-    <div class="weui-flex__item"><a href="javascript:;" class="weui-btn weui-btn_default visit_btn" onclick='visit1()' style="background-color: #EFEFF4" id="visit1">联系人访问</a></div>
-    <div class="weui-flex__item"><a href="javascript:;" class="weui-btn weui-btn_default visit_btn" onclick='visit2()' style="background-color: #f7f7f7" id="visit2">地址访问</a></div>
-</div>
-<!--联系人访问界面-->
-<div class="weui-cells weui-cells_form" id="pvisit" style="display:block">
-    <div class="weui-cell">
-        <div class="weui-cell__hd"><label class="weui-label"><font size="4" color="red">* </font>受访人姓名</label></div>
-        <div class="weui-cell__bd">
-            <input class="weui-input" id="visitorName" type="text" placeholder="请输入受访人姓名" onkeyup="autocompletename()"
-                   visitorId="" flag="-1" onautocomplete="on">
-        </div>
+    <div class="weui-flex">
+        <div class="weui-flex__item"><a href="javascript:;" class="weui-btn weui-btn_default visit_btn" onclick='visit1()' style="background-color: #EFEFF4" id="visit1">联系人访问</a></div>
+        <div class="weui-flex__item"><a href="javascript:;" class="weui-btn weui-btn_default visit_btn" onclick='visit2()' style="background-color: #f7f7f7" id="visit2">地址访问</a></div>
     </div>
-    <div class="weui-cell">
-        <div class="weui-cell__hd">
-            <label class="weui-label"><font size="4" color="red">* </font>受访人手机号</label>
+    <!--联系人访问界面-->
+    <div class="weui-cells weui-cells_form" id="pvisit">
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label class="weui-label">
+                    <font size="4" color="red">* </font>受访人姓名
+                </label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" id="visitorName" type="text" placeholder="请输入受访人姓名" onkeyup="autocompletename()" visitorId="" flag="-1" onautocomplete="on">
+            </div>
         </div>
-        <div class="weui-cell__bd">
-            <input class="weui-input" id="visitorPhone" type="tel" placeholder="请输入受访人手机号" onBlur="postNP()">
+        <div class="weui-cell">
+            <div class="weui-cell__hd">
+                <label class="weui-label">
+                    <font size="4" color="red">* </font>受访人手机号
+                </label>
+            </div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" id="visitorPhone" type="tel" placeholder="请输入受访人手机号" onBlur="postNP()">
+            </div>
         </div>
-    </div>
-    <div class="weui-cell">
-        <div class="weui-cell__hd"><label for="start-time" class="weui-label"><font size="4" color="red">* </font>开始时间</label></div>
-        <div class="weui-cell__bd">
-            <input class="weui-input" id="start-time" type="text" value="" placeholder="">
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label for="start-time" class="weui-label">
+                    <font size="4" color="red">* </font>开始时间
+                </label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" id="start-time" type="text" value="" placeholder="">
+            </div>
         </div>
-    </div>
 
-    <div class="weui-cell">
-        <div class="weui-cell__hd"><label for="hour" class="weui-label"><font size="4" color="red">* </font>时长/小时</label></div>
-        <div class="weui-cell__bd">
-            <input class="weui-input" id="hour" type="text" value="" placeholder="请选择时长">
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label for="hour" class="weui-label">
+                    <font size="4" color="red">* </font>时长/小时
+                </label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" id="hour" type="text" value="" placeholder="请选择时长">
+            </div>
         </div>
-    </div>
 
-    <div class="weui-cell">
-        <div class="weui-cell__hd"><label for="reason" class="weui-label">访问事由</label></div>
-        <div class="weui-cell__bd">
-            <input class="weui-input" id="reason" type="text" value="" placeholder="请选择访问事由">
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label for="reason" class="weui-label">访问事由</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" id="reason" type="text" value="" placeholder="请选择访问事由">
+            </div>
         </div>
-    </div>
-    <div class="weui-btn-area">
-        <a class="weui-btn weui-btn_primary" href="javascript:" id="showTooltips">发起访问</a>
-    </div>
-
-    <div class="weui-tab">
-        <div class="weui-navbar">
-            <a class="weui-navbar__item weui-bar__item--on" href="#tab1">
-                <img src="images/contacts.png" style="width: 8%;"/> 常用联系人
-            </a>
-            <a class="weui-navbar__item" href="#tab2" onclick="getRecord()">
-                <img src="images/record.png" style="width: 8%;"/> 访问邀约记录
-            </a>
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label for="cardNumbers" class="weui-label">是否有车</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" id="cardNumbers" type="text" value="" placeholder="请选择是否有车">
+            </div>
         </div>
-        <div class="weui-tab__bd">
-            <div id="tab1" class="weui-tab__bd-item weui-tab__bd-item--active">
-                <div class="weui-search-bar" id="searchBar">
-                    <form class="weui-search-bar__form" action="#">
-                        <div class="weui-search-bar__box">
-                            <i class="weui-icon-search"></i>
-                            <input type="search" class="weui-search-bar__input" id="searchInput" placeholder="搜索"
-                                   required="">
-                            <a href="javascript:" class="weui-icon-clear" id="searchClear"></a>
-                        </div>
-                        <label class="weui-search-bar__label" id="searchText"
-                               style="transform-origin: 0px 0px 0px; opacity: 1; transform: scale(1, 1);">
-                            <i class="weui-icon-search"></i>
-                            <span>搜索</span>
-                        </label>
-                    </form>
-                    <a href="javascript:" class="weui-search-bar__cancel-btn" id="searchCancel"
-                       onclick="getContacts('')">取消</a>
-                </div>
+        <div id='cardNumbersInput' class="cardNumbersInput">
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label for="entourage" class="weui-label">随行人员</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" id="entourage" type="text" value="" placeholder="请选择常用联系人">
+            </div>
+        </div>
+        <div class="weui-cell" id='peopleEntourage' style="display: none;">
+            <div class="weui-cell__hd">
+                <label class="weui-label"></label>
+            </div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" id="entourageNames" readonly placeholder="请选择常用联系人" />
+            </div>
+        </div>
+        <div class=" weui-btn-area">
+            <a class="weui-btn weui-btn_primary" href="javascript:" id="showTooltips">发起访问</a>
+        </div>
 
-                <!-- 联系人列表-->
-                <div id="contactPerson"></div>
-                <!--<div class="weui-cells">
+        <div class="weui-tab">
+            <div class="weui-navbar">
+                <a class="weui-navbar__item weui-bar__item--on" href="#tab1">
+                    <img src="images/contacts.png" style="width: 8%;" /> 常用联系人
+                </a>
+                <a class="weui-navbar__item" href="#tab2" onclick="getRecord()">
+                    <img src="images/record.png" style="width: 8%;" /> 访问邀约记录
+                </a>
+            </div>
+            <div class="weui-tab__bd">
+                <div id="tab1" class="weui-tab__bd-item weui-tab__bd-item--active">
+                    <div class="weui-search-bar" id="searchBar">
+                        <form class="weui-search-bar__form" action="#">
+                            <div class="weui-search-bar__box">
+                                <i class="weui-icon-search"></i>
+                                <input type="search" class="weui-search-bar__input" id="searchInput" placeholder="搜索" required="">
+                                <a href="javascript:" class="weui-icon-clear" id="searchClear"></a>
+                            </div>
+                            <label class="weui-search-bar__label" id="searchText" style="transform-origin: 0px 0px 0px; opacity: 1; transform: scale(1, 1);">
+                                <i class="weui-icon-search"></i>
+                                <span>搜索</span>
+                            </label>
+                        </form>
+                        <a href="javascript:" class="weui-search-bar__cancel-btn" id="searchCancel" onclick="getContacts('');getEntourageContact('');">取消</a>
+                    </div>
+
+                    <!-- 联系人列表-->
+                    <div id="contactPerson"></div>
+                    <div id="contactEntouragePerson" style="display: none;"></div>
+
+                    <!--<div class="weui-cells">
                     <div class="weui-cell">
                       <div class="weui-cell__hd"><img src=""></div>
                         <div class="weui-cell__bd">
@@ -108,297 +139,442 @@
                     </div>
                 </div>
 -->
-            </div>
-            <div id="tab2" class="weui-tab__bd-item">
-                <div class="list-main-mian weui-form-preview infinite weui-pull-to-refresh" id="listwrap"
-                     style="height:100%; margin-top: 1px;overflow:auto;  z-index: 1">
-                    <!--    内容展示区-->
-                    <div class="weui-form-preview" id="recorddiv">
-                    </div>
-                    <div class="weui-loadmore" id="loading" style="padding-bottom:30px;height:20px;display: none">
-                        <i class="weui-loading"></i>
-                        <span class="weui-loadmore__tips">正在加载</span>
-                    </div>
-                    <div class="weui-loadmore weui-loadmore_line" id="over"
-                         style="padding-bottom:30px;height:20px;display: none">
-                        <span class="weui-loadmore__tips">没有更多数据了</span>
+                </div>
+                <div id="tab2" class="weui-tab__bd-item">
+                    <div class="list-main-mian weui-form-preview infinite weui-pull-to-refresh" id="listwrap" style="height:100%; margin-top: 1px;overflow:auto;  z-index: 1">
+                        <!--    内容展示区-->
+                        <div class="weui-form-preview" id="recorddiv">
+                        </div>
+                        <div class="weui-loadmore" id="loading" style="padding-bottom:30px;height:20px;display: none">
+                            <i class="weui-loading"></i>
+                            <span class="weui-loadmore__tips">正在加载</span>
+                        </div>
+                        <div class="weui-loadmore weui-loadmore_line" id="over" style="padding-bottom:30px;height:20px;display: none">
+                            <span class="weui-loadmore__tips">没有更多数据了</span>
+                        </div>
                     </div>
                 </div>
+
             </div>
-
         </div>
     </div>
-</div>
 
-<!--地址访问界面-->
-<div class="weui-cells weui-cells_form" id="addrvisit" style="display: none">
-    <div class="weui-cell">
-        <div class="weui-cell__hd"><label class="weui-label"><font size="4" color="red">* </font>企业/单位名称</label></div>
-        <div class="weui-cell__bd">
-            <input class="weui-input" id="companyName" type="text" placeholder="请输入单位名称" companyId="" level=""  onkeydown="autoFindCompanyName()">
-        </div>
-    </div>
-    <div style="display: none" id="addrshow">
+    <!--地址访问界面-->
+    <div class="weui-cells weui-cells_form" id="addrvisit" style="display: none">
         <div class="weui-cell">
-            <div class="weui-cell__hd"><label class="weui-label">企业/单位地址</label></div>
+            <div class="weui-cell__hd"><label class="weui-label">
+                    <font size="4" color="red">* </font>企业/单位名称
+                </label></div>
             <div class="weui-cell__bd">
-                <input class="weui-input" id="companyAddr" type="text" disabled>
+                <input class="weui-input" id="companyName" type="text" placeholder="请输入单位名称" companyId="" level="" onkeydown="autoFindCompanyName()">
+            </div>
+        </div>
+        <div style="display: none" id="addrshow">
+            <div class="weui-cell">
+                <div class="weui-cell__hd"><label class="weui-label">企业/单位地址</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" id="companyAddr" type="text" disabled>
+                </div>
+            </div>
+        </div>
+
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label class="weui-label">
+                    <font size="4" color="red">* </font>受访人姓名
+                </label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" id="visit2Name" type="text" placeholder="请输入受访人姓名" userId="" onBlur="findName()">
+            </div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label for="visit2Time" class="weui-label">
+                    <font size="4" color="red">* </font>开始时间
+                </label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" id="visit2Time" type="text" value="" placeholder="">
+            </div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label for="visit2Hour" class="weui-label">
+                    <font size="4" color="red">* </font>时长/小时
+                </label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" id="visit2Hour" type="text" value="" placeholder="请选择时长">
+            </div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label for="visit2Reason" class="weui-label">访问事由</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" id="visit2Reason" type="text" value="" placeholder="请选择访问事由">
+            </div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label for="cardNumbersAddr" class="weui-label">是否有车</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" id="cardNumbersAddr" type="text" value="" placeholder="请选择是否有车">
+            </div>
+        </div>
+        <div id='cardNumbersInputAddr' class="cardNumbersInput">
+
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label for="entourageAddr" class="weui-label">随行人员</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" id="entourageAddr" type="text" value="" placeholder="请选择常用联系人" />
+            </div>
+        </div>
+        <div class="weui-cell" id='peopleEntourageAddr' style="display: none;">
+            <div class="weui-cell__hd">
+                <label class="weui-label"></label>
+            </div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" id="entourageNamesAddr" type="text" readonly placeholder="请选择常用联系人" />
+            </div>
+        </div>
+        <div class=" weui-btn-area">
+            <a class="weui-btn weui-btn_primary" href="javascript:" id="visitByAddr">发起访问</a>
+        </div>
+
+        <div class="weui-tab">
+            <div class="weui-navbar">
+                <a class="weui-navbar__item weui-bar__item--on" href="#tab3">
+                    <img src="images/contacts.png" style="width: 8%;" /> 常用联系人
+                </a>
+                <a class="weui-navbar__item" href="#tab4" onclick="getRecord()">
+                    <img src="images/record.png" style="width: 8%;" /> 访问邀约记录
+                </a>
+            </div>
+            <div class="weui-tab__bd">
+                <div id="tab3" class="weui-tab__bd-item weui-tab__bd-item--active">
+                    <div class="weui-search-bar" id="searchBar">
+                        <form class="weui-search-bar__form" action="#">
+                            <div class="weui-search-bar__box">
+                                <i class="weui-icon-search"></i>
+                                <input type="search" class="weui-search-bar__input" id="searchInputAddr" placeholder="搜索" required="">
+                                <a href="javascript:" class="weui-icon-clear" id="searchClear"></a>
+                            </div>
+                            <label class="weui-search-bar__label" id="searchText" style="transform-origin: 0px 0px 0px; opacity: 1; transform: scale(1, 1);">
+                                <i class="weui-icon-search"></i>
+                                <span>搜索</span>
+                            </label>
+                        </form>
+                        <a href="javascript:" class="weui-search-bar__cancel-btn" id="searchCancelAddr" onclick="getEntourageContact('');">取消</a>
+                    </div>
+
+                    <!-- 联系人列表-->
+                    <div id="contactEntouragePersonAddr"></div>
+                </div>
+                <div id="tab4" class="weui-tab__bd-item">
+                    <div class="list-main-mian weui-form-preview infinite weui-pull-to-refresh" id="listwrap" style="height:100%; margin-top: 1px;overflow:auto;  z-index: 1">
+                        <!--    内容展示区-->
+                        <div class="weui-form-preview" id="recorddiv">
+                        </div>
+                        <div class="weui-loadmore" id="loading" style="padding-bottom:30px;height:20px;display: none">
+                            <i class="weui-loading"></i>
+                            <span class="weui-loadmore__tips">正在加载</span>
+                        </div>
+                        <div class="weui-loadmore weui-loadmore_line" id="over" style="padding-bottom:30px;height:20px;display: none">
+                            <span class="weui-loadmore__tips">没有更多数据了</span>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
 
-    <div class="weui-cell">
-        <div class="weui-cell__hd"><label class="weui-label"><font size="4" color="red">* </font>受访人姓名</label></div>
-        <div class="weui-cell__bd">
-            <input class="weui-input" id="visit2Name" type="text" placeholder="请输入受访人姓名" userId="" onBlur="findName()" >
-        </div>
-    </div>
-    <div class="weui-cell">
-        <div class="weui-cell__hd"><label for="visit2Time" class="weui-label"><font size="4" color="red">* </font>开始时间</label></div>
-        <div class="weui-cell__bd">
-            <input class="weui-input" id="visit2Time" type="text" value="" placeholder="">
-        </div>
-    </div>
-    <div class="weui-cell">
-        <div class="weui-cell__hd"><label for="visit2Hour" class="weui-label"><font size="4" color="red">* </font>时长/小时</label></div>
-        <div class="weui-cell__bd">
-            <input class="weui-input" id="visit2Hour" type="text" value="" placeholder="请选择时长">
-        </div>
-    </div>
-    <div class="weui-cell">
-        <div class="weui-cell__hd"><label for="visit2Reason" class="weui-label">访问事由</label></div>
-        <div class="weui-cell__bd">
-            <input class="weui-input" id="visit2Reason" type="text" value="" placeholder="请选择访问事由">
-        </div>
-    </div>
-    <div class="weui-btn-area">
-        <a class="weui-btn weui-btn_primary" href="javascript:" id="visitByAddr">发起访问</a>
-    </div>
-</div>
+    <script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery-weui/1.2.1/js/jquery-weui.min.js"></script>
+    <script src="https://cdn.bootcss.com/fastclick/1.0.6/fastclick.js"></script>
+    <script src="js/jquery-ui.js"></script>
+    <script src="js/myUtil.js"></script>
+    <script src="js/visit.js"></script>
+    <script src="js/layui/layui.js"></script>
 
-<script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
-<script src="https://cdn.bootcss.com/jquery-weui/1.2.1/js/jquery-weui.min.js"></script>
-<script src="https://cdn.bootcss.com/fastclick/1.0.6/fastclick.js"></script>
-<script src="js/jquery-ui.js"></script>
-<script src="js/myUtil.js"></script>
-<script src="js/visit.js"></script>
-<!--<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>-->
+    <script src="js/slide.js"></script>
 
+    <script>
+        $(function() {
+            $("#visit2Time").val(formatDateTime(0, 0, 0));
+            findCompanyName();
+            visit1();
+        });
 
-<script>
+        function visit1() {
+            document.getElementById("pvisit").style.display = 'block';
+            document.getElementById("visit1").style.background = '#EFEFF4';
+            document.getElementById("visit2").style.background = '#f7f7f7';
+            document.getElementById("addrvisit").style.display = 'none';
+            $("#visit1").css("color", "green");
+            $("#visit2").css("color", "black");
+            initState(0)
 
-    $(function () {
-        $("#visit2Time").val(formatDateTime(0, 0, 0));
-        findCompanyName();
-    });
-    function visit1() {
-        document.getElementById("pvisit").style.display = 'block';
-        document.getElementById("visit1").style.background = '#EFEFF4';
-        document.getElementById("visit2").style.background = '#f7f7f7';
-        document.getElementById("addrvisit").style.display = 'none';
-        $("#visit1").css("color","green");
-        $("#visit2").css("color","black");
-    }
-    function visit2() {
-        document.getElementById('pvisit').style.display = 'none';
-        document.getElementById("visit1").style.background = '#f7f7f7';
-        document.getElementById("visit2").style.background = '#EFEFF4';
-        document.getElementById('addrvisit').style.display = 'block';
-        $("#visit2").css("color","green");
-        $("#visit1").css("color","black");
-    }
-    $("#visit2Reason").picker({
-        title: "请选择拜访事由",
-        cols: [
-            {
+        }
+
+        function visit2() {
+            document.getElementById('pvisit').style.display = 'none';
+            document.getElementById("visit1").style.background = '#f7f7f7';
+            document.getElementById("visit2").style.background = '#EFEFF4';
+            document.getElementById('addrvisit').style.display = 'block';
+            $("#visit2").css("color", "green");
+            $("#visit1").css("color", "black");
+            initState(1)
+        }
+        $('#companyName').click(function() {
+            $('#keycontent').hide()
+        })
+        $('#visit2Name').click(function() {
+            $('#keycontent').hide()
+        })
+        $("#visit2Reason").click(function() {
+            $('#keycontent').hide()
+        })
+        $("#visit2Reason").picker({
+            title: "请选择拜访事由",
+            cols: [{
                 textAlign: 'center',
                 values: ['商务拜访', '配送服务', '面试', '找人', '其他']
-            }
-        ],
-        onChange: function (p, v, dv) {
-            console.log(p, v, dv);
-        },
-        onClose: function (p, v, d) {
-            console.log("close");
-        }
-    });
-    $("#visit2Hour").picker({
-        title: "请选择拜访时长",
-        cols: [
-            {
-                textAlign: 'center',
-                values: ['0.5', '1', '1.5', '2', '2.5', '3', '3.5', '4', '4.5', '5', '5.5', '6']
-            }
-        ],
-        onChange: function (p, v, dv) {
-            console.log(p, v, dv);
-        },
-        onClose: function (p, v, d) {
-            console.log("close");
-        }
-    });
-    $("#visit2Time").datetimePicker();
-    let last;
-    /*地址输入出现下拉选择*/
-    /*function autoFindCompanyAddr() {
-        last = (new Date()).getTime();
-        let time=last;
-        //得到输入的值
-        setTimeout(function(){
-            console.log(last == time);
-            if (last == time) {
-                findCompanyAdd();
-            }
-        },1000);
-    }*/
-    /*function findCompanyAdd(){
-        console.log($("#companyAddr").val());
-        let addr = [];
-        $.ajax({
-            type: 'POST',
-            contentType: "application/x-www-form-urlencoded",
-            url: "company/findCompanyAddr",
-            data: {
-                addr: $("#companyAddr").val(),
+            }],
+            onChange: function(p, v, dv) {
+                console.log(p, v, dv);
             },
-            success: function (result) {
-                console.log(result)
-                if(result.data.length>0){
-                    for(var i in result.data){
-                        var c = {};
-                        c.value = result.data[i].addr;
-                        c.label = result.data[i].addr
-                        c.companyId = result.data[i].id
-                        c.companyName = result.data[i].companyname
-                        addr.push(c)
-                    }
-                }
+            onClose: function(p, v, d) {
+                console.log("close");
+                $('#keycontent').hide()
             }
         });
-        $("#companyAddr").autocomplete({
-            source:addr,
-            select :function (event,ui) {
-                console.log(ui.item);
-                /!*  $("#companyName").val(ui.item.companyName);
-                  $("#companyName").attr("companyId",ui.item.companyId);*!/
-            }
+        $("#visit2Hour").click(function() {
+            $('#keycontent').hide()
         })
-    }*/
-    /*公司名输入出现下拉选择*/
-    function autoFindCompanyName() {
-        last = (new Date()).getTime();
-        let time=last;
-        //得到输入的值
-        setTimeout(function(){
-            console.log(last == time);
-            if (last == time) {
-                findCompanyName();
+        $("#visit2Hour").picker({
+            title: "请选择拜访时长",
+            cols: [{
+                textAlign: 'center',
+                values: ['0.5', '1', '1.5', '2', '2.5', '3', '3.5', '4', '4.5', '5', '5.5', '6']
+            }],
+            onChange: function(p, v, dv) {
+                console.log(p, v, dv);
+            },
+            onClose: function(p, v, d) {
+                console.log("close");
+                $('#keycontent').hide()
             }
-        },1000);
-    }
+        });
+        $("#visit2Time").click(function() {
+            $('#keycontent').hide()
+        });
+        $("#visit2Time").datetimePicker();
+        let last;
+        /*公司名输入出现下拉选择*/
+        function autoFindCompanyName() {
+            last = (new Date()).getTime();
+            let time = last;
+            //得到输入的值
+            setTimeout(function() {
+                console.log(last == time);
+                if (last == time) {
+                    findCompanyName();
+                }
+            }, 1000);
+        }
 
-    function findCompanyName(){
-        let companyName = [];
-        if ($("#companyName").val()!=''&&$("#companyName").val()!=null&&$("#companyName").val()!='undefined') {
+        function findCompanyName() {
+            let companyName = [];
+            if ($("#companyName").val() != '' && $("#companyName").val() != null && $("#companyName").val() != 'undefined') {
+                $.ajax({
+                    type: 'POST',
+                    contentType: "application/x-www-form-urlencoded",
+                    url: "company/findCompany",
+                    data: {
+                        companyName: $("#companyName").val(),
+                    },
+                    success: function(result) {
+                        console.log(result);
+                        if (result.data.length > 0) {
+                            for (var i in result.data) {
+                                var c = {};
+                                c.value = result.data[i].companyname;
+                                c.label = result.data[i].companyname;
+                                c.companyAddr = result.data[i].addr;
+                                c.companyId = result.data[i].id;
+                                c.level = result.data[i].level;
+                                companyName.push(c)
+                            }
+                        }
+                    }
+
+                });
+                $("#companyName").autocomplete({
+                    source: companyName,
+                    select: function(event, ui) {
+                        console.log(ui.item);
+                        $("#companyAddr").val(ui.item.companyAddr);
+                        $("#companyName").attr("companyId", ui.item.companyId);
+                        $("#companyName").attr("level", ui.item.level);
+                        document.getElementById('addrshow').style.display = 'block';
+                        console.log("companyId;" + ui.item.value)
+                    }
+                })
+            }
+        }
+
+        /*输入完人名查找是否有该用户*/
+        function findName() {
             $.ajax({
                 type: 'POST',
                 contentType: "application/x-www-form-urlencoded",
-                url: "company/findCompany",
+                url: "user/nameCompany",
                 data: {
-                    companyName: $("#companyName").val(),
+                    companyId: $("#companyName").attr("companyId"),
+                    name: $("#visit2Name").val()
                 },
-                success: function (result) {
+                success: function(result) {
                     console.log(result);
-                    if (result.data.length > 0) {
-                        for (var i in result.data) {
-                            var c = {};
-                            c.value = result.data[i].companyname;
-                            c.label = result.data[i].companyname;
-                            c.companyAddr = result.data[i].addr;
-                            c.companyId = result.data[i].id;
-                            c.level=result.data[i].level;
-                            companyName.push(c)
-                        }
+                    if (result.code == 200) {
+                        $("#visit2Name").attr("userId", result.data.id);
+
+                    } else {
+                        $("#visit2Name").attr("userId", "");
+                        $.toptip(result.message);
                     }
                 }
 
             });
-            $("#companyName").autocomplete({
-                source: companyName,
-                select: function (event, ui) {
-                    console.log(ui.item);
-                    $("#companyAddr").val(ui.item.companyAddr);
-                    $("#companyName").attr("companyId", ui.item.companyId);
-                    $("#companyName").attr("level",ui.item.level);
-                    document.getElementById('addrshow').style.display = 'block';
-                    console.log("companyId;" + ui.item.value)
-                }
-            })
         }
-    }
+        //发起地址访问
+        $("#visitByAddr").click(function() {
+            $('#keycontent').hide()
+            if (getCookie("isAuth") != "T" && getCookie("isAuth") != "H") {
+                $.toptip('请先进行信息填写！');
+                window.location.href = authUrl;
+            } else {
+                let visitorName = $("#visit2Name").val();
+                let visitorId = $("#visit2Name").attr("userId");
+                let reason = $("#visit2Reason").val();
+                let startDate = $("#visit2Time").val();
+                let hour = $("#visit2Hour").val();
 
-    /*输入完人名查找是否有该用户*/
-    function findName() {
-        $.ajax({
-            type: 'POST',
-            contentType: "application/x-www-form-urlencoded",
-            url: "user/nameCompany",
-            data: {
-               companyId:$("#companyName").attr("companyId"),
-                name:$("#visit2Name").val()
-            },
-            success: function (result) {
-                console.log(result);
-                if(result.code == 200){
-                    $("#visit2Name").attr("userId",result.data.id);
+                var _newEng = $("#cardNumbersInput").data("newEng");
+                var _entourageNames = $("#entourageNames").val();
+                var _cardNumber = $("#cardNumbersInput").data("cardNumbers");
 
-                }else{
-                    $("#visit2Name").attr("userId","");
-                    $.toptip(result.message);
+                var entourageNamesIds = []
+                var _entourageNamesIds = '';
+                entourageNames.forEach((item) => {
+                    entourageNamesIds.push(item.visitorid);
+                })
+                if (entourageNamesIds.length) {
+                    _entourageNamesIds = entourageNamesIds.join(',');
+                }
+
+                if (isEmpty(visitorName)) {
+                    $.toptip("请输入受访人姓名");
+                    return;
+                } else if (isEmpty(startDate)) {
+                    $.toptip("请输入访问开始时间");
+                    return;
+                } else if (isEmpty(hour)) {
+                    $.toptip("请输入访问时长");
+                    return;
+                } else if (isEmpty(visitorId)) {
+                    $.toptip("受访人不存在，请重新输入访问信息");
+                    return;
+                } else if (hasCarAddr && isEmpty(_cardNumber)) { //新能源车牌号
+                    $.toptip("请输入车牌号");
+                    return;
+                } else if (hasCarAddr && _cardNumber.length < 7) {
+                    $.toptip("车牌号格式不对");
+                    return;
+                } else if (hasEntourageAddr && isEmpty(_entourageNames)) {
+                    $.toptip("请选择随行人员");
+                    return;
+                } else {
+                    // 查询是否有实人认证
+                    if ($("#companyName").attr("level") == 0 && getCookie("isAuth") != "T") {
+                        window.location.href = verifyUrl;
+                    } else {
+                        visitRequest(visitorId, reason, startDate, hour, _cardNumber, _entourageNamesIds);
+                    }
+                    // visitRequest(visitorId, reason, startDate, hour, _cardNumber, _entourageNamesIds);
+
                 }
             }
-
         });
-    }
-    //发起地址访问
-    $("#visitByAddr").click(function () {
-        if (getCookie("isAuth") != "T"&&getCookie("isAuth") != "H") {
-            $.toptip('请先进行信息填写！');
-            window.location.href = authUrl;
-        } else {
-            let visitorName = $("#visit2Name").val();
-            let visitorId = $("#visit2Name").attr("userId");
-            let reason = $("#visit2Reason").val();
-            let startDate = $("#visit2Time").val();
-            let hour = $("#visit2Hour").val();
-            console.log(visitorId);
-            console.log(reason);
-            console.log(startDate);
-            console.log(hour);
-            if(isEmpty(visitorName)){
-                $.toptip("请输入受访人姓名");
-                return;
-            }else if(isEmpty(startDate)){
-                $.toptip("请输入访问开始时间");
-                return;
-            }else if(isEmpty(hour)){
-                $.toptip("请输入访问时长");
-                return;
-            }else if(isEmpty(visitorId)){
-                $.toptip("受访人不存在，请重新输入访问信息");
-                return;
-            }else{
-                //查询是否有实人认证
-                if ($("#companyName").attr("level")==0&&getCookie("isAuth")!="T"){
-                    window.location.href = verifyUrl;
-                }else{
-                    visitRequest (visitorId,reason,startDate,hour);
+
+        $("#cardNumbersAddr").picker({
+            title: "请选择是否有车",
+            cols: [{
+                textAlign: 'center',
+                values: ['是', '否']
+            }],
+            onChange: function(p, v, dv) {
+                $('#peopleEntourageAddr').hide()
+                let _ul_input_spans = $('#cardNumbersInputAddr .ul_input_spans').find('span');
+                _ul_input_spans.each(function() {
+                    if ($(this).text() !== '新能源') {
+                        $(this).text('');
+                    }
+                })
+                if (Array.isArray(v)) {
+                    if (v[0] === '是') {
+                        $('#cardNumbersInputAddr').show()
+                        hasCarAddr = true;
+                    } else {
+                        $('#cardNumbersInputAddr').hide()
+                        hasCarAddr = false;
+                    }
                 }
+            },
+            onClose: function(p, v, d) {
+                $('#peopleEntourageAddr').hide();
+                console.log("close");
             }
-        }
-    });
+        });
+        $("#cardNumbersAddr").click(function() {
+            $('#cardNumbersInputAddr').show()
+            $('#keycontent').hide()
+        });
 
+        $("#entourageAddr").click(function() {
+            $('#peopleEntourageAddr').show();
+            $('keycontent').hide();
+            entourageNamesAddr = [];
+            $("#contactEntouragePersonAddr").find('input').each(function() {
+                $(this).prop('checked', false);
+            })
+            $('#entourageNamesAddr').val('');
+            if (hasEntourageAddr) {
+                $('#contactEntouragePersonAddr').show()
+            }
+        })
+        $("#entourageAddr").picker({
+            title: "请选择随行人员",
+            cols: [{
+                textAlign: 'center',
+                values: ['是', '否']
+            }],
+            onChange: function(p, v, dv) {
+                console.log(dv);
+                $('#keycontent').hide()
+                if (Array.isArray(v)) {
+                    if (v[0] === '是') {
+                        $('#peopleEntourageAddr').show()
+                        $('#contactEntouragePersonAddr').show()
+                        hasEntourageAddr = true
+                    } else {
+                        $('#peopleEntourageAddr').hide()
+                        $('#contactEntouragePersonAddr').hide()
+                        hasEntourageAddr = false
+                    }
+                }
+            },
+            onClose: function(p, v, d) {
+                console.log("close");
+                $('#keycontent').hide()
 
-</script>
+            }
+        });
+    </script>
 </body>
+
 </html>

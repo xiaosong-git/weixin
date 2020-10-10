@@ -7,7 +7,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/visitor?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&autoReconnect=true&serverTimezone=UTC
     username: root
-    password: 1234
+    password: root
   redis:
     password: cwf #密码
     port: 6379

@@ -342,6 +342,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
                         user.setIdhandleimgurl(idHandleImgUrl);
                         user.setAuthdate(DateUtil.getCurDate());
                         user.setAuthtime(DateUtil.getCurTime());
+
                         String idNoMW = DESUtil.encode(workKey, idNO);
                         user.setIdno(idNoMW);
                         int update = update(user);

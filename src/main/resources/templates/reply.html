@@ -1,338 +1,354 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>记录详情</title>
-    <meta charset="utf-8">
-    <meta content="IE=edge" http-equiv="X-UA-Compatible">
-    <meta content="width=device-width, initial-scale=1, user-scalable=no" name="viewport">
-    <link href="https://cdn.bootcss.com/weui/1.1.3/style/weui.min.css" rel="stylesheet">
-    <link href="https://cdn.bootcss.com/jquery-weui/1.2.1/css/jquery-weui.min.css" rel="stylesheet">
+	<head>
+		<title>记录详情</title>
+		<meta charset="utf-8">
+		<meta content="IE=edge" http-equiv="X-UA-Compatible">
+		<meta content="width=device-width, initial-scale=1, user-scalable=no" name="viewport">
+		<link href="https://cdn.bootcss.com/weui/1.1.3/style/weui.min.css" rel="stylesheet">
+		<link href="https://cdn.bootcss.com/jquery-weui/1.2.1/css/jquery-weui.min.css" rel="stylesheet">
 
-    <style type="text/css">
-        @import url("css/comon.css");
-    </style>
-    <title>
-        <h3 class="demos-title">访问邀约</h3>
-    </title>
+		<style type="text/css">
+			@import url("css/comon.css");
+		</style>
+		<title>
+			<h3 class="demos-title">访问邀约</h3>
+		</title>
 
-</head>
+	</head>
 
-<body ontouchstart>
-<div id="dataDetail" style="display: none"></div>
-<div class="weui-form-preview"  style="margin-left: 3%;margin-right: 3%;margin-top: 3%;background-color: white;">
-    <div class="weui-form-preview__hd" style="padding-top: 5%">
-        <label class="weui-form-preview__label"><font id="visitType1"></font></label>
-        <em class="weui-form-preview__value"><font size="3" id="userName"></font></em>
-        <label class="weui-form-preview__label"><font id="visitType2"></font></label>
-        <em class="weui-form-preview__value"><font size="3" id="visitorName"></font></em>
-    </div>
-    <div class="weui-form-preview__bd">
-        <div class="weui-form-preview__item">
-            <label class="weui-form-preview__label">申请时间</label>
-            <span class="weui-form-preview__value" id="applyDate"></span>
-        </div>
-        <div class="weui-form-preview__item" style="padding-top: 3px">
-            <label class="weui-form-preview__label">申请状态</label>
-            <span class="weui-form-preview__value"><font id="vstatus"></font></span>
-        </div>
-        <div class="weui-form-preview__item" id="appliedDateShow" style="padding-top: 3px">
-            <label class="weui-form-preview__label">受理时间</label>
-            <span class="weui-form-preview__value" id="appliedDate"></span>
-        </div>
-        <div class="weui-form-preview__item" style="padding-top: 3px">
-            <label class="weui-form-preview__label">访问时间</label>
-            <span class="weui-form-preview__value" id="visitDate"></span>
-        </div>
-        <div class="weui-form-preview__item" style="padding-top: 3px">
-            <label class="weui-form-preview__label" >事由</label>
-            <span class="weui-form-preview__value" id="reason"></span>
-        </div>
-        <div class="weui-form-preview__item" id="appliedAddrShow" style="padding-top: 3px">
-            <label class="weui-form-preview__label">访问地址</label>
-            <span class="weui-form-preview__value" id="appliedAddr"></span>
-        </div>
-        <div class="weui-form-preview__item" id="applyAddrShow" style="padding-top: 3px;display: none">
-            <label class="weui-form-preview__label"><font color="red" size="4">*</font>地址选择</label>
-            <span class="weui-form-preview__value"><input id='address' placeholder="请选择会面地址" style="width: 95%;border:none;font-size: 16px;margin-top: 10px;text-align:right;"/></span>
-        </div>
-    </div>
-    <div style="padding-top: 5%"></div>
-    <div class="weui-form-preview__ft">
-        <a class="weui-form-preview__btn weui-form-preview__btn_default" href="javascript:" id="refuse" onclick="verify('applyFail')" style="display: none"><font color="red">拒绝</font></a>
-        <button type="submit" class="weui-form-preview__btn weui-form-preview__btn_primary" href="javascript:" id="agree" onclick="verify('applySuccess')" style="display: none">同意</button>
-    </div>
-</div>
+	<body ontouchstart>
+		<div id="dataDetail" style="display: none"></div>
+		<div class="weui-form-preview" style="margin-left: 3%;margin-right: 3%;margin-top: 3%;background-color: white;">
+			<div class="weui-form-preview__hd" style="padding-top: 5%">
+				<label class="weui-form-preview__label">
+					<font id="visitType1"></font>
+				</label>
+				<em class="weui-form-preview__value">
+					<font size="3" id="userName"></font>
+				</em>
+				<label class="weui-form-preview__label">
+					<font id="visitType2"></font>
+				</label>
+				<em class="weui-form-preview__value">
+					<font size="3" id="visitorName"></font>
+				</em>
+			</div>
+			<div class="weui-form-preview__bd">
+				<div class="weui-form-preview__item">
+					<label class="weui-form-preview__label">申请时间</label>
+					<span class="weui-form-preview__value" id="applyDate"></span>
+				</div>
+				<div class="weui-form-preview__item" style="padding-top: 3px">
+					<label class="weui-form-preview__label">申请状态</label>
+					<span class="weui-form-preview__value">
+						<font id="vstatus"></font>
+					</span>
+				</div>
+				<div class="weui-form-preview__item" id="appliedDateShow" style="padding-top: 3px">
+					<label class="weui-form-preview__label">受理时间</label>
+					<span class="weui-form-preview__value" id="appliedDate"></span>
+				</div>
+				<div class="weui-form-preview__item" style="padding-top: 3px">
+					<label class="weui-form-preview__label">访问时间</label>
+					<span class="weui-form-preview__value" id="visitDate"></span>
+				</div>
+				<div class="weui-form-preview__item" style="padding-top: 3px">
+					<label class="weui-form-preview__label">事由</label>
+					<span class="weui-form-preview__value" id="reason"></span>
+				</div>
+				<div class="weui-form-preview__item" id="appliedAddrShow" style="padding-top: 3px">
+					<label class="weui-form-preview__label">访问地址</label>
+					<span class="weui-form-preview__value" id="appliedAddr"></span>
+				</div>
+				<div class="weui-form-preview__item" id="applyAddrShow" style="padding-top: 3px;display: none">
+					<label class="weui-form-preview__label">
+						<font color="red" size="4">*</font>地址选择
+					</label>
+					<span class="weui-form-preview__value"><input id='address' placeholder="请选择会面地址" style="width: 95%;border:none;font-size: 16px;margin-top: 10px;text-align:right;" /></span>
+				</div>
+			</div>
+			<div style="padding-top: 5%"></div>
+			<div class="weui-form-preview__ft">
+				<a class="weui-form-preview__btn weui-form-preview__btn_default" href="javascript:" id="refuse" onclick="verify('applyFail')"
+				 style="display: none">
+					<font color="red">拒绝</font>
+				</a>
+				<button type="submit" class="weui-form-preview__btn weui-form-preview__btn_primary" href="javascript:" id="agree"
+				 onclick="verify('applySuccess')" style="display: none">同意</button>
+			</div>
+		</div>
 
-<script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
-<script src="https://cdn.bootcss.com/jquery-weui/1.2.1/js/jquery-weui.min.js"></script>
-<script src="https://cdn.bootcss.com/fastclick/1.0.6/fastclick.js"></script>
-<script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
-<script src="js/myUtil.js"></script>
-<script>
-    let recordId;
-    let companyId = -1;
-    let otherId;
-    let realName;
-    let addr;
-    let myId;
-    let index;
-    $(function () {
-        if (isLogin("reply")) {
-            return;
-        }
-        $.showLoading("数据加载中");
-         index = getQueryString("index");
-         recordId = getQueryString("recordId");
-         //发起人ID
-         otherId = getQueryString("otherId");
-         //被访问（邀约）人ID
-         myId = getQueryString("myId");
-         console.log("发起人ID:"+otherId);
-         console.log("被访人ID:"+myId);
-         getOtherUser();
-         setTimeout(function () { getRecord();}, 1000);
-    });
+		<script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+		<script src="https://cdn.bootcss.com/jquery-weui/1.2.1/js/jquery-weui.min.js"></script>
+		<script src="https://cdn.bootcss.com/fastclick/1.0.6/fastclick.js"></script>
+		<script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+		<script src="js/myUtil.js"></script>
+		<script>
+			let recordId;
+			let companyId = -1;
+			let otherId;
+			let realName;
+			let addr;
+			let myId;
+			let index;
+			$(function() {
+				if (isLogin("reply")) {
+					return;
+				}
+				$.showLoading("数据加载中");
+				index = getQueryString("index");
+				recordId = getQueryString("recordId");
+				//发起人ID
+				otherId = getQueryString("otherId");
+				//被访问（邀约）人ID
+				myId = getQueryString("myId");
+				console.log("发起人ID:" + otherId);
+				console.log("被访人ID:" + myId);
+				getOtherUser();
+				setTimeout(function() {
+					getRecord();
+				}, 1000);
+			});
 
-    function verify(status) {
-        if ((companyId == -1 && status == "applySuccess")||(isEmpty(companyId) && status == "applySuccess")) {
-            $.toptip("请选择会面地址");
-            return;
-        } else {
-            $.ajax({
-                type: 'POST',
-                contentType: "application/x-www-form-urlencoded",
-                url: "visit/record/confireRecord",
-                data: {
-                    recordId: recordId,
-                    cstatus: status,
-                    companyId: companyId
-                },
-                success: function (result) {
-                    console.log(result);
-                    $.toptip("审核成功", "success");
-                    $.toast("审核成功，页面即将关闭");
-                    //点击确认后的回调函数
-                    setTimeout(function () {
-                        quit();
-                    }, 1500);
-                },
-                //请求失败，包含具体的错误信息
-                error: function (e) {
-                    $.hideLoading();
-                    $.toptip(e.message);
-                }
-            });
-        }
+			function verify(status) {
+				if ((companyId == -1 && status == "applySuccess") || (isEmpty(companyId) && status == "applySuccess")) {
+					$.toptip("请选择会面地址");
+					return;
+				} else {
+					$.ajax({
+						type: 'POST',
+						contentType: "application/x-www-form-urlencoded",
+						url: "visit/record/confireRecord",
+						data: {
+							recordId: recordId,
+							cstatus: status,
+							companyId: companyId
+						},
+						success: function(result) {
+							console.log(result);
+							$.toptip("审核成功", "success");
+							$.toast("审核成功，页面即将关闭");
+							//点击确认后的回调函数
+							setTimeout(function() {
+								quit();
+							}, 1500);
+						},
+						//请求失败，包含具体的错误信息
+						error: function(e) {
+							$.hideLoading();
+							$.toptip(e.message);
+						}
+					});
+				}
 
-    }
+			}
 
-    //公司获取
-    function getCompany() {
-        $.ajax({
-            type: 'POST',
-            contentType: "application/x-www-form-urlencoded",
-            url: "/pybl/company/findByUserId",
-            data: {
-                userId: myId
-            },
-            success: function (result) {
-                console.log(result)
-                let companys = [];
-                for (let i in result.data) {
-                    // 默认地址
-                    var b = result.data[i].id == result.data[i].users[0].companyId;
-                    console.log(result.data[i].id + "_" + result.data[i].users[0].companyId);
-                    if(b){
-                        $("#address").val(result.data[i].companyname +"("+result.data[i].addr+")");
-                    }
-                    companys.push(result.data[i].companyname +"("+result.data[i].addr+")")
-                }
-                console.log("==========");
-                console.log(companys);
-                $("#address").picker({
-                    title: "请选择地址",
-                    cols: [
-                        {
-                            textAlign: 'center',
-                            values: companys,
-                        }
-                    ],
-                    onChange: function (p, v, dv) {
-                        console.log();
-                    },
-                    onClose: function (p, v, d) {
-                        let companyName = $("#address").val()//店铺名赋值
+			//公司获取
+			function getCompany() {
+				$.ajax({
+					type: 'POST',
+					contentType: "application/x-www-form-urlencoded",
+					url: "/pybl/company/findByUserId",
+					data: {
+						userId: myId
+					},
+					success: function(result) {
+						console.log(result)
+						let companys = [];
+						for (let i in result.data) {
+							// 默认地址
+							var b = result.data[i].id == result.data[i].users[0].companyId;
+							console.log(result.data[i].id + "_" + result.data[i].users[0].companyId);
+							if (b) {
+								$("#address").val(result.data[i].companyname + "(" + result.data[i].addr + ")");
+							}
+							companys.push(result.data[i].companyname + "(" + result.data[i].addr + ")")
+						}
+						console.log("==========");
+						console.log(companys);
+						$("#address").picker({
+							title: "请选择地址",
+							cols: [{
+								textAlign: 'center',
+								values: companys,
+							}],
+							onChange: function(p, v, dv) {
+								console.log();
+							},
+							onClose: function(p, v, d) {
+								let companyName = $("#address").val() //店铺名赋值
 
-                        for (let i in result.data) {
-                            if ((result.data[i].companyname+"("+result.data[i].addr+")") == companyName) {
-                                companyId = result.data[i].id;
-                            }
-                        }
-                    }
-                });
-            }
-        });
-    }
+								for (let i in result.data) {
+									if ((result.data[i].companyname + "(" + result.data[i].addr + ")") == companyName) {
+										companyId = result.data[i].id;
+									}
+								}
+							}
+						});
+					}
+				});
+			}
 
-    //退出
-    function quit() {
-        wx.closeWindow();
-    }
+			//退出
+			function quit() {
+				wx.closeWindow();
+			}
 
-    function getRecord() {
-        $.ajax({
-            type: 'POST',
-            contentType: "application/x-www-form-urlencoded",
-            url: "visit/record/getRecord",
-            data: {
-                recordId: recordId
-            },
-            success: function (result) {
-                if (result.code == 200) {
-                    let data = result.data;
-                    console.log(data)
-                    if (data.userId != myId) {
-                        otherId = data.userId;
-                    } else {
-                        otherId = data.visitorId;
-                    }
-                    companyId = data.companyId;
-                    addr = data.addr;
+			function getRecord() {
+				$.ajax({
+					type: 'POST',
+					contentType: "application/x-www-form-urlencoded",
+					url: "visit/record/getRecord",
+					data: {
+						recordId: recordId
+					},
+					success: function(result) {
+						if (result.code == 200) {
+							let data = result.data;
+							console.log(data)
+							if (data.userId != myId) {
+								otherId = data.userId;
+							} else {
+								otherId = data.visitorId;
+							}
+							companyId = data.companyId;
+							addr = data.addr;
 
 
-                    content(data);
-                }
-            }
-        });
-    }
-    //获取对方名字
-    function getOtherUser() {
-        let userId;
-        //index=reply 审核状态，useId为对方Id;
-        if(index =="reply"){
-            userId = otherId;
-        }else{
-            userId = myId;
-        }
+							content(data);
+						}
+					}
+				});
+			}
+			//获取对方名字
+			function getOtherUser() {
+				let userId;
+				//index=reply 审核状态，useId为对方Id;
+				if (index == "reply") {
+					userId = otherId;
+				} else {
+					userId = myId;
+				}
 
-        $.ajax({
-            type: 'POST',
-            contentType: "application/x-www-form-urlencoded",
-            url: "user/getUserById",
-            data: {
-                userId: userId
-            },
-            success: function (result) {
-                if (result.code == 200) {
-                    realName = result.data.realname;
-                }
-            }
-        });
-    }
+				$.ajax({
+					type: 'POST',
+					contentType: "application/x-www-form-urlencoded",
+					url: "user/getUserById",
+					data: {
+						userId: userId
+					},
+					success: function(result) {
+						if (result.code == 200) {
+							realName = result.data.realname;
+						}
+					}
+				});
+			}
 
-    function content(data) {
-        let userName = "";
-        let visitorName = "";
+			function content(data) {
+				let userName = "";
+				let visitorName = "";
 
-        if(index == "reply"){
-            userName = realName;
-            visitorName = "本人";
-        }else{
-            userName = "本人";
-            visitorName = realName;
-        }
-        document.getElementById('userName').innerText = userName;
-        document.getElementById('visitorName').innerText = visitorName;
-        let recordType = data.recordType;
-        if(recordType == "1"){
-            document.getElementById('visitType1').innerText = "访问人";
-            document.getElementById('visitType2').innerText = "被访人";
-        }else{
-            document.getElementById('visitType1').innerText = "邀约人";
-            document.getElementById('visitType2').innerText = "被邀人";
-        }
-        let applyDate = data.visitDate + " " + data.visitTime;
-        document.getElementById('applyDate').innerText = applyDate;
-        let isValue = data.isValue;
-        let cstatus = data.cstatus;
-        //show=0：已审核或者过期，show=1：未审核
-        let show = 0;
-        if (isValue == "T") {//是否未过期
-            if (cstatus == "applySuccess") {
-                show = 0;
-                document.getElementById('vstatus').innerText = "通过";
-                document.getElementById("vstatus").style.color = '#006400';
-                if (recordType==1&&data.level==0&&getCookie("isAuth")!="T"&&index == "reply"){
-                    //todo 跳转实人界面
-                    window.location.href = verifyUrl;
-                // alert("访问跳转实人界面");
-                }
-            } else if (cstatus == "applyFail") {
-                show = 0;
-                document.getElementById('vstatus').innerText = "拒绝";
-                document.getElementById("vstatus").style.color = '#8b0000';
-            } else if (cstatus == "applyConfirm") {
-                show = 1;
-                document.getElementById("vstatus").style.color = 'blue';
-                document.getElementById('vstatus').innerText = "待审核";
-                console.log(recordType==2&&data.level==0&&getCookie("isAuth")!="T"&&index == "reply");
-                if (recordType==2&&data.level==0&&getCookie("isAuth")!="T"&&index == "reply"){
-                    //todo 跳转实人界面
-                    window.location.href = verifyUrl;
-                    // alert("邀约跳转实人界面");
-                }
-            }
-        }else{
-            show = 0;
-            document.getElementById("vstatus").style.color = '#696969';
-            document.getElementById('vstatus').innerText = "过期";
-        }
-        let appliedDate = data.replyDate + " " + data.replyTime;
-        if(appliedDate !=null){
-           document.getElementById("appliedDate").innerText = appliedDate;
-        }
+				if (index == "reply") {
+					userName = realName;
+					// visitorName = "本人";
+					visitorName = getCookie("myName")
+				} else {
+					// userName = "本人";
+					userName = getCookie("myName")
+					visitorName = realName;
+				}
+				document.getElementById('userName').innerText = userName;
+				document.getElementById('visitorName').innerText = visitorName;
+				let recordType = data.recordType;
+				if (recordType == "1") {
+					document.getElementById('visitType1').innerText = "访问人";
+					document.getElementById('visitType2').innerText = "被访人";
+				} else {
+					document.getElementById('visitType1').innerText = "邀约人";
+					document.getElementById('visitType2').innerText = "被邀人";
+				}
+				let applyDate = data.visitDate + " " + data.visitTime;
+				document.getElementById('applyDate').innerText = applyDate;
+				let isValue = data.isValue;
+				let cstatus = data.cstatus;
+				//show=0：已审核或者过期，show=1：未审核
+				let show = 0;
+				if (isValue == "T") { //是否未过期
+					if (cstatus == "applySuccess") {
+						show = 0;
+						document.getElementById('vstatus').innerText = "通过";
+						document.getElementById("vstatus").style.color = '#006400';
+						if (recordType == 1 && data.level == 0 && getCookie("isAuth") != "T" && index == "reply") {
+							//todo 跳转实人界面
+							window.location.href = verifyUrl;
+							// alert("访问跳转实人界面");
+						}
+					} else if (cstatus == "applyFail") {
+						show = 0;
+						document.getElementById('vstatus').innerText = "拒绝";
+						document.getElementById("vstatus").style.color = '#8b0000';
+					} else if (cstatus == "applyConfirm") {
+						show = 1;
+						document.getElementById("vstatus").style.color = 'blue';
+						document.getElementById('vstatus').innerText = "待审核";
+						console.log(recordType == 2 && data.level == 0 && getCookie("isAuth") != "T" && index == "reply");
+						if (recordType == 2 && data.level == 0 && getCookie("isAuth") != "T" && index == "reply") {
+							//todo 跳转实人界面
+							window.location.href = verifyUrl;
+							// alert("邀约跳转实人界面");
+						}
+					}
+				} else {
+					show = 0;
+					document.getElementById("vstatus").style.color = '#696969';
+					document.getElementById('vstatus').innerText = "过期";
+				}
+				if (data.replyDate && data.replyTime) {
+					let appliedDate = data.replyDate + " " + data.replyTime;
+					document.getElementById("appliedDate").innerText = appliedDate;
+				}
+				let date = data.startDate.substring(0, 10);
+				let startTime = data.startDate.substring(11, 16);
+				let endTime = data.endDate.substring(11, 16);
+				let visitDate = date + " " + startTime + "-" + endTime;
+				document.getElementById('visitDate').innerText = visitDate;
+				if (data.reason != null) {
+					document.getElementById('reason').innerText = data.reason;
+				}
+				if (data.addr != null) {
+					document.getElementById('appliedAddr').innerText = data.addr;
+				}
+				if (show == 0) {
+					document.getElementById("applyAddrShow").style.display = 'none';
+					document.getElementById("refuse").style.display = 'none';
+					document.getElementById("agree").style.display = 'none';
+				} else {
+					document.getElementById("refuse").style.display = 'block';
+					document.getElementById("agree").style.display = 'block';
+					document.getElementById("appliedDateShow").style.display = 'none';
+					if (recordType == 1) {
+						document.getElementById("applyAddrShow").style.display = 'block';
+						document.getElementById("appliedAddrShow").style.display = 'none';
+						getCompany();
+					} else {
+						document.getElementById("applyAddrShow").style.display = 'none';
+						document.getElementById("appliedAddrShow").style.display = 'block';
 
-        let date = data.startDate.substring(0, 10);
-        let startTime = data.startDate.substring(11, 16);
-        let endTime = data.endDate.substring(11, 16);
-        let visitDate = date + " " + startTime + "-" + endTime;
-        document.getElementById('visitDate').innerText = visitDate;
-        if(data.reason != null){
-            document.getElementById('reason').innerText = data.reason;
-        }
-        if(data.addr!=null){
-            document.getElementById('appliedAddr').innerText = data.addr;
-        }
-        if(show==0){
-            document.getElementById("applyAddrShow").style.display = 'none';
-            document.getElementById("refuse").style.display = 'none';
-            document.getElementById("agree").style.display = 'none';
-        }else{
-            document.getElementById("refuse").style.display = 'block';
-            document.getElementById("agree").style.display = 'block';
-            document.getElementById("appliedDateShow").style.display = 'none';
-            if(recordType == 1){
-                document.getElementById("applyAddrShow").style.display = 'block';
-                document.getElementById("appliedAddrShow").style.display = 'none';
-                getCompany();
-            }else{
-                document.getElementById("applyAddrShow").style.display = 'none';
-                document.getElementById("appliedAddrShow").style.display = 'block';
-
-            }
-        }
-        $.hideLoading()
-    }
-    //获取上个页面传过来的参数
-    function getQueryString(name) {
-        let reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
-        let r = window.location.search.substr(1).match(reg);
-        if (r != null) {
-            return unescape(r[2]);
-        }
-        return null;
-    }
-
-</script>
-</body>
+					}
+				}
+				$.hideLoading()
+			}
+			//获取上个页面传过来的参数
+			function getQueryString(name) {
+				let reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+				let r = window.location.search.substr(1).match(reg);
+				if (r != null) {
+					return unescape(r[2]);
+				}
+				return null;
+			}
+		</script>
+	</body>
 </html>

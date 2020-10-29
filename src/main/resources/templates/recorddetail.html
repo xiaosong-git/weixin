@@ -90,7 +90,8 @@
             $("#visitType2").html("受访人");
             if (getCookie("userId") == detailJson.userId) {//发起人为自己
                 replyStatus =0 ;
-                userName = "本人";
+                // userName = "本人";
+				userName=getCookie("myName")
                 // $("#user").hide();
                 visitorName = detailJson.realName;
                 if (detailJson.level==0&&detailJson.vstatus == "access"&&getCookie("isAuth")!="T"){
@@ -99,7 +100,8 @@
             } else {//发起人为对方
                 replyStatus =1 ;
                 userName = detailJson.realName;
-                visitorName = "本人";
+                // visitorName = "本人";
+				visitorName=getCookie("myName")
 
                 // $("#visitor").hide();
             }
@@ -109,7 +111,8 @@
             if (getCookie("userId") == detailJson.userId) {
                 replyStatus =1 ;
                 userName = detailJson.realName;
-                visitorName = "本人";
+                // visitorName = "本人";
+				visitorName=getCookie("myName")
                 if (detailJson.level==0&&detailJson.vstatus == "unaudited"&&getCookie("isAuth")!="T") {
                         $.toptip("该公司安全等级较高，需要通过实人认证才能访问！");
                         window.location.href = verifyUrl;
@@ -117,7 +120,8 @@
                 // $("#visitor").hide();
             } else {
                 replyStatus =0;
-                userName = "本人";
+                // userName = "本人";
+				userName=getCookie("myName")
                 visitorName = detailJson.realName;
                 // $("#user").hide();
             }
@@ -165,9 +169,11 @@
             if(detailJson.replyDate == ""){
                 document.getElementById("appliedDateShow").style.display = 'none';
             }else{
-                let replyDate = detailJson.replyDate + " " + detailJson.replyTime;
+                if(detailJson.replyDate&& detailJson.replyTime){
+                    let replyDate = detailJson.replyDate + " " + detailJson.replyTime;
+                    document.getElementById("appliedDate").innerText = replyDate;
+                }
                 document.getElementById("appliedDateShow").style.display = 'block';
-                document.getElementById("appliedDate").innerText = replyDate;
             }
            if(detailJson.addr ==""){
                $("#appliedAddrShow").hide();
@@ -193,7 +199,7 @@
                     $("#agree").show();
                 }
             }else{  //邀约界面
-                companyId = 1;
+                companyId = detailJson.companyId;
                 $("#appliedAddrShow").show();
                 document.getElementById("appliedAddr").innerText =detailJson.addr;
                 $("#applyAddrShow").hide();

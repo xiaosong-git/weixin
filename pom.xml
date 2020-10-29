@@ -208,6 +208,8 @@
                     <directory>src/main/resources</directory>
                     <excludes>
                         <exclude>logback.xml</exclude>
+                        <exclude>*.yml</exclude>
+                        <exclude>*.txt</exclude>
                     </excludes>
                 </resource>
             </resources>

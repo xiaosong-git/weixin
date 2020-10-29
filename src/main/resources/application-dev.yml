@@ -24,6 +24,8 @@ spring:
 
 templateId: I-nNgggadJrZcZmkJzgxMVOptw4tf2MD9NKgYhWnCdM
 imgUrl: /project/weixin/tempotos
+companyId: 18
+orgCode: GQ1HL
 #property配置
 # 开发环境配置
 # 数据源配置，请修改为你项目的实际配置

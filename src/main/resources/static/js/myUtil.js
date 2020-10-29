@@ -1,4 +1,4 @@
-let IS_DEVELOP = false;//是否生产环境
+let IS_DEVELOP = true;//是否生产环境
 let uri;
 let url;
 let appId = "wx1ddcdc86c83bc9a1";

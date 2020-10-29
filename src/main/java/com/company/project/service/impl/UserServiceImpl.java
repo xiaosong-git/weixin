@@ -463,7 +463,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
     public Result authAfter(Long userId, String idNO, String realName) throws Exception {
         User user = userMapper.findByUserId(userId);
         String imageServerUrl = paramService.findValueByName("imageServerUrl");
-        String photoResult = auth(idNO, realName, imageServerUrl+user.getIdhandleimgurl());//实人认证
+        String photoResult = phoneResult(idNO, realName, imageServerUrl+user.getIdhandleimgurl());//实人认证
         if (!"success".equals(photoResult)) {
             return ResultGenerator.genFailResult(photoResult, "401");
         }else{
@@ -714,7 +714,45 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
             return "系统错误";
         }
     }
+    //旧实人认证 0.5元一张
+    public String phoneResult(String idNO, String realName, String idHandleImgUrl) throws Exception {
+        String merchOrderId = OrderNoUtil.genOrderNo("V", 16);//商户请求订单号
+        String merchantNo = "100000000000006";//商户号
+        String productCode = "0003";//请求的产品编码
+        String key = "2B207D1341706A7R4160724854065152";//秘钥
+        String dateTime = DateUtil.getSystemTimeFourteen();//时间戳
+        String certNo = DESUtil.encode(key, idNO);
+        logger.info("名称加密前为：{}", realName);
+        String userName = DESUtil.encode(key, realName);
+        logger.info("名称加密后为：{}", userName);
+//        String imageServerUrl = paramService.findValueByName("imageServerUrl");
+//        String photo = Base64.encode(FilesUtils.getImageFromNetByUrl(imageServerUrl + idHandleImgUrl));
+        String signSource = merchantNo + merchOrderId + dateTime + productCode + key;//原始签名值
+        String sign = MD5Util.MD5Encode(signSource);//签名值
 
+
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("merchOrderId", merchOrderId);
+        logger.info(merchOrderId);
+        map.put("merchantNo", merchantNo);
+        map.put("productCode", productCode);
+        map.put("userName", userName);//加密
+        map.put("certNo", certNo);// 加密);
+        map.put("dateTime", dateTime);
+        map.put("photo", Configuration.GetImageStrFromPath1(idHandleImgUrl, 30));//加密
+        map.put("sign", sign);
+        String userIdentityUrl = paramService.findValueByName("userIdentityUrl");
+        ThirdResponseObj obj = HttpUtil.http2Nvp(userIdentityUrl, map, "UTF-8");
+        String makePlanJsonResult = obj.getResponseEntity();
+        JSONObject jsonObject = JSONObject.parseObject(makePlanJsonResult);
+        Map resultMap = JSON.parseObject(jsonObject.toString());
+        logger.info(jsonObject.toString());
+        if ("1".equals(resultMap.get("bankResult").toString())) {
+            return "success";
+        } else {
+            return resultMap.get("message").toString();
+        }
+    }
     public static String createSign(String str) throws Exception {
         StringBuilder sb = new StringBuilder();
         sb.append("1000000007000010").append(str).append("9A0723248F21943R4208534528919630");

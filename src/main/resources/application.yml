@@ -1,7 +1,7 @@
 spring:
   profiles:
     #生产环境改为prod
-    active: test
+    active: prod
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
   devtools:

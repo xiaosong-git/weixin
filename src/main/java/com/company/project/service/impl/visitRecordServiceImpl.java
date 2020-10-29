@@ -61,6 +61,10 @@ public class visitRecordServiceImpl extends AbstractService<VisitRecord> impleme
     private OtherWxMapper otherWxMapper;
     @Value("${templateId}")
     private String templateId;
+    @Value("${companyId}")
+    private Long companyId;
+    @Value("${orgCode}")
+    private String orgCode;
     private MyService iService = new MyWxServiceImpl();
     Logger logger = LoggerFactory.getLogger(visitRecordServiceImpl.class);
 
@@ -74,11 +78,14 @@ public class visitRecordServiceImpl extends AbstractService<VisitRecord> impleme
     @Override
     public Result visitRequest(VisitRecord visitRecord, String hour) throws Exception {
         visitRecord.setRecordType(1);
+        visitRecord.setCstatus("applyConfirm");
         //访问朋悦比邻
         if(visitRecord.getVisitorId()==-1){
             visitRecord.setCstatus("applySuccess");
-            //发送推送
-            sendTemplate(visitRecord);
+            visitRecord.setReplyDate(DateUtil.getCurDate());
+            visitRecord.setReplyTime(DateUtil.getCurTime());
+            visitRecord.setCompanyId(companyId);
+            visitRecord.setOrgCode(orgCode);
         }
         return visitCommon(visitRecord, hour, 1);
     }
@@ -88,6 +95,7 @@ public class visitRecordServiceImpl extends AbstractService<VisitRecord> impleme
         if (visitRecord.getCompanyId() == null) {
             return ResultGenerator.genFailResult("邀约公司地址未上传成功！");
         }
+        visitRecord.setCstatus("applyConfirm");
         visitRecord.setRecordType(2);
         Long visitorId = visitRecord.getUserId();
         Long userId = visitRecord.getVisitorId();
@@ -162,6 +170,8 @@ public class visitRecordServiceImpl extends AbstractService<VisitRecord> impleme
         String replyDate = DateUtil.getCurDate();
         String replyTime = DateUtil.getCurTime();
         String orgCode = orgMapper.findOrgCodeByCompanyId(companyId);
+        logger.info("回应邀约访问的大楼编码{}",orgCode);
+
         int resultCode = visitorRecordMapper.updateCstatus(recordId, cstatus, replyDate, replyTime, companyId, orgCode);
         if (resultCode != 1) {
             return ResultGenerator.genFailResult("审核失败");
@@ -321,7 +331,7 @@ public class visitRecordServiceImpl extends AbstractService<VisitRecord> impleme
     }
 
     public Result visitCommon(VisitRecord visitRecord, String hour, int applyTpey) throws WxErrorException {
-        String cstatus = "applyConfirm";
+
         Long userId = visitRecord.getUserId();
         Long visitorId = visitRecord.getVisitorId();
         if (userId.equals(visitorId)) {
@@ -356,7 +366,6 @@ public class visitRecordServiceImpl extends AbstractService<VisitRecord> impleme
 //        }
         //储存新的来访记录
         Date date = new Date();
-        visitRecord.setCstatus(cstatus);
         visitRecord.setVisitDate(new SimpleDateFormat("yyyy-MM-dd").format(date));
         visitRecord.setVisitTime(new SimpleDateFormat("HH:mm:ss").format(date));
         visitRecord.setEndDate(endDate);
@@ -366,8 +375,15 @@ public class visitRecordServiceImpl extends AbstractService<VisitRecord> impleme
             //消息推送
             User user = userService.findById(userId);
             User visitor = userService.findById(visitorId);
+            //访问朋悦比邻公司
+            if(visitRecord.getVisitorId()==-1){
+                //发送推送
+                sendTemplate(visitRecord);
+               return ResultGenerator.genSuccessResult(visitRecord);
+            }
             String notification_title = "";
             String realName = user.getRealname();
+
            /* String msg_content = "【朋悦比邻】您好，您有一条预约访客需审核，访问者:" + realName + "，被访者:" + visitor.getRealname() + ",访问时间:"
                     + startDate;*/
             String msg_content = "";

@@ -21,6 +21,8 @@ spring:
         min-idle: 0
 templateId: 2UBJNiTiPPQTlwu2PHxtbCKhqao3Ix1I8mjGPBIWnUU
 imgUrl: /project/weixin/tempotos
+companyId: 18
+orgCode: GQ1HL
 # 生产环境配置
 #朋悦比邻
 #server.port=8099

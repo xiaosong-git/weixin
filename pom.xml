@@ -202,18 +202,22 @@
                         <skip>true</skip>
                     </configuration>
                 </plugin>
-        </plugins>
-            <resources>
-                <resource>
-                    <directory>src/main/resources</directory>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.1.2</version>
+                <configuration>
+
                     <excludes>
+                        <!-- **/* 前缀用法，可以匹配所有路径，例如：**/*.txt -->
                         <exclude>logback.xml</exclude>
                         <exclude>*.yml</exclude>
                         <exclude>*.txt</exclude>
                     </excludes>
-                </resource>
-            </resources>
 
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 
     <repositories>

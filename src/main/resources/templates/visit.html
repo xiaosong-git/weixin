@@ -208,29 +208,29 @@
                 <input class="weui-input" id="visit2Reason" type="text" value="" placeholder="请选择访问事由">
             </div>
         </div>
-        <div class="weui-cell">
-            <div class="weui-cell__hd"><label for="cardNumbersAddr" class="weui-label">是否有车</label></div>
-            <div class="weui-cell__bd">
-                <input class="weui-input" id="cardNumbersAddr" type="text" value="" placeholder="请选择是否有车">
-            </div>
-        </div>
-        <div id='cardNumbersInputAddr' class="cardNumbersInput">
+<!--        <div class="weui-cell">-->
+<!--            <div class="weui-cell__hd"><label for="cardNumbersAddr" class="weui-label">是否有车</label></div>-->
+<!--            <div class="weui-cell__bd">-->
+<!--                <input class="weui-input" id="cardNumbersAddr" type="text" value="" placeholder="请选择是否有车">-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div id='cardNumbersInputAddr' class="cardNumbersInput">-->
 
-        </div>
-        <div class="weui-cell">
-            <div class="weui-cell__hd"><label for="entourageAddr" class="weui-label">随行人员</label></div>
-            <div class="weui-cell__bd">
-                <input class="weui-input" id="entourageAddr" type="text" value="" placeholder="请选择常用联系人" />
-            </div>
-        </div>
-        <div class="weui-cell" id='peopleEntourageAddr' style="display: none;">
-            <div class="weui-cell__hd">
-                <label class="weui-label"></label>
-            </div>
-            <div class="weui-cell__bd">
-                <input class="weui-input" id="entourageNamesAddr" type="text" readonly placeholder="请选择常用联系人" />
-            </div>
-        </div>
+<!--        </div>-->
+<!--        <div class="weui-cell">-->
+<!--            <div class="weui-cell__hd"><label for="entourageAddr" class="weui-label">随行人员</label></div>-->
+<!--            <div class="weui-cell__bd">-->
+<!--                <input class="weui-input" id="entourageAddr" type="text" value="" placeholder="请选择常用联系人" />-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="weui-cell" id='peopleEntourageAddr' style="display: none;">-->
+<!--            <div class="weui-cell__hd">-->
+<!--                <label class="weui-label"></label>-->
+<!--            </div>-->
+<!--            <div class="weui-cell__bd">-->
+<!--                <input class="weui-input" id="entourageNamesAddr" type="text" readonly placeholder="请选择常用联系人" />-->
+<!--            </div>-->
+<!--        </div>-->
         <div class=" weui-btn-area">
             <a class="weui-btn weui-btn_primary" href="javascript:" id="visitByAddr">发起访问</a>
         </div>
@@ -445,8 +445,8 @@
         $("#visitByAddr").click(function() {
             $('#keycontent').hide()
             if (getCookie("isAuth") != "T" && getCookie("isAuth") != "H") {
-                $.toptip('请先进行信息填写！');
-                window.location.href = authUrl;
+                $.toptip('请先进行实人认证！');
+                window.location.href = verifyTestUrl;
             } else {
                 let visitorName = $("#visit2Name").val();
                 let visitorId = $("#visit2Name").attr("userId");
@@ -454,18 +454,18 @@
                 let startDate = $("#visit2Time").val();
                 let hour = $("#visit2Hour").val();
 
-                var _newEng = $("#cardNumbersInput").data("newEng");
-                var _entourageNames = $("#entourageNames").val();
-                var _cardNumber = $("#cardNumbersInput").data("cardNumbers");
-
-                var entourageNamesIds = []
-                var _entourageNamesIds = '';
-                entourageNames.forEach((item) => {
-                    entourageNamesIds.push(item.visitorid);
-                })
-                if (entourageNamesIds.length) {
-                    _entourageNamesIds = entourageNamesIds.join(',');
-                }
+                // var _newEng = $("#cardNumbersInput").data("newEng");
+                // var _entourageNames = $("#entourageNames").val();
+                // var _cardNumber = $("#cardNumbersInput").data("cardNumbers");
+                //
+                // var entourageNamesIds = []
+                // var _entourageNamesIds = '';
+                // entourageNames.forEach((item) => {
+                //     entourageNamesIds.push(item.visitorid);
+                // });
+                // if (entourageNamesIds.length) {
+                //     _entourageNamesIds = entourageNamesIds.join(',');
+                // }
 
                 if (isEmpty(visitorName)) {
                     $.toptip("请输入受访人姓名");
@@ -479,21 +479,22 @@
                 } else if (isEmpty(visitorId)) {
                     $.toptip("受访人不存在，请重新输入访问信息");
                     return;
-                } else if (hasCarAddr && isEmpty(_cardNumber)) { //新能源车牌号
-                    $.toptip("请输入车牌号");
-                    return;
-                } else if (hasCarAddr && _cardNumber.length < 7) {
-                    $.toptip("车牌号格式不对");
-                    return;
-                } else if (hasEntourageAddr && isEmpty(_entourageNames)) {
-                    $.toptip("请选择随行人员");
-                    return;
+                // } else if (hasCarAddr && isEmpty(_cardNumber)) { //新能源车牌号
+                //     $.toptip("请输入车牌号");
+                //     return;
+                // } else if (hasCarAddr && _cardNumber.length < 7) {
+                //     $.toptip("车牌号格式不对");
+                //     return;
+                // } else if (hasEntourageAddr && isEmpty(_entourageNames)) {
+                //     $.toptip("请选择随行人员");
+                //     return;
                 } else {
                     // 查询是否有实人认证
                     if ($("#companyName").attr("level") == 0 && getCookie("isAuth") != "T") {
-                        window.location.href = verifyUrl;
+                           window.location.href = verifyTestUrl;
                     } else {
-                        visitRequest(visitorId, reason, startDate, hour, _cardNumber, _entourageNamesIds);
+                        visitRequest(visitorId, reason, startDate, hour);
+                        // visitRequest(visitorId, reason, startDate, hour, _cardNumber, _entourageNamesIds);
                     }
                     // visitRequest(visitorId, reason, startDate, hour, _cardNumber, _entourageNamesIds);
 
@@ -514,7 +515,7 @@
                     if ($(this).text() !== '新能源') {
                         $(this).text('');
                     }
-                })
+                });
                 if (Array.isArray(v)) {
                     if (v[0] === '是') {
                         $('#cardNumbersInputAddr').show()

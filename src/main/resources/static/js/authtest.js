@@ -143,8 +143,87 @@ function jssdkimg(obj) {
     });
 }
 
+//退出
+function quit() {
+    $.toptip( document.referrer==='', 'success');
+    wx.closeWindow();
+}
+function goback() {
+    window.history.go(-1);
+}
+//实人认证
+function verify() {
+    if (isEmpty($("#realName").val())) {
+        $.toptip("请输入真实姓名");
+    }
+    else if (isEmpty($("#photoDiv").val())) {
+        $.toptip("请上传人像照片");
+    } else if (isEmpty($("#bindp").val())) {
+        $.toptip("请输入手机号码");
+    } else if (isEmpty($("#code").val())) {
+        $.toptip("请输入验证码");
+    }else if (isEmpty($("#code").val())) {
+        $.toptip("请输入验证码");
+    }else if (isEmpty($("#idNo").val())){
+        $.toptip("请输入身份证");
+    }
+    else {
+        $.showLoading();//15280023431
+        $.ajax({
+            //请求方式
+            type: "POST",
+            //请求的媒体类型
+            contentType: "application/x-www-form-urlencoded",
+            //请求地址
+            url: "user/verify",
+            //数据，json字符串
+            data: {
+                openId: getCookie("openId"),
+                wxId:getCookie(("wxId")),
+                otherOpenId:getCookie(("otherOpenId")),
+                idHandleImgUrl: $("#uploaderFiles").val(),
+                idNO: $("#idNo").val(),
+                realName: $("#realName").val(),
+                localImgUrl: $("#photoDiv").val(),
+                phone: $("#bindp").val(),
+                code: $("#code").val(),
+                // imgname:rst.base64
+            },
+            //请求成功
+            success: function (result) {
+                if (result.code == 400) {
+                    $.toptip("认证失败，请确认输入信息是否有误");
+                    $.toptip(result.message);
+
+                    $.hideLoading();
+                } else {
+                    $.hideLoading();
+                    setCookie("userId", result.data.userId);
+                    setCookie("isAuth", "T");
+                    $.toptip("认证成功！", 'success');
+
+                    //点击确认后的回调函数
+
+                    setTimeout(function () {
+                        $.toptip( document.referrer==='', 'success');
+                        $.toast("认证成功，页面即将关闭");
+                        if (document.referrer==='') {
+                            $.toast("认证成功，页面即将关闭");
+                        }
+                        wx.closeWindow();
+                    }, 1500);
+                    //点击确认后的回调函数
 
 
+                }
+            },
+            error: function (e) {
+                $.toptip("当前网络异常");
+            }
+        });
+    }
+
+}
 //实人认证
 function halfVerify() {
     if (isEmpty($("#realName").val())) {
@@ -193,67 +272,7 @@ function halfVerify() {
                     $.toptip("认证成功！", 'success');
                     $.toast("认证成功，页面即将关闭");
                     //点击确认后的回调函数
-                    document.referrer===''? wx.closeWindow():window.history.go(-1);
-
-                }
-            },
-            error: function (e) {
-                $.toptip("当前网络异常");
-            }
-        });
-    }
-
-}
-//实人认证
-function verify() {
-    if (isEmpty($("#realName").val())) {
-        $.toptip("请输入真实姓名");
-    }
-    else if (isEmpty($("#photoDiv").val())) {
-        $.toptip("请上传人像照片");
-    } else if (isEmpty($("#bindp").val())) {
-        $.toptip("请输入手机号码");
-    } else if (isEmpty($("#code").val())) {
-        $.toptip("请输入验证码");
-    }else if (isEmpty($("#code").val())) {
-        $.toptip("请输入验证码");
-    }
-    else {
-        $.showLoading();//15280023431
-        $.ajax({
-            //请求方式
-            type: "POST",
-            //请求的媒体类型
-            contentType: "application/x-www-form-urlencoded",
-            //请求地址
-            url: "user/halfVerify",
-            //数据，json字符串
-            data: {
-                openId: getCookie("openId"),
-                wxId:getCookie(("wxId")),
-                otherOpenId:getCookie(("otherOpenId")),
-                idHandleImgUrl: $("#uploaderFiles").val(),
-                // idNO: $("#idNo").val(),
-                realName: $("#realName").val(),
-                localImgUrl: $("#photoDiv").val(),
-                phone: $("#bindp").val(),
-                code: $("#code").val(),
-                // imgname:rst.base64
-            },
-            //请求成功
-            success: function (result) {
-                if (result.code == 400) {
-                    $.toptip("认证失败，请确认输入信息是否有误");
-                    $.toptip(result.message);
-
-                    $.hideLoading();
-                } else {
-                    $.hideLoading();
-                    setCookie("userId", result.data.userId);
-                    setCookie("isAuth", "H");
-                    $.toptip("认证成功！", 'success');
-                    $.toast("认证成功，页面即将关闭");
-                    //点击确认后的回调函数
+                    alert(document.referrer==='');
                     document.referrer===''? wx.closeWindow():window.history.go(-1);
 
                 }

@@ -198,6 +198,8 @@
                     $("#refuse").show();
                     $("#agree").show();
                 }
+                //选择公司名
+                getCompany();
             }else{  //邀约界面
                 companyId = detailJson.companyId;
                 $("#appliedAddrShow").show();
@@ -212,7 +214,7 @@
                 }
             }
         }
-        getCompany();
+
     });
 
     function verify(status) {
@@ -257,6 +259,13 @@
                 console.log(result)
                 let companys = [];
                 for (let i in result.data) {
+                    // 默认地址
+                    var b = result.data[i].id == result.data[i].users[0].companyId;
+                    console.log(result.data[i].id + "_" + result.data[i].users[0].companyId);
+                    if (b) {
+                        $("#address").val(result.data[i].companyname + "(" + result.data[i].addr + ")");
+                        companyId=result.data[i].id;
+                    }
                     companys.push(result.data[i].companyname + "(" + result.data[i].addr + ")")
                 }
                 $("#address").picker({

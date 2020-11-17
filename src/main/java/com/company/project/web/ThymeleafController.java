@@ -24,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,9 +47,9 @@ public class ThymeleafController {
     private OtherWxMapper otherWxMapper;
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login(@RequestParam(name = "code", required = false) String code,
-                        @RequestParam(name = "state", defaultValue = "0") String state, Model model)  {
+                        @RequestParam(name = "state", defaultValue = "0") String state, Model model, HttpServletResponse response)  {
 
-        logger.info(state);
+        logger.info(state+code);
 //        Map<String, Object> parameter =getParameter(state);
 //        Object wxId = parameter.get("wxId");
 //        Object openId = parameter.get("openId");
@@ -67,58 +69,31 @@ public class ThymeleafController {
 //        wxUser.setOpenid(oAuth2AccessTokenResult.getOpenid());
 //        wxUser.setLang("zh_CN");
 //        WxUserList.WxUser wxUser1 = iService.oauth2ToGetUserInfo(oAuth2AccessTokenResult.getAccess_token(), wxUser);
-        model.addAttribute("openId", oAuth2AccessTokenResult.getOpenid());
+//        model.addAttribute("openId", oAuth2AccessTokenResult.getOpenid());
+        logger.info("openId{}",oAuth2AccessTokenResult.getOpenid());
         User user = userService.getUser(oAuth2AccessTokenResult.getOpenid());
+        response.addCookie(new Cookie("openId",oAuth2AccessTokenResult.getOpenid()));
+
         if (user != null) {
-            model.addAttribute("userId", user.getId());
-            model.addAttribute("isAuth", user.getIsauth());
-            model.addAttribute("myName", user.getRealname());
-            model.addAttribute("phone", user.getPhone());
+            response.addCookie(new Cookie("phone",user.getPhone()));
+            response.addCookie(new Cookie("myName",user.getRealname()));
+            response.addCookie(new Cookie("userId",user.getId().toString()));
+            response.addCookie(new Cookie("isAuth",user.getIsauth()));
             if (split.length>1) {
                 String wxId = split[1];
                 String otherOpenId = split[2];
                 userService.otherWxVerify(wxId,user.getId(),otherOpenId);
             }
         } else {
-            model.addAttribute("userId", 0);
-            model.addAttribute("isAuth", "F");
-            model.addAttribute("myName", "");
-            model.addAttribute("phone", "");
+            response.addCookie(new Cookie("phone",""));
+            response.addCookie(new Cookie("myName",""));
+            response.addCookie(new Cookie("userId","0"));
+            response.addCookie(new Cookie("isAuth","F"));
         }
-        return "login";
+        //跳转地址
+        setAuth( split[0],model);
+        return split[0];
     }
-
-//    public static void main(String[] args) {
-//        Map<String, Object> parameter = getParameter("?wxId=212&openId=33");
-//        Object wxId = parameter.get("wxId");
-//        Object openId = parameter.get("openId");
-//        System.out.println(wxId);
-//        System.out.println(openId);
-//
-//        String s="visit";
-//        String[] split = s.split("=");
-//        System.out.println(split[0]);
-//    }
-//
-//    public static Map<String, Object> getParameter(String url) {
-//        Map<String, Object> map = new HashMap<String, Object>();
-//        try {
-//            final String charset = "utf-8";
-//            url = URLDecoder.decode(url, charset);
-//            if (url.indexOf('?') != -1) {
-//                final String contents = url.substring(url.indexOf('?') + 1);
-//                String[] keyValues = contents.split(",");
-//                for (int i = 0; i < keyValues.length; i++) {
-//                    String key = keyValues[i].substring(0, keyValues[i].indexOf("="));
-//                    String value = keyValues[i].substring(keyValues[i].indexOf("=") + 1);
-//                    map.put(key, value);
-//                }
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return map;
-//    }
 
     @AuthCheckAnnotation(checkLogin = false, checkVerify = false)
     @RequestMapping(value = "/visit", method = RequestMethod.GET)
@@ -139,6 +114,7 @@ public class ThymeleafController {
             WxOAuth2AccessTokenResult result = iService.otherAuth2ToGetAccessToken(wx.getAppid(),wx.getSecret(),code);
             logger.info("otherOpenId,{}",result.getOpenid());
             model.addAttribute("otherOpenId",result.getOpenid());
+
         } catch (WxErrorException e) {
             e.printStackTrace();
         }
@@ -233,31 +209,40 @@ public class ThymeleafController {
     }
     @AuthCheckAnnotation(checkLogin = false, checkVerify = false)
     @RequestMapping(value = "/verify", method = RequestMethod.GET)
-    public String verify(Model model, @CookieValue(name="isAuth",required = false) String isAuth,
-                         @CookieValue(name="userId",required = false) String userId) {
+    public String verify(Model model) {
 
-        System.out.println(isAuth);
         logger.info("verify");
         setAuth( "verify",model);
         return "verify";
     }
+    @AuthCheckAnnotation(checkLogin = false, checkVerify = false)
+    @RequestMapping(value = "/verifytest", method = RequestMethod.GET)
+    public String verifytest(Model model) {
 
+        logger.info("verify");
+        setAuth( "verifytest",model);
+        return "verifytest";
+    }
     public void setAuth(String path,Model model){
         List<String> jsApiList = new ArrayList<>();
 
         //需要用到哪些JS SDK API 就设置哪些
-        jsApiList.add("chooseImage");//拍照或从手机相册中选图接口
-        jsApiList.add("onMenuShareQZone");//获取“分享到QQ空间”按钮点击状态及自定义分享内容接口
-        jsApiList.add("previewImage");//预览图片接口
-        jsApiList.add("uploadImage");//上传图片接口
-        jsApiList.add("downloadImage");//下载图片接口
+        //拍照或从手机相册中选图接口
+        jsApiList.add("chooseImage");
+        //获取“分享到QQ空间”按钮点击状态及自定义分享内容接口
+        jsApiList.add("onMenuShareQZone");
+        //预览图片接口
+        jsApiList.add("previewImage");
+        //上传图片接口
+        jsApiList.add("uploadImage");
+        //下载图片接口
+        jsApiList.add("downloadImage");
         logger.info("已进入auth界面");
         try {
             //把config返回到前端进行js调用即可。
             WxJsapiConfig config = iService.createJsapiConfig(MenuKey.URL + path, jsApiList);
             config.setAppid(WxConfig.getInstance().getAppId());
             System.out.println(config.getNoncestr());
-//                 System.out.println(config.toJson());
             model.addAttribute("config", config);
             logger.info("进入设置权限");
         } catch (WxErrorException e) {

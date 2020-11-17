@@ -381,16 +381,17 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
             localImgUrl = URLDecoder.decode(localImgUrl, "UTF-8");
             try {
                 //本地实人认证
-                UserAuth userAuth = userAuthMapper.localPhoneResult(idNoMW, realName);
-                if (userAuth != null) {
-//                    localImgUrl=userAuth.getIdhandleimgurl();//目前存在无法两张人像比对的bug
-//                    logger.info("本地实人认证成功上一张成功图片为：{}",userAuth.getIdhandleimgurl());
-                } else {
-                    String photoResult = auth(idNO, realName, localImgUrl);//实人认证
+//                UserAuth userAuth = userAuthMapper.localPhoneResult(idNoMW, realName);
+//                if (userAuth != null) {
+////                    localImgUrl=userAuth.getIdhandleimgurl();//目前存在无法两张人像比对的bug
+////                    logger.info("本地实人认证成功上一张成功图片为：{}",userAuth.getIdhandleimgurl());
+//                } else {
+                String imageServerUrl = paramService.findValueByName("imageServerUrl");
+                    String photoResult = auth(idNO, realName, imageServerUrl+idHandleImgUrl);//实人认证
                     if (!"success".equals(photoResult)) {
                         return ResultGenerator.genFailResult(photoResult, "fail");
                     }
-                }
+//                }
             } catch (Exception e) {
                 e.printStackTrace();
                 return ResultGenerator.genFailResult("图片上传出错!", "fail");
@@ -699,11 +700,11 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
         postMethod.setEntity(entityStr);
         HttpResponse resp = httpClient.execute(postMethod);
         int statusCode = resp.getStatusLine().getStatusCode();
-        ThirdResponseObj responseObj = new ThirdResponseObj();
         if (200 == statusCode) {
 
             String str = EntityUtils.toString(resp.getEntity(), HTTP.UTF_8);
             JSONObject jsonObject = JSONObject.parseObject(str);
+            logger.info("实人认证结果{}",jsonObject.toJSONString());
             Map resultMap = JSON.parseObject(jsonObject.toString());
             if ("0".equals(resultMap.get("succ_flag").toString())) {
                 return "success";
@@ -755,7 +756,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
     }
     public static String createSign(String str) throws Exception {
         StringBuilder sb = new StringBuilder();
-        sb.append("1000000007000010").append(str).append("9A0723248F21943R4208534528919630");
+        sb.append("1000000007000010").append(str).append("2B207D1341706A7R4160724854065152");
         String newSign = MD5Util.MD5Encode(sb.toString(), "UTF-8");
         return newSign;
     }

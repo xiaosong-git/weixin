@@ -7,7 +7,7 @@ if (IS_DEVELOP) {//生产环境
     url = "http://" + uri + "/";
 } else {
     appId = "wx2a1951f46acc4371";
-    uri = "438516c4.cpolar.io";
+    uri = "6f230a8e.cpolar.io";
     url = "http://" + uri + "/";
 }
 
@@ -33,6 +33,7 @@ let secondRecordUrl=url+suffix+"secondrecord";
 let recordDetailUrl=url+suffix+"recorddetail";
 let bindphoneUrl=url+suffix+"bindphone";
 let verifyUrl=url+suffix+"verify";
+let verifyTestUrl=url+suffix+"verifytest";
 
 let replyUrl=url+suffix+"reply";
 let indexUrl=url+suffix+"index1";

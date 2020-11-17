@@ -48,7 +48,7 @@ $(function () {
             // $.showLoading();
             $.alert("您还未进行身份认证，请先进行实人认证", function() {
                 //点击确认后的回调函数
-                    window.location.href = authUrl;
+                window.location.href = verifyTestUrl;
                     $.showLoading();
                 });
         } else {
@@ -153,12 +153,12 @@ function postNP() {
 
 //发起成功访问
 function visit() {
-    var visitorName = $("#visitorName").val();
-    var visitorPhone = $("#visitorPhone").val();
-    var startDate = $("#start-time").val();
-    var hour = $("#hour").val();
-    var reason = $("#reason").val();
-    var visitorId=$("#visitorName").attr("visitorId");
+    let visitorName = $("#visitorName").val();
+    let visitorPhone = $("#visitorPhone").val();
+    let startDate = $("#start-time").val();
+    let hour = $("#hour").val();
+    let reason = $("#reason").val();
+    let visitorId=$("#visitorName").attr("visitorId");
     if (isEmpty(visitorName)) {
         $.toptip("请输入受访人姓名");
         return;
@@ -203,7 +203,7 @@ function visitRequest (visitorId,reason,startDate,hour){
             } else if (result.code == 200) {
                 $.toast("发起访问成功", 'success');
                 alert("访问申请已发送，等待对方审核");
-                location.reload();
+                window.location.href=firstRecordUrl;
             } else {
                 $.toptip("系统错误，请重试");
             }

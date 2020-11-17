@@ -158,7 +158,7 @@
                     // if (false) {
                     $.alert("您还未进行身份认证，请先进行实人认证", function() {
                         //点击确认后的回调函数
-                        window.location.href = authUrl;
+                         window.location.href = verifyTestUrl;
                         $.showLoading();
                     });
                 } else {
@@ -333,14 +333,16 @@
                 },
                 success: function(result) {
                     console.log(result)
-                    var companys = [];
+                    let companys = [];
                     for (var i in result.data) {
                         //  默认地址
                         var b = result.data[i].id == result.data[i].users[0].companyId;
                         console.log(result.data[i].id + "_" + result.data[i].users[0].companyId);
                         if (b) {
                             $("#address").val(result.data[i].companyname + "(" + result.data[i].addr + ")");
+                            companyId=result.data[i].id;
                         }
+
                         companys.push(result.data[i].companyname + "(" + result.data[i].addr + ")")
                     }
                     $("#address").picker({

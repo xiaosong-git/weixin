@@ -162,6 +162,7 @@
 							console.log(result.data[i].id + "_" + result.data[i].users[0].companyId);
 							if (b) {
 								$("#address").val(result.data[i].companyname + "(" + result.data[i].addr + ")");
+								companyId=result.data[i].id;
 							}
 							companys.push(result.data[i].companyname + "(" + result.data[i].addr + ")")
 						}
